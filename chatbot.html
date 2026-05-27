@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Job Application – Sampark AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root { --ink:#0a0a0f; --paper:#f5f3ee; --accent:#e85a2a; --muted:#7a7870; --border:#e2dfd8; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    min-height:100vh;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a20 50%, #0a1020 100%);
+    font-family:'DM Sans',sans-serif;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:1rem;
+  }
+
+  .chat-wrapper { width:100%; max-width:560px; display:flex; flex-direction:column; height:100vh; max-height:720px; }
+
+  .chat-top {
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    border-bottom:none;
+    border-radius:20px 20px 0 0;
+    padding:1.2rem 1.5rem;
+    display:flex; align-items:center; gap:1rem;
+  }
+  .chat-logo { font-family:'Syne',sans-serif; font-weight:800; color:#fff; font-size:1rem; }
+  .chat-logo span { color:var(--accent); }
+  .chat-job-info { flex:1; text-align:right; }
+  .chat-job-title { font-family:'Syne',sans-serif; font-weight:700; color:#fff; font-size:0.95rem; }
+  .chat-company { font-size:0.78rem; color:rgba(255,255,255,0.45); }
+  .status-dot { width:8px; height:8px; border-radius:50%; background:#22c55e; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  .chat-body {
+    flex:1; overflow-y:auto;
+    background:rgba(10,10,15,0.8);
+    border-left:1px solid rgba(255,255,255,0.1);
+    border-right:1px solid rgba(255,255,255,0.1);
+    padding:1.5rem;
+    display:flex; flex-direction:column; gap:1rem;
+    scroll-behavior:smooth;
+  }
+  .chat-body::-webkit-scrollbar { width:4px; }
+  .chat-body::-webkit-scrollbar-track { background:transparent; }
+  .chat-body::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:2px; }
+
+  .msg { display:flex; flex-direction:column; max-width:82%; animation:fadeUp 0.35s ease both; }
+  .msg.bot { align-self:flex-start; }
+  .msg.user { align-self:flex-end; }
+  .msg-bubble {
+    padding:0.85rem 1.1rem; border-radius:16px;
+    font-size:0.9rem; line-height:1.55;
+  }
+  .msg.bot .msg-bubble {
+    background:rgba(255,255,255,0.08);
+    color:#fff; border-radius:4px 16px 16px 16px;
+  }
+  .msg.user .msg-bubble {
+    background:var(--accent); color:#fff;
+    border-radius:16px 4px 16px 16px;
+  }
+  .msg-time { font-size:0.7rem; color:rgba(255,255,255,0.3); margin-top:0.3rem; }
+  .msg.user .msg-time { text-align:right; }
+
+  .typing-bubble {
+    background:rgba(255,255,255,0.08);
+    border-radius:4px 16px 16px 16px;
+    padding:0.85rem 1.1rem;
+    display:inline-flex; gap:5px; align-items:center;
+  }
+  .typing-bubble span {
+    width:7px; height:7px; border-radius:50%;
+    background:rgba(255,255,255,0.5); animation:bounce 1.2s infinite;
+  }
+  .typing-bubble span:nth-child(2) { animation-delay:0.2s; }
+  .typing-bubble span:nth-child(3) { animation-delay:0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
+
+  .chat-footer {
+    background:rgba(10,10,15,0.95);
+    border:1px solid rgba(255,255,255,0.1);
+    border-top:1px solid rgba(255,255,255,0.15);
+    border-radius:0 0 20px 20px;
+    padding:1rem 1.2rem;
+    display:flex; gap:0.8rem; align-items:center;
+  }
+  .chat-input {
+    flex:1; background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.15);
+    border-radius:10px; padding:0.75rem 1rem;
+    color:#fff; font-family:'DM Sans',sans-serif; font-size:0.9rem;
+    outline:none; transition:border-color 0.2s;
+    resize:none; max-height:120px;
+  }
+  .chat-input::placeholder { color:rgba(255,255,255,0.3); }
+  .chat-input:focus { border-color:rgba(232,90,42,0.6); }
+  .send-btn {
+    width:42px; height:42px; border-radius:10px;
+    background:var(--accent); border:none; color:#fff;
+    cursor:pointer; display:flex; align-items:center; justify-content:center;
+    font-size:1.1rem; transition:opacity 0.2s; flex-shrink:0;
+  }
+  .send-btn:hover { opacity:0.85; }
+  .send-btn:disabled { opacity:0.4; cursor:not-allowed; }
+
+  .complete-banner {
+    display:none; background:rgba(22,163,74,0.15);
+    border:1px solid rgba(22,163,74,0.3);
+    border-radius:12px; padding:1.5rem; text-align:center; color:#fff;
+    margin-top:1rem;
+  }
+  .complete-banner.show { display:block; }
+  .complete-banner h3 { font-family:'Syne',sans-serif; font-size:1.1rem; color:#4ade80; margin-bottom:0.5rem; }
+  .complete-banner p { font-size:0.85rem; color:rgba(255,255,255,0.6); }
+
+  .powered-by { text-align:center; margin-top:0.8rem; font-size:0.72rem; color:rgba(255,255,255,0.25); }
+  .powered-by a { color:rgba(232,90,42,0.6); text-decoration:none; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<div class="chat-wrapper">
+  <div class="chat-top">
+    <div class="status-dot"></div>
+    <div>
+      <div class="chat-logo">Sampark<span>AI</span></div>
+      <div style="font-size:0.72rem;color:rgba(255,255,255,0.4)">AI Screening Assistant</div>
+    </div>
+    <div class="chat-job-info">
+      <div class="chat-job-title" id="job-title-display">Loading...</div>
+      <div class="chat-company" id="company-display">Please wait</div>
+    </div>
+  </div>
+
+  <div class="chat-body" id="chat-body"></div>
+
+  <div class="chat-footer">
+    <textarea class="chat-input" id="chat-input" placeholder="Type your answer here…" rows="1"
+      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
+      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
+    <button class="send-btn" id="send-btn" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<div class="complete-banner" id="complete-banner">
+  <h3>✅ Screening Complete!</h3>
+  <p>Thank you! The HR team will review your profile and contact you soon.</p>
+</div>
+
+<div class="powered-by">Powered by <a href="index.html">Sampark AI</a></div>
+
+<script>
+// Get job ID from URL
+const urlParams = new URLSearchParams(location.search);
+const jobId = urlParams.get('job');
+
+// Load admin data
+let adminData = JSON.parse(localStorage.getItem('sampark_admin') || '{"clients":[],"jobs":[],"candidates":[]}');
+const job = adminData.jobs.find(j => j.id === jobId);
+const client = job ? adminData.clients.find(c => c.id === job.clientId) : null;
+
+// Update header
+document.getElementById('job-title-display').textContent = job ? job.title : 'Job Application';
+document.getElementById('company-display').textContent = client ? client.company : 'Company';
+
+// Build system prompt
+const systemPrompt = `You are a friendly, professional AI recruitment screening assistant for Sampark AI. You are screening candidates for the following position:
+
+Job Title: ${job ? job.title : 'Open Position'}
+Company: ${client ? client.company : 'Our Client'}
+${job ? 'Job Description: ' + (job.desc || 'Not provided') : ''}
+Required Experience: ${job ? (job.exp || 'Any') : 'Any'}
+
+Your task: Screen the candidate by asking these questions ONE AT A TIME in this exact order:
+1. Ask for their full name
+2. Ask for their total years of work experience  
+3. Ask what is their current or most recent job title/role
+4. Ask about their key skills relevant to this position
+5. Ask their expected monthly salary (in rupees)
+6. Ask about their notice period (or when they can join)
+
+Rules:
+- Ask ONLY ONE question at a time
+- Be warm, encouraging, and professional
+- Keep responses SHORT (1-3 sentences max)
+- After they answer question 6, thank them warmly, tell them the HR team at ${client ? client.company : 'the company'} will review their profile and contact them within 2-3 working days
+- Then output this exact tag on a new line: [SCREENING_COMPLETE]
+- Do not ask any additional questions beyond the 6 listed`;
+
+let chatHistory = [];
+let candidateData = { jobId: jobId, clientId: client ? client.id : null, jobTitle: job ? job.title : 'Unknown', status: 'new', createdAt: new Date().toISOString(), id: 'cand_' + Date.now() };
+let isComplete = false;
+
+function addMsg(role, text, animate = true) {
+  const body = document.getElementById('chat-body');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const time = new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  div.innerHTML = `<div class="msg-bubble">${text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div><div class="msg-time">${time}</div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function showTyping() {
+  const body = document.getElementById('chat-body');
+  const div = document.createElement('div');
+  div.className = 'msg bot'; div.id = 'typing-indicator';
+  div.innerHTML = `<div class="typing-bubble"><span></span><span></span><span></span></div>`;
+  body.appendChild(div);
+  body.scrollTop = body.scrollHeight;
+}
+
+function removeTyping() {
+  const el = document.getElementById('typing-indicator');
+  if (el) el.remove();
+}
+
+async function sendMsg() {
+  if (isComplete) return;
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  input.value = ''; input.style.height = 'auto';
+  document.getElementById('send-btn').disabled = true;
+  addMsg('user', text);
+  chatHistory.push({ role: 'user', content: text });
+
+  // Extract candidate data from responses
+  extractCandidateData(chatHistory.length, text);
+
+  showTyping();
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 300,
+        system: systemPrompt,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    removeTyping();
+    let reply = data.content?.[0]?.text || "Sorry, please try again.";
+
+    if (reply.includes('[SCREENING_COMPLETE]')) {
+      reply = reply.replace('[SCREENING_COMPLETE]', '').trim();
+      isComplete = true;
+      saveCandidateData();
+      setTimeout(() => {
+        document.getElementById('complete-banner').classList.add('show');
+        document.getElementById('chat-input').disabled = true;
+        document.getElementById('send-btn').disabled = true;
+        document.getElementById('chat-input').placeholder = 'Screening complete ✓';
+      }, 1000);
+    }
+
+    addMsg('bot', reply);
+    chatHistory.push({ role: 'assistant', content: reply });
+  } catch(e) {
+    removeTyping();
+    addMsg('bot', 'Sorry, there was a connection issue. Please refresh and try again.');
+  }
+  document.getElementById('send-btn').disabled = false;
+}
+
+function extractCandidateData(turn, answer) {
+  // Map answer turn to candidate field (user message turns: 1=name, 2=exp, 3=role, 4=skills, 5=salary, 6=notice)
+  const userTurns = chatHistory.filter(m => m.role === 'user').length;
+  if (userTurns === 1) candidateData.name = answer;
+  else if (userTurns === 2) candidateData.experience = answer;
+  else if (userTurns === 3) candidateData.currentRole = answer;
+  else if (userTurns === 4) candidateData.skills = answer;
+  else if (userTurns === 5) candidateData.salary = answer;
+  else if (userTurns === 6) candidateData.notice = answer;
+}
+
+function saveCandidateData() {
+  if (!jobId) return;
+  adminData = JSON.parse(localStorage.getItem('sampark_admin') || '{"clients":[],"jobs":[],"candidates":[]}');
+  adminData.candidates = adminData.candidates || [];
+  adminData.candidates.push(candidateData);
+  localStorage.setItem('sampark_admin', JSON.stringify(adminData));
+}
+
+// Start the conversation
+async function startChat() {
+  if (!job) {
+    addMsg('bot', "⚠️ This job link seems invalid or expired. Please contact the company for a new link.");
+    return;
+  }
+  showTyping();
+  await new Promise(r => setTimeout(r, 800));
+  removeTyping();
+  const greeting = `👋 Hello! Welcome to **${client ? client.company : 'our company'}**'s screening process for the **${job.title}** position.\n\nI'm the AI screening assistant. This will take about 3–4 minutes. Your answers will be reviewed by the HR team.\n\nLet's get started! Could you please tell me your **full name**?`;
+  addMsg('bot', greeting);
+  chatHistory.push({ role: 'assistant', content: greeting });
+}
+
+startChat();
+</script>
+</body>
+</html>

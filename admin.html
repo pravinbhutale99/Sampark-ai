@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin Portal – Sampark AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink:#0a0a0f; --paper:#f5f3ee; --accent:#e85a2a;
+    --muted:#7a7870; --card:#ffffff; --border:#e2dfd8;
+    --sidebar:#0a0a0f; --sidebar-w:240px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--paper); font-family:'DM Sans',sans-serif; color:var(--ink); }
+
+  /* LOGIN */
+  .login-screen {
+    min-height:100vh; display:flex; align-items:center; justify-content:center;
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a1020 100%);
+  }
+  .login-box {
+    background:#fff; border-radius:20px; padding:3rem;
+    width:100%; max-width:420px; text-align:center;
+  }
+  .login-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.8rem; margin-bottom:0.3rem; }
+  .login-logo span { color:var(--accent); }
+  .login-box p { color:var(--muted); font-size:0.9rem; margin-bottom:2rem; }
+  .login-box input {
+    width:100%; padding:0.8rem 1rem; border:1px solid var(--border);
+    border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.95rem;
+    margin-bottom:1rem; outline:none; transition:border-color 0.2s;
+  }
+  .login-box input:focus { border-color:var(--accent); }
+  .login-btn {
+    width:100%; background:var(--ink); color:#fff;
+    padding:0.9rem; border-radius:8px; border:none;
+    font-family:'Syne',sans-serif; font-weight:700; font-size:1rem;
+    cursor:pointer; transition:background 0.2s;
+  }
+  .login-btn:hover { background:var(--accent); }
+  .login-hint { font-size:0.8rem; color:var(--muted); margin-top:1rem; }
+
+  /* DASHBOARD */
+  .dashboard { display:none; }
+  .dashboard.active { display:flex; min-height:100vh; }
+
+  /* SIDEBAR */
+  .sidebar {
+    width:var(--sidebar-w); background:var(--sidebar); color:#fff;
+    display:flex; flex-direction:column; padding:2rem 1.5rem;
+    position:fixed; top:0; left:0; height:100vh; overflow-y:auto;
+  }
+  .sidebar-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem; margin-bottom:3rem; }
+  .sidebar-logo span { color:var(--accent); }
+  .nav-item {
+    display:flex; align-items:center; gap:0.8rem;
+    padding:0.75rem 1rem; border-radius:8px; cursor:pointer;
+    color:rgba(255,255,255,0.6); font-size:0.9rem; margin-bottom:0.3rem;
+    transition:all 0.2s; text-decoration:none;
+  }
+  .nav-item:hover, .nav-item.active { background:rgba(255,255,255,0.1); color:#fff; }
+  .nav-item.active { background:var(--accent); color:#fff; }
+  .sidebar-bottom { margin-top:auto; }
+  .sidebar-bottom .nav-item { color:rgba(255,255,255,0.4); }
+
+  /* MAIN */
+  .main { margin-left:var(--sidebar-w); flex:1; padding:2.5rem; }
+  .page { display:none; }
+  .page.active { display:block; }
+
+  .page-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; flex-wrap:wrap; gap:1rem; }
+  .page-title { font-family:'Syne',sans-serif; font-weight:800; font-size:1.8rem; }
+  .page-subtitle { color:var(--muted); font-size:0.9rem; margin-top:0.2rem; }
+
+  .btn { padding:0.6rem 1.2rem; border-radius:8px; border:none; cursor:pointer; font-family:'Syne',sans-serif; font-weight:600; font-size:0.85rem; transition:all 0.2s; }
+  .btn-dark { background:var(--ink); color:#fff; }
+  .btn-dark:hover { background:var(--accent); }
+  .btn-outline { background:transparent; color:var(--ink); border:1px solid var(--border); }
+  .btn-outline:hover { border-color:var(--ink); }
+
+  /* STATS */
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; margin-bottom:2rem; }
+  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:14px; padding:1.5rem; }
+  .stat-card .label { font-size:0.8rem; color:var(--muted); font-weight:500; text-transform:uppercase; letter-spacing:0.05em; }
+  .stat-card .value { font-family:'Syne',sans-serif; font-weight:800; font-size:2rem; margin-top:0.4rem; }
+  .stat-card .change { font-size:0.8rem; color:#16a34a; margin-top:0.3rem; }
+
+  /* TABLE */
+  .table-card { background:var(--card); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+  .table-card table { width:100%; border-collapse:collapse; }
+  .table-card th { text-align:left; padding:1rem 1.5rem; font-size:0.8rem; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); border-bottom:1px solid var(--border); }
+  .table-card td { padding:1rem 1.5rem; font-size:0.9rem; border-bottom:1px solid var(--border); }
+  .table-card tr:last-child td { border-bottom:none; }
+  .table-card tr:hover td { background:var(--paper); }
+  .badge { display:inline-flex; padding:0.25rem 0.7rem; border-radius:100px; font-size:0.75rem; font-weight:600; }
+  .badge.active { background:#dcfce7; color:#16a34a; }
+  .badge.pending { background:#fef9c3; color:#854d0e; }
+  .badge.inactive { background:#fee2e2; color:#991b1b; }
+  .copy-btn { background:var(--paper); border:1px solid var(--border); border-radius:6px; padding:0.3rem 0.7rem; font-size:0.75rem; cursor:pointer; transition:all 0.2s; }
+  .copy-btn:hover { background:var(--ink); color:#fff; border-color:var(--ink); }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.5); backdrop-filter:blur(4px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:1rem; opacity:0; pointer-events:none; transition:opacity 0.3s; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:#fff; border-radius:20px; width:100%; max-width:500px; padding:2.5rem; transform:translateY(20px); transition:transform 0.3s; max-height:90vh; overflow-y:auto; }
+  .modal-overlay.open .modal { transform:translateY(0); }
+  .modal h3 { font-family:'Syne',sans-serif; font-weight:800; font-size:1.4rem; margin-bottom:1.5rem; }
+  .form-group { margin-bottom:1.2rem; }
+  .form-group label { display:block; font-size:0.85rem; font-weight:500; margin-bottom:0.4rem; }
+  .form-group input, .form-group select, .form-group textarea { width:100%; padding:0.75rem 1rem; border:1px solid var(--border); border-radius:8px; font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s; resize:vertical; }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--accent); }
+  .modal-btns { display:flex; gap:1rem; margin-top:1.5rem; }
+
+  @media(max-width:768px) {
+    .sidebar { width:100%; height:auto; position:relative; flex-direction:row; flex-wrap:wrap; padding:1rem; }
+    .main { margin-left:0; padding:1.5rem; }
+    .sidebar-logo { margin-bottom:0; margin-right:auto; }
+    .sidebar-bottom { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-screen" id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">Sampark<span>AI</span></div>
+    <p>Admin Portal — Pravin only</p>
+    <input type="email" id="admin-email" placeholder="admin@samparkai.tech" value="admin@samparkai.tech"/>
+    <input type="password" id="admin-pass" placeholder="Password" value="sampark2026"/>
+    <button class="login-btn" onclick="adminLogin()">Login to Dashboard →</button>
+    <p class="login-hint">Default: admin@samparkai.tech / sampark2026</p>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="sidebar">
+    <div class="sidebar-logo">Sampark<span>AI</span></div>
+    <div class="nav-item active" onclick="showPage('overview')">📊 Overview</div>
+    <div class="nav-item" onclick="showPage('clients')">🏢 Clients</div>
+    <div class="nav-item" onclick="showPage('jobs')">💼 Job Roles</div>
+    <div class="nav-item" onclick="showPage('candidates')">👥 Candidates</div>
+    <div class="sidebar-bottom">
+      <div class="nav-item" onclick="logout()">🚪 Logout</div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- OVERVIEW -->
+    <div class="page active" id="page-overview">
+      <div class="page-header">
+        <div>
+          <div class="page-title">Good morning, Pravin 👋</div>
+          <div class="page-subtitle">Here's what's happening with Sampark AI today</div>
+        </div>
+        <button class="btn btn-dark" onclick="showPage('clients');document.getElementById('add-client-modal').classList.add('open')">+ Add Client</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="label">Total Clients</div><div class="value" id="stat-clients">0</div><div class="change">↑ Add your first client!</div></div>
+        <div class="stat-card"><div class="label">Active Jobs</div><div class="value" id="stat-jobs">0</div><div class="change">Across all clients</div></div>
+        <div class="stat-card"><div class="label">Total Candidates</div><div class="value" id="stat-candidates">0</div><div class="change">Screened by AI</div></div>
+        <div class="stat-card"><div class="label">Monthly Revenue</div><div class="value" id="stat-revenue">₹0</div><div class="change">From active plans</div></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Client</th><th>Plan</th><th>Jobs</th><th>Candidates</th><th>Status</th></tr></thead>
+          <tbody id="overview-table"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">No clients yet. Add your first client! 🚀</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CLIENTS -->
+    <div class="page" id="page-clients">
+      <div class="page-header">
+        <div><div class="page-title">Clients</div><div class="page-subtitle">Manage your paying clients</div></div>
+        <button class="btn btn-dark" onclick="document.getElementById('add-client-modal').classList.add('open')">+ Add Client</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Company</th><th>Contact</th><th>Plan</th><th>Login</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody id="clients-table"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">No clients yet.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- JOBS -->
+    <div class="page" id="page-jobs">
+      <div class="page-header">
+        <div><div class="page-title">Job Roles</div><div class="page-subtitle">Create chatbot links for each job</div></div>
+        <button class="btn btn-dark" onclick="document.getElementById('add-job-modal').classList.add('open')">+ Create Job</button>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Job Title</th><th>Client</th><th>Candidates</th><th>Chatbot Link</th><th>Status</th></tr></thead>
+          <tbody id="jobs-table"><tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">No jobs yet. Create one!</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CANDIDATES -->
+    <div class="page" id="page-candidates">
+      <div class="page-header">
+        <div><div class="page-title">All Candidates</div><div class="page-subtitle">Every candidate screened across all clients</div></div>
+      </div>
+      <div class="table-card">
+        <table>
+          <thead><tr><th>Name</th><th>Job</th><th>Client</th><th>Experience</th><th>Salary Ask</th><th>Status</th></tr></thead>
+          <tbody id="candidates-table"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">No candidates yet.</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ADD CLIENT MODAL -->
+<div class="modal-overlay" id="add-client-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <h3>➕ Add New Client</h3>
+    <div class="form-group"><label>Company Name</label><input id="c-company" placeholder="e.g. Infosys BPO"/></div>
+    <div class="form-group"><label>Contact Person</label><input id="c-contact" placeholder="HR Manager Name"/></div>
+    <div class="form-group"><label>Phone / WhatsApp</label><input id="c-phone" placeholder="+91 98765 43210"/></div>
+    <div class="form-group"><label>Client Login Email</label><input id="c-email" placeholder="hr@company.com"/></div>
+    <div class="form-group"><label>Client Password</label><input id="c-password" placeholder="Set a password for client"/></div>
+    <div class="form-group"><label>Plan</label>
+      <select id="c-plan">
+        <option value="5000">Starter — ₹5,000/month</option>
+        <option value="10000">Growth — ₹10,000/month</option>
+        <option value="15000">Enterprise — ₹15,000/month</option>
+      </select>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-dark" onclick="addClient()">Add Client →</button>
+      <button class="btn btn-outline" onclick="document.getElementById('add-client-modal').classList.remove('open')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD JOB MODAL -->
+<div class="modal-overlay" id="add-job-modal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="modal">
+    <h3>💼 Create Job Role</h3>
+    <div class="form-group"><label>Job Title</label><input id="j-title" placeholder="e.g. Sales Executive, Software Engineer"/></div>
+    <div class="form-group"><label>Assign to Client</label><select id="j-client"></select></div>
+    <div class="form-group"><label>Job Description (for AI context)</label><textarea id="j-desc" rows="3" placeholder="Brief description of the role..."></textarea></div>
+    <div class="form-group"><label>Required Experience</label><input id="j-exp" placeholder="e.g. 2-5 years"/></div>
+    <div class="modal-btns">
+      <button class="btn btn-dark" onclick="addJob()">Create Job →</button>
+      <button class="btn btn-outline" onclick="document.getElementById('add-job-modal').classList.remove('open')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---- DATA ----
+let data = JSON.parse(localStorage.getItem('sampark_admin') || '{"clients":[],"jobs":[],"candidates":[]}');
+function save() { localStorage.setItem('sampark_admin', JSON.stringify(data)); }
+
+// ---- AUTH ----
+function adminLogin() {
+  const e = document.getElementById('admin-email').value;
+  const p = document.getElementById('admin-pass').value;
+  if (e === 'admin@samparkai.tech' && p === 'sampark2026') {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').classList.add('active');
+    renderAll();
+  } else { alert('Wrong credentials!'); }
+}
+function logout() {
+  document.getElementById('dashboard').classList.remove('active');
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// ---- NAVIGATION ----
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  event && event.currentTarget && event.currentTarget.classList.add('active');
+}
+
+// ---- RENDER ----
+function renderAll() { renderStats(); renderOverview(); renderClients(); renderJobs(); renderCandidates(); populateJobClientSelect(); }
+
+function renderStats() {
+  document.getElementById('stat-clients').textContent = data.clients.length;
+  document.getElementById('stat-jobs').textContent = data.jobs.length;
+  document.getElementById('stat-candidates').textContent = data.candidates.length;
+  const rev = data.clients.reduce((s,c) => s + parseInt(c.plan||0), 0);
+  document.getElementById('stat-revenue').textContent = '₹' + rev.toLocaleString('en-IN');
+}
+
+function renderOverview() {
+  const tb = document.getElementById('overview-table');
+  if (!data.clients.length) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">No clients yet. Add your first client! 🚀</td></tr>'; return; }
+  tb.innerHTML = data.clients.map(c => {
+    const jobs = data.jobs.filter(j => j.clientId === c.id).length;
+    const cands = data.candidates.filter(cd => cd.clientId === c.id).length;
+    return `<tr><td><strong>${c.company}</strong><br/><small style="color:var(--muted)">${c.contact}</small></td><td>₹${parseInt(c.plan).toLocaleString('en-IN')}/mo</td><td>${jobs}</td><td>${cands}</td><td><span class="badge active">Active</span></td></tr>`;
+  }).join('');
+}
+
+function renderClients() {
+  const tb = document.getElementById('clients-table');
+  if (!data.clients.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">No clients yet.</td></tr>'; return; }
+  tb.innerHTML = data.clients.map(c => `
+    <tr>
+      <td><strong>${c.company}</strong></td>
+      <td>${c.contact}<br/><small>${c.phone}</small></td>
+      <td>₹${parseInt(c.plan).toLocaleString('en-IN')}/mo</td>
+      <td><small style="color:var(--muted)">${c.email}</small></td>
+      <td><span class="badge active">Active</span></td>
+      <td><button class="copy-btn" onclick="deleteClient('${c.id}')">Delete</button></td>
+    </tr>`).join('');
+}
+
+function renderJobs() {
+  const tb = document.getElementById('jobs-table');
+  if (!data.jobs.length) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">No jobs yet.</td></tr>'; return; }
+  tb.innerHTML = data.jobs.map(j => {
+    const client = data.clients.find(c => c.id === j.clientId);
+    const cands = data.candidates.filter(c => c.jobId === j.id).length;
+    const link = `${location.origin}/chatbot.html?job=${j.id}`;
+    return `<tr>
+      <td><strong>${j.title}</strong><br/><small style="color:var(--muted)">${j.exp}</small></td>
+      <td>${client ? client.company : 'N/A'}</td>
+      <td>${cands}</td>
+      <td><button class="copy-btn" onclick="copyLink('${link}')">📋 Copy Link</button></td>
+      <td><span class="badge active">Active</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderCandidates() {
+  const tb = document.getElementById('candidates-table');
+  if (!data.candidates.length) { tb.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">No candidates yet.</td></tr>'; return; }
+  tb.innerHTML = data.candidates.map(c => {
+    const job = data.jobs.find(j => j.id === c.jobId);
+    const client = data.clients.find(cl => cl.id === c.clientId);
+    return `<tr>
+      <td><strong>${c.name}</strong></td>
+      <td>${job ? job.title : 'N/A'}</td>
+      <td>${client ? client.company : 'N/A'}</td>
+      <td>${c.experience || '-'}</td>
+      <td>${c.salary || '-'}</td>
+      <td><span class="badge ${c.status === 'shortlisted' ? 'active' : 'pending'}">${c.status || 'New'}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function populateJobClientSelect() {
+  const sel = document.getElementById('j-client');
+  sel.innerHTML = data.clients.length
+    ? data.clients.map(c => `<option value="${c.id}">${c.company}</option>`).join('')
+    : '<option value="">No clients yet</option>';
+}
+
+// ---- ACTIONS ----
+function addClient() {
+  const company = document.getElementById('c-company').value.trim();
+  if (!company) { alert('Please enter company name'); return; }
+  const client = {
+    id: 'c_' + Date.now(),
+    company, contact: document.getElementById('c-contact').value,
+    phone: document.getElementById('c-phone').value,
+    email: document.getElementById('c-email').value,
+    password: document.getElementById('c-password').value,
+    plan: document.getElementById('c-plan').value,
+    createdAt: new Date().toISOString()
+  };
+  data.clients.push(client);
+  save(); renderAll();
+  document.getElementById('add-client-modal').classList.remove('open');
+  alert(`✅ Client "${company}" added! Their login: ${client.email} / ${client.password}`);
+}
+
+function deleteClient(id) {
+  if (!confirm('Delete this client?')) return;
+  data.clients = data.clients.filter(c => c.id !== id);
+  save(); renderAll();
+}
+
+function addJob() {
+  const title = document.getElementById('j-title').value.trim();
+  if (!title) { alert('Please enter job title'); return; }
+  const job = {
+    id: 'j_' + Date.now(),
+    title, clientId: document.getElementById('j-client').value,
+    desc: document.getElementById('j-desc').value,
+    exp: document.getElementById('j-exp').value,
+    createdAt: new Date().toISOString()
+  };
+  data.jobs.push(job);
+  save(); renderAll();
+  document.getElementById('add-job-modal').classList.remove('open');
+  const link = `${location.origin}/chatbot.html?job=${job.id}`;
+  alert(`✅ Job created!\n\nChatbot link:\n${link}\n\nShare this with candidates!`);
+}
+
+function copyLink(link) {
+  navigator.clipboard.writeText(link).then(() => alert('✅ Link copied!\n\n' + link));
+}
+</script>
+</body>
+</html>
