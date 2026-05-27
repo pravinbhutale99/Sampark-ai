@@ -317,13 +317,26 @@ function renderClients() {
     </tr>`).join('');
 }
 
+function buildChatLink(j, client) {
+  const base = location.origin + '/chatbot.html';
+  const p = new URLSearchParams({
+    job: j.id,
+    title: j.title,
+    company: client ? client.company : 'Our Client',
+    exp: j.exp || 'Any',
+    desc: j.desc || '',
+    client: j.clientId || ''
+  });
+  return `${base}?${p.toString()}`;
+}
+
 function renderJobs() {
   const tb = document.getElementById('jobs-table');
   if (!data.jobs.length) { tb.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:2rem">No jobs yet.</td></tr>'; return; }
   tb.innerHTML = data.jobs.map(j => {
     const client = data.clients.find(c => c.id === j.clientId);
     const cands = data.candidates.filter(c => c.jobId === j.id).length;
-    const link = `${location.origin}/chatbot.html?job=${j.id}`;
+    const link = buildChatLink(j, client);
     return `<tr>
       <td><strong>${j.title}</strong><br/><small style="color:var(--muted)">${j.exp}</small></td>
       <td>${client ? client.company : 'N/A'}</td>
@@ -396,7 +409,8 @@ function addJob() {
   data.jobs.push(job);
   save(); renderAll();
   document.getElementById('add-job-modal').classList.remove('open');
-  const link = `${location.origin}/chatbot.html?job=${job.id}`;
+  const client = data.clients.find(c => c.id === job.clientId);
+  const link = buildChatLink(job, client);
   alert(`✅ Job created!\n\nChatbot link:\n${link}\n\nShare this with candidates!`);
 }
 
