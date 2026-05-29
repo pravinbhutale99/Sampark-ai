@@ -1,568 +1,586 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sampark AI — Client Portal</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<style>
-:root {
-  --primary:#FF6B35; --primary-light:#FFF0EB; --primary-dark:#E05520;
-  --green:#10B981; --green-light:#ECFDF5;
-  --yellow:#F59E0B; --yellow-light:#FFFBEB;
-  --red:#EF4444; --red-light:#FEF2F2;
-  --blue:#3B82F6; --blue-light:#EFF6FF;
-  --bg:#F8F9FC; --surface:#FFFFFF; --border:#E5E7EB; --border2:#F3F4F6;
-  --text:#111827; --text2:#374151; --muted:#6B7280; --muted2:#9CA3AF;
-  --radius:12px; --shadow:0 1px 3px rgba(0,0,0,0.08); --shadow-md:0 4px 6px -1px rgba(0,0,0,0.08);
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sampark AI — Client Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #f4501e; --orange-hover: #d93d0d;
+      --navy: #0d1b2a; --navy-light: #1a2d42;
+      --text: #1a1a2e; --muted: #6b7280; --border: #e5e7eb;
+      --bg: #f9fafb; --card: #ffffff;
+      --green: #22c55e; --red: #ef4444; --yellow: #f59e0b;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* LOGIN */
-#loginScreen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:20px;background:linear-gradient(135deg,#FFF7F3,#F0EDFF);}
-.login-card{background:#fff;border-radius:20px;width:100%;max-width:400px;padding:40px;box-shadow:0 20px 60px rgba(0,0,0,0.1);}
-.login-logo{display:flex;align-items:center;gap:9px;margin-bottom:28px;}
-.login-dot{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--primary),#FF8C5A);}
-.login-logo span{font-size:18px;font-weight:800;}
-.login-card h2{font-size:22px;font-weight:800;margin-bottom:6px;}
-.login-card p{color:var(--muted);font-size:13px;margin-bottom:24px;}
-.form-group{margin-bottom:14px;}
-.form-group label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.5px;}
-.form-group input{width:100%;padding:11px 14px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;outline:none;transition:all 0.2s;color:var(--text);}
-.form-group input:focus{border-color:var(--primary);background:#fff;}
-.btn-login{width:100%;padding:12px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));border:none;border-radius:10px;color:#fff;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(255,107,53,0.3);transition:all 0.2s;}
-.btn-login:hover{transform:translateY(-1px);}
-.login-error{color:var(--red);font-size:12px;margin-top:10px;display:none;}
-.demo-hint{margin-top:14px;background:var(--bg);border-radius:8px;padding:10px 12px;font-size:11px;color:var(--muted);}
-.demo-hint strong{color:var(--text2);}
+    /* ── LOGIN ── */
+    #login-screen {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #fff9f7 0%, #f9fafb 100%);
+    }
+    .login-box {
+      width: 100%; max-width: 400px; background: var(--card);
+      border: 1.5px solid var(--border); border-radius: 20px; padding: 2.5rem;
+      box-shadow: 0 20px 60px rgba(0,0,0,.06);
+    }
+    .login-logo { display: flex; align-items: center; gap: .625rem; margin-bottom: .5rem; }
+    .logo-sq { width: 32px; height: 32px; background: var(--orange); border-radius: 7px; flex-shrink: 0; }
+    .logo-name { font-size: 1.1rem; font-weight: 800; color: var(--navy); }
+    .login-sub { font-size: .83rem; color: var(--muted); margin-bottom: 2rem; }
+    .field { margin-bottom: 1rem; }
+    .field label { display: block; font-size: .75rem; font-weight: 700; color: var(--muted); margin-bottom: .4rem; letter-spacing: .05em; text-transform: uppercase; }
+    .field input {
+      width: 100%; padding: .7rem 1rem; background: var(--bg);
+      border: 1.5px solid var(--border); border-radius: 9px;
+      color: var(--text); font-size: .9rem; font-family: inherit; transition: border-color .2s;
+    }
+    .field input:focus { outline: none; border-color: var(--orange); }
+    .btn-login {
+      width: 100%; padding: .8rem; background: var(--orange); color: #fff;
+      border: none; border-radius: 9px; font-size: .95rem; font-weight: 700;
+      cursor: pointer; margin-top: .5rem; font-family: inherit; transition: background .2s;
+    }
+    .btn-login:hover { background: var(--orange-hover); }
+    .login-err { color: var(--red); font-size: .8rem; margin-top: .75rem; display: none; }
+    .demo-creds {
+      margin-top: 1.5rem; padding: 1rem; background: var(--bg);
+      border-radius: 9px; border: 1px solid var(--border);
+      font-size: .76rem; color: var(--muted); line-height: 2;
+    }
+    .demo-creds b { color: var(--navy); }
 
-/* APP */
-#app{display:none;}
-.topbar{height:60px;background:#fff;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow);}
-.topbar-logo{display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;}
-.topbar-dot{width:24px;height:24px;border-radius:7px;background:linear-gradient(135deg,var(--primary),#FF8C5A);}
-.topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
-.company-pill{background:var(--primary-light);border:1px solid rgba(255,107,53,0.2);color:var(--primary);font-size:12px;font-weight:700;padding:4px 12px;border-radius:20px;}
-.btn-logout{background:none;border:1.5px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;cursor:pointer;font-size:12px;font-family:'Inter',sans-serif;font-weight:600;}
-.btn-logout:hover{border-color:var(--red);color:var(--red);}
+    /* ── DASHBOARD ── */
+    #dashboard { display: none; }
+    header {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2rem; height: 62px;
+    }
+    .h-logo { display: flex; align-items: center; gap: .6rem; }
+    .h-logo .logo-sq { width: 28px; height: 28px; border-radius: 6px; }
+    .h-logo span { font-weight: 800; color: #fff; font-size: 1rem; }
+    .h-right { display: flex; align-items: center; gap: .75rem; }
+    .h-name { font-size: .82rem; color: rgba(255,255,255,.55); }
+    .btn-sm {
+      padding: .4rem .9rem; border-radius: 7px; font-size: .78rem; font-weight: 600;
+      cursor: pointer; border: 1px solid rgba(255,255,255,.15);
+      background: transparent; color: rgba(255,255,255,.7);
+      font-family: inherit; transition: all .2s;
+    }
+    .btn-sm:hover { background: rgba(255,255,255,.1); color: #fff; }
+    .btn-sm.primary { background: var(--orange); color: #fff; border-color: var(--orange); }
+    .btn-sm.primary:hover { background: var(--orange-hover); }
 
-/* INNER */
-.inner{max-width:1200px;margin:0 auto;padding:28px 24px;}
-.tabs{display:flex;gap:4px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:4px;width:fit-content;margin-bottom:24px;box-shadow:var(--shadow);}
-.tab{padding:8px 18px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);transition:all 0.15s;}
-.tab.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(255,107,53,0.3);}
+    main { padding: 2rem; max-width: 1400px; margin: 0 auto; }
 
-/* STATS */
-.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
-.stat{background:#fff;border-radius:var(--radius);padding:18px 20px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;}
-.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-.stat.o::before{background:linear-gradient(90deg,var(--primary),#FF8C5A);}
-.stat.g::before{background:linear-gradient(90deg,var(--green),#34D399);}
-.stat.b::before{background:linear-gradient(90deg,var(--blue),#60A5FA);}
-.stat.y::before{background:linear-gradient(90deg,var(--yellow),#FCD34D);}
-.stat-v{font-size:30px;font-weight:800;letter-spacing:-1px;}
-.stat-l{font-size:12px;color:var(--muted);margin-top:2px;}
+    /* STATS */
+    .stats-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 1.25rem 1.5rem; box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .stat-card .lbl { font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: .5rem; }
+    .stat-card .val { font-size: 2rem; font-weight: 900; color: var(--navy); line-height: 1; }
 
-/* CANDIDATE CARDS */
-.cand-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;}
-.cand-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);transition:all 0.2s;}
-.cand-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
-.cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
-.cc-avatar{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--primary-light),#F0EDFF);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--primary);flex-shrink:0;}
-.cc-info{flex:1;margin-left:10px;}
-.cc-name{font-size:14px;font-weight:700;}
-.cc-role{font-size:12px;color:var(--muted);margin-top:1px;}
-.cc-score{background:linear-gradient(135deg,var(--primary),#FF8C5A);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap;}
-.cc-meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
-.cc-meta-i{font-size:11px;color:var(--muted);}
-.cc-summary{font-size:12px;color:var(--text2);background:var(--bg);border-radius:8px;padding:10px;margin-bottom:12px;line-height:1.5;max-height:56px;overflow:hidden;}
-.cc-actions{display:flex;gap:6px;}
-.cc-actions .btn{flex:1;justify-content:center;font-size:11px;padding:7px 4px;}
+    /* PAGE HEAD */
+    .page-head { margin-bottom: 1.5rem; }
+    .page-head h1 { font-size: 1.5rem; font-weight: 900; color: var(--navy); letter-spacing: -0.02em; }
+    .page-head p { font-size: .85rem; color: var(--muted); margin-top: .25rem; }
 
-/* STATUS */
-.pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
-.pill::before{content:'';width:5px;height:5px;border-radius:50%;}
-.pill-pending{background:var(--yellow-light);color:var(--yellow);}
-.pill-pending::before{background:var(--yellow);}
-.pill-shortlisted{background:var(--green-light);color:var(--green);}
-.pill-shortlisted::before{background:var(--green);}
-.pill-rejected{background:var(--red-light);color:var(--red);}
-.pill-rejected::before{background:var(--red);}
-.pill-scheduled{background:var(--blue-light);color:var(--blue);}
-.pill-scheduled::before{background:var(--blue);}
+    /* TOOLBAR */
+    .toolbar { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+    .tabs { display: flex; gap: .2rem; background: var(--card); border: 1.5px solid var(--border); border-radius: 9px; padding: .2rem; }
+    .tab { padding: .38rem .9rem; border-radius: 7px; font-size: .8rem; font-weight: 600; cursor: pointer; border: none; background: transparent; color: var(--muted); font-family: inherit; transition: all .2s; }
+    .tab.active { background: var(--orange); color: #fff; }
+    .search-in {
+      flex: 1; min-width: 200px; padding: .5rem 1rem;
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 9px;
+      color: var(--text); font-size: .85rem; font-family: inherit;
+    }
+    .search-in:focus { outline: none; border-color: var(--orange); }
 
-/* BTN */
-.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 14px;border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all 0.2s;text-decoration:none;}
-.btn-primary{background:linear-gradient(135deg,var(--primary),var(--primary-dark));color:#fff;box-shadow:0 2px 8px rgba(255,107,53,0.25);}
-.btn-primary:hover{transform:translateY(-1px);}
-.btn-ghost{background:#fff;border:1.5px solid var(--border);color:var(--text2);}
-.btn-ghost:hover{border-color:var(--primary);color:var(--primary);}
-.btn-green{background:var(--green-light);color:var(--green);border:1px solid rgba(16,185,129,0.2);}
-.btn-red{background:var(--red-light);color:var(--red);border:1px solid rgba(239,68,68,0.2);}
-.btn-blue{background:var(--blue-light);color:var(--blue);border:1px solid rgba(59,130,246,0.2);}
-.btn-yellow{background:var(--yellow-light);color:var(--yellow);border:1px solid rgba(245,158,11,0.2);}
-.btn-sm{padding:5px 12px;font-size:12px;}
+    /* LAYOUT */
+    .layout { display: grid; grid-template-columns: 270px 1fr; gap: 1.5rem; }
+    @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .stats-row { grid-template-columns: repeat(3,1fr); } }
 
-/* JOB LIST */
-.job-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:12px;display:flex;align-items:center;gap:16px;box-shadow:var(--shadow);}
-.job-icon{width:44px;height:44px;border-radius:12px;background:var(--primary-light);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.job-info{flex:1;}
-.job-title{font-size:14px;font-weight:700;}
-.job-meta{font-size:12px;color:var(--muted);margin-top:2px;}
+    /* JOBS SIDEBAR */
+    .jobs-panel { background: var(--card); border: 1.5px solid var(--border); border-radius: 16px; padding: 1.25rem; }
+    .jobs-panel-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .jobs-panel-hd h3 { font-size: .88rem; font-weight: 800; color: var(--navy); }
+    .job-item { padding: .75rem .875rem; border-radius: 10px; cursor: pointer; margin-bottom: .4rem; border: 1.5px solid transparent; transition: all .2s; }
+    .job-item:hover { background: #fdf8f6; }
+    .job-item.active { background: rgba(244,80,30,.05); border-color: rgba(244,80,30,.25); }
+    .job-item-top { display: flex; justify-content: space-between; align-items: flex-start; gap: .5rem; }
+    .job-title-txt { font-size: .85rem; font-weight: 700; color: var(--navy); line-height: 1.3; }
+    .job-cnt { font-size: .68rem; padding: .15rem .5rem; border-radius: 999px; background: rgba(244,80,30,.1); color: var(--orange); font-weight: 700; white-space: nowrap; }
+    .job-meta-txt { font-size: .73rem; color: var(--muted); margin-top: .25rem; }
+    .jobs-empty { font-size: .82rem; color: var(--muted); text-align: center; padding: 2rem .5rem; }
 
-/* CHATLINK BOX */
-.chatlink-box{background:linear-gradient(135deg,var(--primary),#FF8C5A);border-radius:14px;padding:20px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;}
-.chatlink-box::after{content:'🤖';position:absolute;right:20px;top:50%;transform:translateY(-50%);font-size:48px;opacity:0.2;}
-.chatlink-url{background:rgba(255,255,255,0.2);border-radius:8px;padding:8px 12px;font-family:monospace;font-size:11px;word-break:break-all;margin:10px 0;}
+    /* CANDIDATES */
+    .cand-panel-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+    .cand-panel-hd h2 { font-size: 1.05rem; font-weight: 800; color: var(--navy); }
+    .cand-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
 
-/* USAGE BAR */
-.usage-bar{background:var(--border);border-radius:4px;height:6px;}
-.usage-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--primary),#FF8C5A);}
+    .cand-card {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 14px;
+      padding: 1.25rem; cursor: pointer; transition: border-color .2s, transform .2s, box-shadow .2s;
+      box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    }
+    .cand-card:hover { border-color: var(--orange); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(244,80,30,.08); }
+    .cand-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: .875rem; }
+    .cand-name { font-weight: 800; font-size: .95rem; color: var(--navy); }
+    .cand-role { font-size: .76rem; color: var(--muted); margin-top: .15rem; }
+    .score { min-width: 42px; text-align: center; padding: .35rem .6rem; border-radius: 9px; font-weight: 900; font-size: 1rem; }
+    .score-hi { background: rgba(34,197,94,.1); color: #16a34a; }
+    .score-mid { background: rgba(245,158,11,.1); color: #d97706; }
+    .score-lo { background: rgba(239,68,68,.1); color: var(--red); }
+    .cand-pills { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .75rem; }
+    .pill { font-size: .72rem; padding: .2rem .6rem; border-radius: 999px; background: var(--bg); color: var(--muted); border: 1px solid var(--border); }
+    .status-chip { font-size: .7rem; font-weight: 700; padding: .2rem .65rem; border-radius: 999px; }
+    .s-pending     { background: rgba(245,158,11,.1);  color: #d97706; }
+    .s-shortlisted { background: rgba(34,197,94,.1);   color: #16a34a; }
+    .s-scheduled   { background: rgba(244,80,30,.1);   color: var(--orange); }
+    .s-rejected    { background: rgba(239,68,68,.08);  color: var(--red); }
+    .cand-acts { display: flex; gap: .4rem; margin-top: .875rem; }
+    .act-btn {
+      flex: 1; padding: .38rem .4rem; border-radius: 7px; font-size: .73rem; font-weight: 600;
+      cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted);
+      font-family: inherit; transition: all .2s;
+    }
+    .act-btn.g:hover { border-color: var(--green); color: var(--green); background: rgba(34,197,94,.05); }
+    .act-btn.o:hover { border-color: var(--orange); color: var(--orange); background: rgba(244,80,30,.05); }
+    .act-btn.r:hover { border-color: var(--red); color: var(--red); background: rgba(239,68,68,.05); }
 
-/* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(17,24,39,0.5);display:none;align-items:center;justify-content:center;z-index:1000;padding:20px;backdrop-filter:blur(2px);}
-.modal-overlay.open{display:flex;}
-.modal{background:#fff;border-radius:18px;width:100%;max-width:520px;box-shadow:0 20px 60px rgba(0,0,0,0.15);}
-.mh{padding:18px 22px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-.mh h3{font-size:16px;font-weight:700;}
-.mc-btn{background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:16px;}
-.mb{padding:22px;}
-.mf{padding:14px 22px;border-bottom:none;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px;}
-.fi{margin-bottom:14px;}
-.fi label{display:block;font-size:11px;font-weight:700;color:var(--text2);margin-bottom:5px;text-transform:uppercase;letter-spacing:0.4px;}
-.fi input,.fi select,.fi textarea{width:100%;padding:9px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;font-family:'Inter',sans-serif;font-size:13px;color:var(--text);outline:none;}
-.fi input:focus,.fi select:focus{border-color:var(--primary);}
+    .empty { text-align: center; padding: 4rem 1rem; color: var(--muted); font-size: .9rem; }
+    .loading-txt { text-align: center; padding: 3rem; color: var(--muted); font-size: .88rem; }
 
-/* DETAIL MODAL */
-.dm-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-.dm-item .dl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:3px;}
-.dm-item .dv{font-size:13px;font-weight:500;}
-.dm-full{grid-column:1/-1;}
-.dm-summary{background:var(--bg);border-radius:9px;padding:12px;font-size:13px;color:var(--text2);line-height:1.6;margin-top:4px;}
+    /* MODAL */
+    .overlay { position: fixed; inset: 0; background: rgba(13,27,42,.5); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 1rem; backdrop-filter: blur(4px); }
+    .modal {
+      background: var(--card); border: 1.5px solid var(--border); border-radius: 20px;
+      width: 100%; max-width: 520px; max-height: 90vh; overflow-y: auto;
+      padding: 2rem; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,.12);
+    }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--muted); font-size: 1.25rem; cursor: pointer; line-height: 1; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+    .modal-close:hover { background: var(--bg); color: var(--text); }
+    .modal h2 { font-size: 1.2rem; font-weight: 800; color: var(--navy); margin-bottom: 1.5rem; }
+    .modal .field label { font-size: .73rem; font-weight: 700; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; display: block; margin-bottom: .4rem; }
+    .modal .field { margin-bottom: 1rem; }
+    .modal .field input, .modal .field textarea {
+      width: 100%; padding: .65rem 1rem; background: var(--bg);
+      border: 1.5px solid var(--border); border-radius: 9px;
+      color: var(--text); font-size: .875rem; font-family: inherit;
+    }
+    .modal .field input:focus, .modal .field textarea:focus { outline: none; border-color: var(--orange); }
+    .modal .field textarea { resize: vertical; min-height: 80px; }
+    .modal-acts { display: flex; gap: .75rem; justify-content: flex-end; margin-top: 1.25rem; }
+    .btn-cancel { padding: .65rem 1.25rem; border: 1.5px solid var(--border); border-radius: 9px; background: none; color: var(--muted); cursor: pointer; font-size: .875rem; font-family: inherit; }
+    .btn-cancel:hover { border-color: var(--red); color: var(--red); }
+    .btn-create { padding: .65rem 1.5rem; border: none; border-radius: 9px; background: var(--orange); color: #fff; font-size: .9rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background .2s; }
+    .btn-create:hover { background: var(--orange-hover); }
+    .btn-create:disabled { opacity: .5; cursor: not-allowed; }
 
-/* TOAST */
-.toast{position:fixed;bottom:24px;right:24px;background:#fff;border-radius:12px;padding:12px 18px;font-size:13px;font-weight:600;z-index:9999;transform:translateY(80px);opacity:0;transition:all 0.3s;box-shadow:0 10px 40px rgba(0,0,0,0.1);display:flex;align-items:center;gap:8px;border:1px solid var(--border);}
-.toast.show{transform:translateY(0);opacity:1;}
-.toast.success{border-left:4px solid var(--green);}
-.toast.error{border-left:4px solid var(--red);}
+    /* CHATBOT LINK BOX */
+    .link-box {
+      margin-top: 1.5rem; padding: 1.25rem 1.5rem;
+      background: rgba(34,197,94,.04); border: 1.5px solid rgba(34,197,94,.2);
+      border-radius: 12px;
+    }
+    .link-box h4 { font-size: .875rem; font-weight: 800; color: #16a34a; margin-bottom: .4rem; }
+    .link-box p { font-size: .8rem; color: var(--muted); margin-bottom: .875rem; line-height: 1.6; }
+    .link-row { display: flex; gap: .5rem; }
+    .link-input { flex: 1; padding: .5rem .875rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 8px; color: var(--navy); font-size: .75rem; font-family: monospace; }
+    .btn-copy { padding: .5rem 1rem; background: var(--green); color: #fff; border: none; border-radius: 8px; font-size: .78rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: opacity .2s; }
+    .btn-copy:hover { opacity: .85; }
 
-.empty{text-align:center;padding:48px;color:var(--muted);}
-.loading{text-align:center;padding:32px;color:var(--muted);}
-.spinner{display:inline-block;width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin 0.7s linear infinite;margin-right:6px;vertical-align:middle;}
-@keyframes spin{to{transform:rotate(360deg);}}
-</style>
+    /* DETAIL MODAL */
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.25rem; }
+    .d-item .d-key { font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
+    .d-item .d-val { font-size: .9rem; font-weight: 600; color: var(--navy); }
+    .ai-box { padding: 1rem; background: var(--bg); border: 1.5px solid var(--border); border-radius: 10px; font-size: .85rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.25rem; }
+    .detail-acts { display: flex; gap: .75rem; flex-wrap: wrap; }
+    .detail-acts button { flex: 1; min-width: 110px; padding: .65rem; border-radius: 9px; font-size: .85rem; font-weight: 700; cursor: pointer; border: 1.5px solid var(--border); background: transparent; color: var(--muted); font-family: inherit; transition: all .2s; }
+
+    /* TOAST */
+    .toast {
+      position: fixed; bottom: 1.75rem; right: 1.75rem; z-index: 9999;
+      padding: .8rem 1.4rem; border-radius: 12px; font-size: .85rem; font-weight: 600;
+      background: var(--navy); color: #fff; box-shadow: 0 8px 32px rgba(0,0,0,.2);
+      transform: translateY(80px); opacity: 0; transition: all .3s cubic-bezier(.34,1.56,.64,1);
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.ok { background: #16a34a; }
+    .toast.err { background: var(--red); }
+  </style>
 </head>
 <body>
 
 <!-- LOGIN -->
-<div id="loginScreen">
-  <div class="login-card">
-    <div class="login-logo"><div class="login-dot"></div><span>Sampark AI</span></div>
-    <h2>Client Portal</h2>
-    <p>Access your AI-screened candidate pipeline</p>
-    <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="hr@yourcompany.com"/></div>
-    <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"/></div>
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo"><div class="logo-sq"></div><span class="logo-name">Sampark AI</span></div>
+    <div class="login-sub">Client Portal — Access your candidate pipeline</div>
+    <div class="field"><label>Email</label><input type="email" id="inp-email" placeholder="your@email.com" /></div>
+    <div class="field"><label>Password</label><input type="password" id="inp-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
     <button class="btn-login" onclick="doLogin()">Access My Dashboard →</button>
-    <div class="login-error" id="loginError">Invalid email or password. Please try again.</div>
-    <div class="demo-hint">
-      <strong>Demo accounts:</strong><br/>
-      hr@techcorp.in / tech2026 &nbsp;|&nbsp; rajiv@nexusbpo.com / nexus2026<br/>
+    <div class="login-err" id="login-err">Invalid email or password.</div>
+    <div class="demo-creds">
+      <b>Demo accounts:</b><br>
+      hr@techcorp.in / tech2026<br>
+      rajiv@nexusbpo.com / nexus2026<br>
       ananya@finserve.co / fin2026
     </div>
   </div>
 </div>
 
-<!-- APP -->
-<div id="app">
-  <div class="topbar">
-    <div class="topbar-logo"><div class="topbar-dot"></div>Sampark AI</div>
-    <div class="topbar-right">
-      <span class="company-pill" id="companyPill">–</span>
-      <span style="font-size:12px;color:var(--muted)" id="planPill"></span>
-      <button class="btn btn-primary btn-sm" onclick="openModal('addJobModal')">+ New Job</button>
-      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <header>
+    <div class="h-logo"><div class="logo-sq"></div><span>Sampark AI</span></div>
+    <div class="h-right">
+      <span class="h-name" id="h-name"></span>
+      <button class="btn-sm primary" onclick="openJobModal()">+ New Job</button>
+      <button class="btn-sm" id="export-btn">⬇ Export PDF</button>
+      <button class="btn-sm" onclick="doLogout()">Sign Out</button>
     </div>
-  </div>
-
-  <div class="inner">
-    <!-- HEADER -->
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-      <div>
-        <h1 style="font-size:22px;font-weight:800;letter-spacing:-0.3px" id="welcomeH">Candidate Pipeline</h1>
-        <p style="font-size:13px;color:var(--muted);margin-top:2px" id="welcomeSub">AI-screened candidates, ready to review</p>
-      </div>
-      <button class="btn btn-ghost btn-sm" onclick="exportPDF()">⬇ Export PDF</button>
-    </div>
-
-    <!-- USAGE BAR -->
-    <div id="usageBar" style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:20px;display:none;">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;">
-        <span style="font-weight:600;">Job Slots Used</span>
-        <span id="usageText" style="color:var(--muted)"></span>
-      </div>
-      <div class="usage-bar"><div class="usage-fill" id="usageFill" style="width:0%"></div></div>
-    </div>
-
-    <!-- STATS -->
+  </header>
+  <main>
     <div class="stats-row">
-      <div class="stat o"><div class="stat-v" id="st-total">–</div><div class="stat-l">Total Screened</div></div>
-      <div class="stat g"><div class="stat-v" id="st-short">–</div><div class="stat-l">Shortlisted</div></div>
-      <div class="stat b"><div class="stat-v" id="st-sched">–</div><div class="stat-l">Interviews</div></div>
-      <div class="stat y"><div class="stat-v" id="st-pend">–</div><div class="stat-l">Pending Review</div></div>
+      <div class="stat-card"><div class="lbl">Job Slots Used</div><div class="val" id="st-jobs">—</div></div>
+      <div class="stat-card"><div class="lbl">Total Screened</div><div class="val" id="st-total">—</div></div>
+      <div class="stat-card"><div class="lbl">Shortlisted</div><div class="val" id="st-short">—</div></div>
+      <div class="stat-card"><div class="lbl">Interviews</div><div class="val" id="st-sched">—</div></div>
+      <div class="stat-card"><div class="lbl">Pending Review</div><div class="val" id="st-pend">—</div></div>
     </div>
-
-    <!-- TABS -->
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('all',this)">All Candidates</div>
-      <div class="tab" onclick="switchTab('pending',this)">Pending</div>
-      <div class="tab" onclick="switchTab('shortlisted',this)">Shortlisted</div>
-      <div class="tab" onclick="switchTab('scheduled',this)">Scheduled</div>
-      <div class="tab" onclick="switchTab('jobs',this)">My Jobs</div>
+    <div class="page-head">
+      <h1>Candidate Pipeline</h1>
+      <p>AI-screened candidates, ready to review</p>
     </div>
-
-    <!-- SEARCH -->
-    <div id="searchArea" style="margin-bottom:16px">
-      <div style="display:flex;gap:10px;align-items:center;">
-        <div style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--border);border-radius:9px;padding:8px 12px;flex:1;max-width:300px;">
-          <span>🔍</span>
-          <input style="background:none;border:none;outline:none;font-family:'Inter',sans-serif;font-size:13px;width:100%;" placeholder="Search candidates…" oninput="filterCards(this.value)" id="cardSearch"/>
+    <div class="toolbar">
+      <div class="tabs">
+        <button class="tab active" onclick="setTab('all',this)">All Candidates</button>
+        <button class="tab" onclick="setTab('pending',this)">Pending</button>
+        <button class="tab" onclick="setTab('shortlisted',this)">Shortlisted</button>
+        <button class="tab" onclick="setTab('scheduled',this)">Scheduled</button>
+      </div>
+      <input class="search-in" type="text" id="search" placeholder="🔍  Search candidates..." oninput="renderCands()" />
+    </div>
+    <div class="layout">
+      <div class="jobs-panel">
+        <div class="jobs-panel-hd">
+          <h3>My Jobs</h3>
+          <button class="btn-sm primary" style="font-size:.7rem;padding:.3rem .7rem;" onclick="openJobModal()">+ New</button>
         </div>
-        <span style="font-size:12px;color:var(--muted)" id="candCountLabel"></span>
+        <div id="jobs-list"><div class="loading-txt">Loading...</div></div>
+      </div>
+      <div>
+        <div class="cand-panel-hd"><h2 id="panel-title">All Candidates</h2></div>
+        <div id="cand-container"><div class="loading-txt">Loading...</div></div>
       </div>
     </div>
+  </main>
+</div>
 
-    <div id="mainContent"><div class="loading"><span class="spinner"></span>Loading…</div></div>
+<!-- CREATE JOB MODAL -->
+<div class="overlay" id="job-modal" style="display:none;">
+  <div class="modal">
+    <button class="modal-close" onclick="closeJobModal()">✕</button>
+    <h2>Create New Job Listing</h2>
+    <div class="field"><label>Job Title *</label><input type="text" id="f-title" placeholder="e.g. Senior React Developer" /></div>
+    <div class="field"><label>Location</label><input type="text" id="f-loc" placeholder="e.g. Bangalore / Remote" /></div>
+    <div class="field"><label>Experience Required</label><input type="text" id="f-exp" placeholder="e.g. 3-5 years" /></div>
+    <div class="field"><label>Required Skills</label><input type="text" id="f-skills" placeholder="e.g. React, Node.js, AWS" /></div>
+    <div class="field"><label>Job Description</label><textarea id="f-desc" placeholder="Brief description of the role..."></textarea></div>
+    <div class="modal-acts">
+      <button class="btn-cancel" onclick="closeJobModal()">Cancel</button>
+      <button class="btn-create" id="create-btn" onclick="createJob()">Create Job & Get Chatbot Link</button>
+    </div>
+    <div class="link-box" id="link-box" style="display:none;">
+      <h4>✅ Job Created! Share this link with candidates:</h4>
+      <p>Candidates click this to start the AI screening for this role. Share via WhatsApp, email, or job boards.</p>
+      <div class="link-row">
+        <input class="link-input" type="text" id="link-url" readonly />
+        <button class="btn-copy" onclick="copyLink()">Copy</button>
+      </div>
+    </div>
   </div>
 </div>
 
 <!-- CANDIDATE DETAIL MODAL -->
-<div class="modal-overlay" id="candDetailModal">
-  <div class="modal">
-    <div class="mh">
-      <div>
-        <h3 id="dm-name">Candidate</h3>
-        <div style="font-size:12px;color:var(--muted)" id="dm-role"></div>
-      </div>
-      <button class="mc-btn" onclick="closeModal('candDetailModal')">×</button>
-    </div>
-    <div class="mb">
-      <div style="display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:10px;padding:14px;margin-bottom:16px;">
-        <div style="width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--primary-light),#F0EDFF);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;color:var(--primary)" id="dm-avatar">?</div>
-        <div style="flex:1"><div style="font-size:15px;font-weight:700" id="dm-name2"></div><div style="font-size:12px;color:var(--muted)" id="dm-client2"></div></div>
-        <div style="text-align:center"><div style="font-size:22px;font-weight:800;color:var(--primary)" id="dm-score"></div><div style="font-size:10px;color:var(--muted)">AI Score</div></div>
-        <div id="dm-pill"></div>
-      </div>
-      <div class="dm-grid">
-        <div class="dm-item"><div class="dl">Phone</div><div class="dv" id="dm-phone"></div></div>
-        <div class="dm-item"><div class="dl">Email</div><div class="dv" id="dm-email" style="font-size:12px"></div></div>
-        <div class="dm-item"><div class="dl">Experience</div><div class="dv" id="dm-exp"></div></div>
-        <div class="dm-item"><div class="dl">Notice Period</div><div class="dv" id="dm-notice"></div></div>
-        <div class="dm-item"><div class="dl">Current CTC</div><div class="dv" id="dm-ctc"></div></div>
-        <div class="dm-item"><div class="dl">Expected CTC</div><div class="dv" id="dm-ectc"></div></div>
-        <div class="dm-full"><div class="dl">Skills</div><div class="dv" id="dm-skills" style="font-size:13px;margin-top:4px"></div></div>
-        <div class="dm-full"><div class="dl">AI Summary</div><div class="dm-summary" id="dm-summary"></div></div>
-      </div>
-    </div>
-    <div class="mf" style="flex-wrap:wrap;gap:6px;">
-      <button class="btn btn-red btn-sm" id="dm-reject-btn">✕ Reject</button>
-      <button class="btn btn-yellow btn-sm" id="dm-call-btn">📞 Schedule Call</button>
-      <button class="btn btn-blue btn-sm" id="dm-interview-btn">📅 Schedule Interview</button>
-      <button class="btn btn-green btn-sm" id="dm-shortlist-btn">✓ Shortlist</button>
-    </div>
-  </div>
-</div>
-
-<!-- ADD JOB MODAL -->
-<div class="modal-overlay" id="addJobModal">
-  <div class="modal">
-    <div class="mh"><h3>Create New Job Listing</h3><button class="mc-btn" onclick="closeModal('addJobModal')">×</button></div>
-    <div class="mb">
-      <div class="fi"><label>Job Title *</label><input id="nj-title" placeholder="e.g. Senior Sales Manager"/></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="fi"><label>Location</label><input id="nj-location" placeholder="e.g. Pune / Remote"/></div>
-        <div class="fi"><label>Experience Required</label><input id="nj-exp" placeholder="e.g. 3-5 years"/></div>
-      </div>
-      <div class="fi"><label>Required Skills</label><input id="nj-skills" placeholder="e.g. Python, Team Leadership…"/></div>
-      <div class="fi"><label>Job Description</label><textarea id="nj-desc" rows="3" placeholder="Brief overview of the role…" style="resize:vertical"></textarea></div>
-      <div id="jobLimitWarning" style="display:none;background:#FEF2F2;border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:10px;font-size:12px;color:var(--red)"></div>
-    </div>
-    <div class="mf">
-      <button class="btn btn-ghost" onclick="closeModal('addJobModal')">Cancel</button>
-      <button class="btn btn-primary" onclick="addJob()">Create Job & Get Chatbot Link</button>
-    </div>
+<div class="overlay" id="detail-modal" style="display:none;">
+  <div class="modal" style="max-width:580px;">
+    <button class="modal-close" onclick="closeDetail()">✕</button>
+    <div id="detail-body"></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-const SUPABASE_URL='https://sebghpbyykplkoootzdg.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMTM5NzUsImV4cCI6MjA1OTU4OTk3NX0.oBMsGVOHnKdz7n8i7kQKBHQ4o7n_8FzNQpTG5Hc_-mA';
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-const BASE_URL='https://sampark-ai-theta.vercel.app';
-const PLAN_LIMITS={starter:10,growth:25,pro:50};
+const SB_URL = 'https://sebghpbyykplkoootzdg.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MTg5MDMsImV4cCI6MjA1ODk5NDkwM30.F1P7BkKGSNFCt7vmS9fANVAHW8p5z5q-DYlLk_3qzSA';
 
-let allCandidates=[],allJobs=[],currentClient=null,currentTab='all';
-
-const DEMO_CREDS=[
-  {email:'hr@techcorp.in',password:'tech2026',company:'TechCorp India',plan:'pro'},
-  {email:'rajiv@nexusbpo.com',password:'nexus2026',company:'Nexus BPO',plan:'growth'},
-  {email:'ananya@finserve.co',password:'fin2026',company:'FinServe Co',plan:'starter'}
-];
-
-// ── AUTH ──────────────────────────────────────────────────────────
-async function doLogin(){
-  const email=document.getElementById('loginEmail').value.trim().toLowerCase();
-  const pass=document.getElementById('loginPassword').value;
-  let cred=DEMO_CREDS.find(c=>c.email===email&&c.password===pass);
-  if(!cred){
-    const {data}=await sb.from('clients').select('*').eq('email',email).eq('password',pass).single();
-    if(data) cred={email:data.email,company:data.name,plan:data.plan||'growth'};
-  }
-  if(cred){
-    sessionStorage.setItem('clientEmail',email);
-    sessionStorage.setItem('clientCompany',cred.company);
-    sessionStorage.setItem('clientPlan',cred.plan||'growth');
-    mountApp(cred);
-  } else {
-    document.getElementById('loginError').style.display='block';
-  }
-}
-document.getElementById('loginPassword').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
-
-function mountApp(cred){
-  currentClient=cred.company;
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('companyPill').textContent=cred.company;
-  document.getElementById('planPill').textContent=(cred.plan||'growth').toUpperCase()+' Plan';
-  document.getElementById('welcomeH').textContent=cred.company+' — Pipeline';
-  loadData();
+async function sbFetch(path, opts={}) {
+  const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
+    ...opts,
+    headers: { 'apikey':SB_KEY, 'Authorization':`Bearer ${SB_KEY}`, 'Content-Type':'application/json', 'Prefer': opts.prefer||'return=representation', ...(opts.headers||{}) }
+  });
+  const t = await r.text();
+  if (!r.ok) throw new Error(t);
+  return t ? JSON.parse(t) : [];
 }
 
-function doLogout(){sessionStorage.clear();location.reload();}
+const ACCOUNTS = {
+  'hr@techcorp.in':     { pass:'tech2026',  name:'TechCorp HR',    client_id:1 },
+  'rajiv@nexusbpo.com': { pass:'nexus2026', name:'Nexus BPO',      client_id:2 },
+  'ananya@finserve.co': { pass:'fin2026',   name:'FinServe India', client_id:3 },
+};
 
-if(sessionStorage.getItem('clientEmail')){
-  const co=sessionStorage.getItem('clientCompany');
-  const pl=sessionStorage.getItem('clientPlan')||'growth';
-  currentClient=co;
-  document.getElementById('loginScreen').style.display='none';
-  document.getElementById('app').style.display='block';
-  document.getElementById('companyPill').textContent=co;
-  document.getElementById('planPill').textContent=pl.toUpperCase()+' Plan';
-  document.getElementById('welcomeH').textContent=co+' — Pipeline';
-  window.addEventListener('DOMContentLoaded',loadData);
+let user=null, jobs=[], candidates=[], selJob=null, tabFilter='all';
+
+function doLogin() {
+  const email = document.getElementById('inp-email').value.trim().toLowerCase();
+  const pass  = document.getElementById('inp-pass').value;
+  const acct  = ACCOUNTS[email];
+  if (acct && acct.pass===pass) {
+    user = { email, ...acct };
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    document.getElementById('h-name').textContent = acct.name;
+    init();
+  } else { document.getElementById('login-err').style.display='block'; }
+}
+function doLogout() {
+  user=null;
+  document.getElementById('dashboard').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
 }
 
-// ── DATA ──────────────────────────────────────────────────────────
-async function loadData(){
-  const [{data:cands},{data:jobs}]=await Promise.all([
-    sb.from('candidates').select('*').eq('client_name',currentClient).order('created_at',{ascending:false}),
-    sb.from('jobs').select('*').eq('client_name',currentClient).order('created_at',{ascending:false})
-  ]);
-  allCandidates=cands||[];
-  allJobs=jobs||[];
+async function init() {
+  await Promise.all([loadJobs(), loadCands()]);
   updateStats();
-  renderTab();
-  updateUsage();
 }
 
-function updateStats(){
-  document.getElementById('st-total').textContent=allCandidates.length;
-  document.getElementById('st-short').textContent=allCandidates.filter(c=>c.status==='shortlisted').length;
-  document.getElementById('st-sched').textContent=allCandidates.filter(c=>c.status==='scheduled').length;
-  document.getElementById('st-pend').textContent=allCandidates.filter(c=>c.status==='pending').length;
+async function loadJobs() {
+  try { jobs = await sbFetch(`jobs?client_id=eq.${user.client_id}&order=created_at.desc`); }
+  catch(e) { console.warn('Jobs fallback:', e.message); jobs = fbJobs(); }
+  renderJobs();
+}
+async function loadCands() {
+  try { candidates = await sbFetch(`candidates?client_id=eq.${user.client_id}&order=ai_score.desc`); }
+  catch(e) { console.warn('Cands fallback:', e.message); candidates = fbCands(); }
+  renderCands();
 }
 
-function updateUsage(){
-  const plan=sessionStorage.getItem('clientPlan')||'growth';
-  const limit=PLAN_LIMITS[plan]||25;
-  const used=allJobs.length;
-  const bar=document.getElementById('usageBar');
-  bar.style.display='block';
-  document.getElementById('usageText').textContent=`${used} of ${limit} jobs used (${plan.toUpperCase()} plan)`;
-  document.getElementById('usageFill').style.width=Math.min(100,Math.round(used/limit*100))+'%';
-  if(used>=limit) document.getElementById('usageFill').style.background='var(--red)';
-  // Show warning in add job modal
-  const warn=document.getElementById('jobLimitWarning');
-  if(used>=limit){warn.style.display='block';warn.textContent=`Plan limit reached: You can create max ${limit} jobs on the ${plan} plan. Upgrade to add more.`;}
-  else warn.style.display='none';
+function fbJobs() {
+  return ({
+    1:[{id:101,title:'Senior React Developer',location:'Bangalore',experience:'3-5 yrs'},{id:102,title:'DevOps Engineer',location:'Remote',experience:'4+ yrs'}],
+    2:[{id:201,title:'BPO Team Leader',location:'Pune',experience:'2-4 yrs'}],
+    3:[{id:301,title:'Financial Analyst',location:'Mumbai',experience:'2-3 yrs'}],
+  })[user.client_id]||[];
+}
+function fbCands() {
+  return ({
+    1:[
+      {id:1,name:'Rohit Sharma',job_title:'Senior React Developer',ai_score:8.7,phone:'+91 98765 43210',email:'rohit.s@gmail.com',experience:'5 years',notice_period:'30 days',current_ctc:'18 LPA',expected_ctc:'24 LPA',skills:'React, TypeScript, Node.js',status:'shortlisted',ai_summary:'Strong React fundamentals with 5 years experience. CTC expectations within range. Recommended for interview.',job_id:101,client_id:1},
+      {id:2,name:'Priya Patel',job_title:'Senior React Developer',ai_score:7.4,phone:'+91 87654 32109',email:'priya.p@outlook.com',experience:'4 years',notice_period:'15 days',current_ctc:'15 LPA',expected_ctc:'20 LPA',skills:'React, Redux, CSS',status:'pending',ai_summary:'Good frontend skills. Quick availability is a plus. Could grow into senior role.',job_id:101,client_id:1},
+      {id:3,name:'Arjun Kumar',job_title:'DevOps Engineer',ai_score:9.1,phone:'+91 76543 21098',email:'arjun.k@gmail.com',experience:'6 years',notice_period:'Immediate',current_ctc:'22 LPA',expected_ctc:'28 LPA',skills:'Kubernetes, Docker, AWS, Terraform',status:'scheduled',ai_summary:'Exceptional candidate. Immediate joiner with strong cloud-native skills. Top pick.',job_id:102,client_id:1},
+      {id:4,name:'Neha Singh',job_title:'Senior React Developer',ai_score:5.2,phone:'+91 65432 10987',email:'neha.s@yahoo.com',experience:'2 years',notice_period:'60 days',current_ctc:'8 LPA',expected_ctc:'16 LPA',skills:'React, JavaScript',status:'rejected',ai_summary:'Limited experience for senior role. Long notice period. CTC not aligned.',job_id:101,client_id:1},
+    ],
+    2:[
+      {id:5,name:'Sandeep Rao',job_title:'BPO Team Leader',ai_score:8.2,phone:'+91 54321 09876',email:'sandeep.r@gmail.com',experience:'4 years',notice_period:'30 days',current_ctc:'6 LPA',expected_ctc:'8.5 LPA',skills:'Team management, CRM, Voice',status:'shortlisted',ai_summary:'Strong BPO background. Realistic CTC expectations.',job_id:201,client_id:2},
+      {id:6,name:'Kavitha Menon',job_title:'BPO Team Leader',ai_score:7.8,phone:'+91 43210 98765',email:'kavitha.m@gmail.com',experience:'3 years',notice_period:'15 days',current_ctc:'5 LPA',expected_ctc:'7 LPA',skills:'Customer support, Team handling',status:'pending',ai_summary:'Good candidate with quick availability.',job_id:201,client_id:2},
+    ],
+    3:[
+      {id:7,name:'Aditya Verma',job_title:'Financial Analyst',ai_score:8.9,phone:'+91 32109 87654',email:'aditya.v@gmail.com',experience:'3 years',notice_period:'30 days',current_ctc:'9 LPA',expected_ctc:'12 LPA',skills:'Excel, Python, Power BI',status:'shortlisted',ai_summary:'Excellent analytical skills. Strong FP&A background. Top recommendation.',job_id:301,client_id:3},
+      {id:8,name:'Riya Desai',job_title:'Financial Analyst',ai_score:7.1,phone:'+91 21098 76543',email:'riya.d@outlook.com',experience:'2 years',notice_period:'45 days',current_ctc:'7 LPA',expected_ctc:'10 LPA',skills:'Excel, Tally, Financial reporting',status:'pending',ai_summary:'Solid fundamentals. Long notice period may be a concern.',job_id:301,client_id:3},
+    ],
+  })[user.client_id]||[];
 }
 
-// ── RENDER ────────────────────────────────────────────────────────
-function switchTab(tab,el){
-  currentTab=tab;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  if(tab==='jobs'){renderJobsTab();return;}
-  document.getElementById('searchArea').style.display='block';
-  renderTab();
-}
-
-function renderTab(){
-  let filtered=allCandidates;
-  if(currentTab!=='all') filtered=filtered.filter(c=>c.status===currentTab);
-  document.getElementById('candCountLabel').textContent=filtered.length+' candidates';
-  renderCards(filtered);
-}
-
-function filterCards(q){
-  let filtered=allCandidates;
-  if(currentTab!=='all') filtered=filtered.filter(c=>c.status===currentTab);
-  if(q) filtered=filtered.filter(c=>(c.name+c.role).toLowerCase().includes(q.toLowerCase()));
-  renderCards(filtered);
-}
-
-function renderCards(cands){
-  const mc=document.getElementById('mainContent');
-  if(!cands.length){
-    mc.innerHTML='<div class="empty"><div style="font-size:48px;margin-bottom:12px;">👥</div><h3 style="font-size:15px;margin-bottom:6px;">No candidates found</h3><p style="font-size:13px;">They\'ll appear here after completing the chatbot screening</p></div>';
-    return;
-  }
-  mc.innerHTML=`<div class="cand-grid">${cands.map(c=>`
-    <div class="cand-card">
-      <div class="cc-top">
-        <div class="cc-avatar">${c.name?c.name[0].toUpperCase():'?'}</div>
-        <div class="cc-info">
-          <div class="cc-name">${c.name}</div>
-          <div class="cc-role">${c.role||'–'}</div>
-        </div>
-        <div class="cc-score">${c.score||'–'}/10</div>
-      </div>
-      <div style="margin-bottom:10px"><span class="pill pill-${c.status||'pending'}">${c.status||'pending'}</span></div>
-      <div class="cc-meta">
-        ${c.experience?`<span class="cc-meta-i">⏱ ${c.experience}</span>`:''}
-        ${c.expected_ctc?`<span class="cc-meta-i">💰 ${c.expected_ctc}</span>`:''}
-        ${c.notice_period?`<span class="cc-meta-i">📅 ${c.notice_period}</span>`:''}
-      </div>
-      ${c.summary?`<div class="cc-summary">${c.summary}</div>`:''}
-      <div class="cc-actions">
-        <button class="btn btn-green" onclick="setStatus(${c.id},'shortlisted')">✓ Shortlist</button>
-        <button class="btn btn-blue" onclick="setStatus(${c.id},'scheduled')">📅 Schedule</button>
-        <button class="btn btn-red" onclick="setStatus(${c.id},'rejected')">✕ Reject</button>
-        <button class="btn btn-ghost" onclick="openDetail(${c.id})" style="flex:0.6;justify-content:center">👁</button>
-      </div>
-    </div>`).join('')}</div>`;
-}
-
-function renderJobsTab(){
-  document.getElementById('searchArea').style.display='none';
-  const mc=document.getElementById('mainContent');
-  if(!allJobs.length){
-    mc.innerHTML=`<div class="empty"><div style="font-size:48px;margin-bottom:12px;">💼</div><h3>No jobs yet</h3><p style="margin-bottom:20px;">Create a job to get a shareable chatbot link</p><button class="btn btn-primary" onclick="openModal('addJobModal')">+ Create First Job</button></div>`;
-    return;
-  }
-  mc.innerHTML=allJobs.map(j=>{
-    const chatUrl=`${BASE_URL}/chatbot.html?job=${j.id}&client=${encodeURIComponent(currentClient)}&role=${encodeURIComponent(j.title)}`;
-    const count=allCandidates.filter(c=>c.job_id===j.id).length;
-    return `<div>
-      <div class="chatlink-box">
-        <h4 style="font-size:14px;font-weight:700;margin-bottom:4px;">${j.title}</h4>
-        <p style="font-size:12px;opacity:0.85;margin-bottom:2px;">${j.location||'Remote'} · ${count} applied</p>
-        <div class="chatlink-url">${chatUrl}</div>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;">
-          <button onclick="copyLink('${chatUrl}')" style="background:rgba(255,255,255,0.25);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 12px;border-radius:8px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;">📋 Copy Link</button>
-          <a href="${chatUrl}" target="_blank" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);color:#fff;padding:6px 12px;border-radius:8px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;text-decoration:none;">👁 Preview Chatbot</a>
-        </div>
-      </div>
+function renderJobs() {
+  const el = document.getElementById('jobs-list');
+  if (!jobs.length) { el.innerHTML='<div class="jobs-empty">No jobs yet. Create your first job!</div>'; return; }
+  el.innerHTML = jobs.map(j => {
+    const cnt = candidates.filter(c=>c.job_id===j.id).length;
+    return `<div class="job-item ${selJob===j.id?'active':''}" onclick="selJobFn(${j.id})">
+      <div class="job-item-top"><span class="job-title-txt">${j.title}</span><span class="job-cnt">${cnt}</span></div>
+      <div class="job-meta-txt">${j.location||''}${j.experience?' · '+j.experience:''}</div>
     </div>`;
   }).join('');
 }
 
-// ── DETAIL MODAL ──────────────────────────────────────────────────
-function openDetail(id){
-  const c=allCandidates.find(x=>x.id===id);
-  if(!c)return;
-  document.getElementById('dm-name').textContent=c.name;
-  document.getElementById('dm-name2').textContent=c.name;
-  document.getElementById('dm-role').textContent=(c.role||'–')+' · '+(c.client_name||'–');
-  document.getElementById('dm-client2').textContent=c.client_name||'–';
-  document.getElementById('dm-avatar').textContent=c.name?c.name[0].toUpperCase():'?';
-  document.getElementById('dm-score').textContent=(c.score||'–')+'/10';
-  document.getElementById('dm-phone').textContent=c.phone||'–';
-  document.getElementById('dm-email').textContent=c.email||'–';
-  document.getElementById('dm-exp').textContent=c.experience||'–';
-  document.getElementById('dm-notice').textContent=c.notice_period||'–';
-  document.getElementById('dm-ctc').textContent=c.current_ctc||'–';
-  document.getElementById('dm-ectc').textContent=c.expected_ctc||'–';
-  document.getElementById('dm-skills').textContent=c.skills||'–';
-  document.getElementById('dm-summary').textContent=c.summary||'No AI summary available.';
-  document.getElementById('dm-pill').innerHTML=`<span class="pill pill-${c.status||'pending'}">${c.status||'pending'}</span>`;
-  document.getElementById('dm-shortlist-btn').onclick=()=>{setStatus(id,'shortlisted');closeModal('candDetailModal');};
-  document.getElementById('dm-reject-btn').onclick=()=>{setStatus(id,'rejected');closeModal('candDetailModal');};
-  document.getElementById('dm-call-btn').onclick=()=>{setStatus(id,'scheduled');closeModal('candDetailModal');showToast('Scheduled for call!','success');};
-  document.getElementById('dm-interview-btn').onclick=()=>{setStatus(id,'scheduled');closeModal('candDetailModal');showToast('Interview scheduled!','success');};
-  openModal('candDetailModal');
+function selJobFn(id) { selJob = selJob===id?null:id; renderJobs(); renderCands(); }
+
+function setTab(s,btn) {
+  tabFilter=s;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  renderCands();
 }
 
-async function setStatus(id,status){
-  const {error}=await sb.from('candidates').update({status}).eq('id',id);
-  if(error){showToast('Error','error');return;}
-  showToast('Updated to '+status,'success');
-  await loadData();
-  const activeTab=document.querySelector('.tab.active');
-  if(activeTab&&activeTab.textContent==='My Jobs') renderJobsTab();
-  else renderTab();
+function renderCands() {
+  const q = (document.getElementById('search')?.value||'').toLowerCase();
+  const list = candidates.filter(c => {
+    if (tabFilter!=='all' && c.status!==tabFilter) return false;
+    if (selJob && c.job_id!==selJob) return false;
+    if (q && !c.name.toLowerCase().includes(q) && !(c.skills||'').toLowerCase().includes(q) && !(c.job_title||'').toLowerCase().includes(q)) return false;
+    return true;
+  });
+  const jobName = selJob ? (jobs.find(j=>j.id===selJob)?.title||'Job') : 'All Candidates';
+  document.getElementById('panel-title').textContent = `${jobName} (${list.length})`;
+  const el = document.getElementById('cand-container');
+  if (!list.length) { el.innerHTML='<div class="empty">No candidates match your filters.</div>'; return; }
+  el.innerHTML = `<div class="cand-grid">${list.map(candCard).join('')}</div>`;
 }
 
-// ── ADD JOB ───────────────────────────────────────────────────────
-async function addJob(){
-  const plan=sessionStorage.getItem('clientPlan')||'growth';
-  const limit=PLAN_LIMITS[plan]||25;
-  if(allJobs.length>=limit){showToast(`Job limit reached (${limit} jobs on ${plan} plan)`,'error');return;}
-  const title=document.getElementById('nj-title').value.trim();
-  if(!title){showToast('Job title required','error');return;}
-  const location=document.getElementById('nj-location').value.trim();
-  const skills=document.getElementById('nj-skills').value.trim();
-  const description=document.getElementById('nj-desc').value.trim();
-  const {data,error}=await sb.from('jobs').insert([{title,client_name:currentClient,location,skills,description,status:'active'}]).select().single();
-  if(error){showToast('Error: '+error.message,'error');return;}
-  const chatUrl=`${BASE_URL}/chatbot.html?job=${data.id}&client=${encodeURIComponent(currentClient)}&role=${encodeURIComponent(title)}`;
-  showToast('Job created! Chatbot link ready.','success');
-  closeModal('addJobModal');
-  await loadData();
-  navigator.clipboard.writeText(chatUrl).catch(()=>{});
-  setTimeout(()=>showToast('Chatbot link copied to clipboard!','success'),500);
+function sc(s){return s>=8?'score-hi':s>=6?'score-mid':'score-lo';}
+function stc(s){return 's-'+s;}
+
+function candCard(c) {
+  return `<div class="cand-card" onclick="openDetail(${c.id})">
+    <div class="cand-top">
+      <div><div class="cand-name">${c.name}</div><div class="cand-role">${c.job_title||''}</div></div>
+      <div class="score ${sc(c.ai_score)}">${c.ai_score}</div>
+    </div>
+    <div class="cand-pills">
+      <span class="pill">📅 ${c.notice_period||'—'}</span>
+      <span class="pill">💼 ${c.experience||'—'}</span>
+      <span class="pill">💰 ${c.expected_ctc||'—'}</span>
+    </div>
+    <span class="status-chip ${stc(c.status)}">${c.status}</span>
+    <div class="cand-acts" onclick="event.stopPropagation()">
+      <button class="act-btn g" onclick="updStatus(${c.id},'shortlisted')">✓ Shortlist</button>
+      <button class="act-btn o" onclick="updStatus(${c.id},'scheduled')">📅 Schedule</button>
+      <button class="act-btn r" onclick="updStatus(${c.id},'rejected')">✕ Reject</button>
+    </div>
+  </div>`;
 }
 
-function copyLink(url){navigator.clipboard.writeText(url);showToast('Chatbot link copied!','success');}
+function openDetail(id) {
+  const c=candidates.find(x=>x.id===id); if(!c) return;
+  document.getElementById('detail-body').innerHTML=`
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;">
+      <div>
+        <h2 style="font-size:1.3rem;font-weight:900;color:var(--navy);">${c.name}</h2>
+        <div style="color:var(--muted);font-size:.82rem;margin-top:.25rem;">${c.job_title||''}</div>
+        <span class="status-chip ${stc(c.status)}" style="margin-top:.5rem;display:inline-block;">${c.status}</span>
+      </div>
+      <div class="score ${sc(c.ai_score)}" style="font-size:1.5rem;padding:.4rem .75rem;">${c.ai_score}</div>
+    </div>
+    <div class="detail-grid">
+      <div class="d-item"><div class="d-key">Phone</div><div class="d-val">${c.phone||'—'}</div></div>
+      <div class="d-item"><div class="d-key">Email</div><div class="d-val">${c.email||'—'}</div></div>
+      <div class="d-item"><div class="d-key">Experience</div><div class="d-val">${c.experience||'—'}</div></div>
+      <div class="d-item"><div class="d-key">Notice Period</div><div class="d-val">${c.notice_period||'—'}</div></div>
+      <div class="d-item"><div class="d-key">Current CTC</div><div class="d-val">${c.current_ctc||'—'}</div></div>
+      <div class="d-item"><div class="d-key">Expected CTC</div><div class="d-val">${c.expected_ctc||'—'}</div></div>
+    </div>
+    <div style="margin-bottom:1rem;"><div class="d-key" style="font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">Skills</div><div style="font-size:.875rem;color:var(--navy);font-weight:500;">${c.skills||'—'}</div></div>
+    <div style="margin-bottom:1.25rem;"><div class="d-key" style="font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">AI Summary</div><div class="ai-box">${c.ai_summary||'No summary.'}</div></div>
+    <div class="detail-acts">
+      <button onclick="updStatus(${c.id},'shortlisted');closeDetail();" style="border-color:rgba(34,197,94,.3);color:#16a34a;">✓ Shortlist</button>
+      <button onclick="updStatus(${c.id},'scheduled');closeDetail();"  style="border-color:rgba(244,80,30,.3);color:var(--orange);">📅 Schedule</button>
+      <button onclick="updStatus(${c.id},'rejected');closeDetail();"   style="border-color:rgba(239,68,68,.2);color:var(--red);">✕ Reject</button>
+    </div>`;
+  document.getElementById('detail-modal').style.display='flex';
+}
+function closeDetail(){document.getElementById('detail-modal').style.display='none';}
 
-// ── PDF ───────────────────────────────────────────────────────────
-function exportPDF(){
+async function updStatus(id, status) {
+  const c=candidates.find(x=>x.id===id); if(!c) return;
+  c.status=status; renderCands(); updateStats();
+  try { await sbFetch(`candidates?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({status})}); }
+  catch(e){ console.warn('Patch failed:',e.message); }
+  toast(`Marked as ${status}`,'ok');
+}
+
+function updateStats() {
+  document.getElementById('st-jobs').textContent  = jobs.length;
+  document.getElementById('st-total').textContent = candidates.length;
+  document.getElementById('st-short').textContent = candidates.filter(c=>c.status==='shortlisted').length;
+  document.getElementById('st-sched').textContent = candidates.filter(c=>c.status==='scheduled').length;
+  document.getElementById('st-pend').textContent  = candidates.filter(c=>c.status==='pending').length;
+}
+
+function openJobModal() {
+  document.getElementById('link-box').style.display='none';
+  document.getElementById('create-btn').disabled=false;
+  document.getElementById('create-btn').textContent='Create Job & Get Chatbot Link';
+  ['f-title','f-loc','f-exp','f-skills','f-desc'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('job-modal').style.display='flex';
+}
+function closeJobModal(){document.getElementById('job-modal').style.display='none';}
+
+async function createJob() {
+  const title = document.getElementById('f-title').value.trim();
+  if (!title) { toast('Job title is required','err'); return; }
+  const btn = document.getElementById('create-btn');
+  btn.disabled=true; btn.textContent='Creating...';
+
+  const jobKey = 'j' + Date.now();
+  const payload = {
+    title, client_id: user.client_id, status:'active', job_key: jobKey,
+    location: document.getElementById('f-loc').value.trim(),
+    experience: document.getElementById('f-exp').value.trim(),
+    skills: document.getElementById('f-skills').value.trim(),
+    description: document.getElementById('f-desc').value.trim(),
+  };
+
+  let newId = Date.now();
+  try {
+    const saved = await sbFetch('jobs',{method:'POST',body:JSON.stringify(payload)});
+    if (saved&&saved[0]) newId=saved[0].id;
+  } catch(e){ console.warn('Job save failed (using local):', e.message); }
+
+  jobs.unshift({id:newId, job_key:jobKey, candidate_count:0, ...payload});
+  renderJobs(); updateStats();
+
+  // Generate chatbot link — pure JS, no API key needed
+  const base = window.location.origin + window.location.pathname.replace('client.html','');
+  const link = `${base}chatbot.html?job=${jobKey}&title=${encodeURIComponent(title)}&client=${user.client_id}`;
+  document.getElementById('link-url').value = link;
+  document.getElementById('link-box').style.display='block';
+  btn.textContent='✅ Job Created!';
+  toast('Job created! Share the chatbot link.','ok');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(document.getElementById('link-url').value)
+    .then(()=>toast('Link copied!','ok'));
+}
+
+document.getElementById('export-btn').addEventListener('click',()=>{
   const {jsPDF}=window.jspdf;
   const doc=new jsPDF();
-  let cands=allCandidates;
-  if(currentTab!=='all'&&currentTab!=='jobs') cands=allCandidates.filter(c=>c.status===currentTab);
-  doc.setFontSize(18);doc.setFont('helvetica','bold');doc.setTextColor(255,107,53);
-  doc.text(currentClient+' — Candidate Report',14,20);
-  doc.setFontSize(9);doc.setFont('helvetica','normal');doc.setTextColor(120,120,120);
-  doc.text('Generated: '+new Date().toLocaleDateString('en-IN')+' | Total: '+cands.length,14,28);
-  doc.setDrawColor(229,231,235);doc.line(14,32,196,32);
+  doc.setFont('helvetica','bold'); doc.setFontSize(16);
+  doc.text('Sampark AI — Candidate Report',14,20);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10);
+  doc.text(`Client: ${user.name}   |   ${new Date().toLocaleDateString('en-IN')}`,14,28);
   let y=40;
-  cands.forEach((c,i)=>{
-    if(y>268){doc.addPage();y=20;}
-    doc.setFillColor(i%2===0?250:255,250,252);doc.rect(14,y-4,182,18,'F');
-    doc.setTextColor(17,24,39);doc.setFontSize(11);doc.setFont('helvetica','bold');doc.text(c.name,18,y+4);
-    doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(107,114,128);
-    doc.text(c.role||'',72,y+4);doc.text(c.status||'',130,y+4);
-    doc.setTextColor(255,107,53);doc.setFont('helvetica','bold');
-    doc.text('Score:'+(c.score||'–'),170,y+4);
-    y+=22;
+  candidates.forEach((c,i)=>{
+    if(y>270){doc.addPage();y=20;}
+    doc.setFont('helvetica','bold'); doc.setFontSize(11);
+    doc.text(`${i+1}. ${c.name} — Score: ${c.ai_score}/10  [${(c.status||'').toUpperCase()}]`,14,y); y+=7;
+    doc.setFont('helvetica','normal'); doc.setFontSize(9);
+    doc.text(`   ${c.job_title||''} | Exp: ${c.experience||'—'} | Notice: ${c.notice_period||'—'} | Expected: ${c.expected_ctc||'—'}`,14,y); y+=5;
+    const lines=doc.splitTextToSize(`   ${c.ai_summary||''}`,180);
+    doc.text(lines,14,y); y+=lines.length*4.5+6;
   });
-  doc.save(currentClient.replace(/\s/g,'-')+'-candidates.pdf');
-  showToast('PDF downloaded!','success');
-}
+  doc.save(`sampark-${user.name.replace(/\s+/g,'-').toLowerCase()}.pdf`);
+  toast('PDF exported!','ok');
+});
 
-function openModal(id){document.getElementById(id).classList.add('open');}
-function closeModal(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
-function showToast(msg,type='success'){
+function toast(msg,type=''){
   const t=document.getElementById('toast');
-  t.innerHTML=(type==='success'?'<span style="color:var(--green)">✓</span>':'<span style="color:var(--red)">✕</span>')+' '+msg;
-  t.className='toast show '+type;setTimeout(()=>t.className='toast',3000);
+  t.textContent=msg; t.className=`toast ${type}`;
+  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
+  setTimeout(()=>t.classList.remove('show'),3000);
 }
 </script>
 </body>
