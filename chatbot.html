@@ -3,294 +3,249 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sampark AI — Chatbot Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<title>Sampark AI — Candidate Screening</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root {
-    --accent: #6c63ff;
-    --accent2: #ff6584;
-    --green: #00d4aa;
-    --bg: #f7f7fb;
-    --surface: #fff;
-    --border: #e4e4f0;
-    --text: #1a1a2e;
-    --muted: #8888a0;
-  }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { font-family:'DM Sans',sans-serif; background:var(--bg); display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+:root{--primary:#FF6B35;--primary-light:#FFF0EB;--green:#10B981;--blue:#3B82F6;--bg:#F8F9FC;--surface:#fff;--border:#E5E7EB;--text:#111827;--muted:#6B7280;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
 
-  .demo-wrapper { width:100%; max-width:480px; }
-  .demo-label { text-align:center; margin-bottom:16px; }
-  .demo-label h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
-  .demo-label p { color:var(--muted); font-size:13px; margin-top:4px; }
+.wrapper{width:100%;max-width:440px;}
+.powered{text-align:center;font-size:11px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;}
+.powered span{font-weight:700;color:var(--primary);}
 
-  /* CHAT WIDGET */
-  .chat-widget {
-    background:#fff; border-radius:20px; box-shadow:0 8px 40px rgba(0,0,0,0.12);
-    overflow:hidden; border:1px solid var(--border);
-  }
-  .chat-header {
-    background:linear-gradient(135deg,var(--accent),#8b5cf6);
-    padding:16px 20px; display:flex; align-items:center; gap:12px;
-  }
-  .chat-avatar { width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; }
-  .chat-header-text h3 { color:#fff; font-size:15px; font-weight:600; }
-  .chat-header-text p { color:rgba(255,255,255,0.75); font-size:12px; margin-top:1px; }
-  .chat-online { width:8px; height:8px; background:#00d4aa; border-radius:50%; margin-left:auto; box-shadow:0 0 0 2px rgba(0,212,170,0.3); }
+.widget{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.1);border:1px solid var(--border);}
 
-  .chat-body { height:380px; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; scroll-behavior:smooth; }
-  .chat-body::-webkit-scrollbar { width:4px; }
-  .chat-body::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.w-header{padding:16px 18px;background:linear-gradient(135deg,var(--primary),#FF8C5A);display:flex;align-items:center;gap:12px;}
+.w-avatar{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.w-title{color:#fff;font-size:14px;font-weight:700;}
+.w-sub{color:rgba(255,255,255,0.8);font-size:11px;margin-top:1px;}
+.w-online{width:8px;height:8px;background:#10B981;border-radius:50%;margin-left:auto;box-shadow:0 0 0 3px rgba(16,185,129,0.3);}
 
-  .msg { max-width:85%; animation:fadeIn 0.2s ease; }
-  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
-  .msg.bot { align-self:flex-start; }
-  .msg.user { align-self:flex-end; }
-  .bubble { padding:10px 14px; border-radius:16px; font-size:13px; line-height:1.5; }
-  .bot .bubble { background:var(--bg); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; }
-  .user .bubble { background:var(--accent); color:#fff; border-bottom-right-radius:4px; }
-  .msg-time { font-size:10px; color:var(--muted); margin-top:4px; text-align:right; }
-  .bot .msg-time { text-align:left; }
+.w-progress{background:rgba(255,255,255,0.2);height:3px;position:relative;}
+.w-progress-fill{height:100%;background:rgba(255,255,255,0.8);transition:width 0.5s ease;border-radius:0 3px 3px 0;}
 
-  .typing-indicator { display:flex; gap:4px; padding:12px 14px; }
-  .typing-dot { width:6px; height:6px; background:var(--muted); border-radius:50%; animation:bounce 1.2s infinite; }
-  .typing-dot:nth-child(2) { animation-delay:0.2s; }
-  .typing-dot:nth-child(3) { animation-delay:0.4s; }
-  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+.w-body{height:360px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.w-body::-webkit-scrollbar{width:3px;}
+.w-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
 
-  .chat-options { padding:10px 16px; display:flex; flex-wrap:wrap; gap:6px; border-top:1px solid var(--border); }
-  .option-btn { padding:6px 12px; border:1.5px solid var(--accent); border-radius:20px; background:transparent; color:var(--accent); font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; }
-  .option-btn:hover { background:var(--accent); color:#fff; }
+.msg{max-width:88%;animation:fadeUp 0.25s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.msg.bot{align-self:flex-start;}
+.msg.user{align-self:flex-end;}
+.bubble{padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
+.bot .bubble{background:var(--bg);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px;}
+.user .bubble{background:linear-gradient(135deg,var(--primary),#FF8C5A);color:#fff;border-bottom-right-radius:4px;}
+.msg-time{font-size:10px;color:var(--muted);margin-top:3px;}
+.bot .msg-time{text-align:left;}
+.user .msg-time{text-align:right;}
 
-  .chat-input-area { padding:12px 16px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center; }
-  .chat-input { flex:1; padding:10px 14px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; }
-  .chat-input:focus { border-color:var(--accent); background:#fff; }
-  .send-btn { width:38px; height:38px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; }
-  .send-btn:hover { opacity:0.85; }
+.typing{display:flex;gap:4px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;width:fit-content;}
+.td{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:bounce 1.2s infinite;}
+.td:nth-child(2){animation-delay:0.2s;}
+.td:nth-child(3){animation-delay:0.4s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
 
-  /* SUCCESS STATE */
-  .success-banner { display:none; background:linear-gradient(135deg,#00d4aa,#00b894); padding:16px 20px; text-align:center; color:#fff; }
-  .success-banner h3 { font-size:16px; font-weight:700; }
-  .success-banner p { font-size:12px; opacity:0.9; margin-top:2px; }
+.w-options{padding:10px 14px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px;min-height:0;}
+.opt{padding:6px 14px;border:1.5px solid var(--primary);border-radius:20px;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
+.opt:hover{background:var(--primary);color:#fff;}
+
+.w-input{display:flex;align-items:center;gap:8px;padding:12px 14px;border-top:1px solid var(--border);}
+.w-input input{flex:1;padding:9px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;outline:none;color:var(--text);transition:border-color 0.2s;}
+.w-input input:focus{border-color:var(--primary);background:#fff;}
+.send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#FF8C5A);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:opacity 0.2s;box-shadow:0 2px 8px rgba(255,107,53,0.3);}
+.send:hover{opacity:0.9;}
+
+.w-success{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-top:1px solid rgba(16,185,129,0.2);padding:16px 18px;display:none;text-align:center;}
+.w-success h3{font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px;}
+.w-success p{font-size:12px;color:#065F46;}
 </style>
 </head>
 <body>
 
-<div class="demo-wrapper">
-  <div class="demo-label">
-    <h2>Sampark AI Chatbot</h2>
-    <p>AI-powered candidate screening — live demo</p>
-  </div>
-
-  <div class="chat-widget">
-    <div class="chat-header">
-      <div class="chat-avatar">🤖</div>
-      <div class="chat-header-text">
-        <h3>Sampark AI Screener</h3>
-        <p>Powered by Sampark AI</p>
+<div class="wrapper">
+  <div class="powered">Powered by <span>Sampark AI</span> · AI Candidate Screening</div>
+  <div class="widget">
+    <div class="w-header">
+      <div class="w-avatar">🤖</div>
+      <div>
+        <div class="w-title" id="widgetTitle">AI Screener</div>
+        <div class="w-sub" id="widgetSub">Let's get you screened quickly</div>
       </div>
-      <div class="chat-online"></div>
+      <div class="w-online"></div>
     </div>
-
-    <div class="success-banner" id="successBanner">
-      <h3>✓ Application Submitted!</h3>
-      <p>Your profile has been saved. Our team will review and respond within 2 hours.</p>
+    <div class="w-progress"><div class="w-progress-fill" id="progressFill" style="width:0%"></div></div>
+    <div class="w-success" id="successBanner">
+      <h3>Application Submitted! 🎉</h3>
+      <p>Our team will review your profile and respond within 2 hours.</p>
     </div>
-
-    <div class="chat-body" id="chatBody"></div>
-
-    <div class="chat-options" id="chatOptions"></div>
-
-    <div class="chat-input-area">
-      <input class="chat-input" id="chatInput" placeholder="Type your answer…" onkeydown="handleKey(event)"/>
-      <button class="send-btn" onclick="sendMessage()">➤</button>
+    <div class="w-body" id="chatBody"></div>
+    <div class="w-options" id="chatOptions"></div>
+    <div class="w-input">
+      <input id="chatInput" placeholder="Type your answer…" onkeydown="handleKey(event)"/>
+      <button class="send" onclick="sendMsg()">➤</button>
     </div>
   </div>
 </div>
 
 <script>
-const SUPABASE_URL = 'https://sebghpbyykplkoootzdg.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMTM5NzUsImV4cCI6MjA1OTU4OTk3NX0.oBMsGVOHnKdz7n8i7kQKBHQ4o7n_8FzNQpTG5Hc_-mA';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_URL='https://sebghpbyykplkoootzdg.supabase.co';
+const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMTM5NzUsImV4cCI6MjA1OTU4OTk3NX0.oBMsGVOHnKdz7n8i7kQKBHQ4o7n_8FzNQpTG5Hc_-mA';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
-// Configuration — can be injected by embed script
-const CONFIG = {
-  clientName: window.SAMPARK_CLIENT || 'TechCorp India',
-  jobId: window.SAMPARK_JOB_ID || null,
-  role: window.SAMPARK_ROLE || 'Software Engineer',
-  accentColor: window.SAMPARK_COLOR || '#6c63ff'
-};
+// Read URL params
+const params=new URLSearchParams(window.location.search);
+const JOB_ID=params.get('job')||null;
+const CLIENT_NAME=params.get('client')||window.SAMPARK_CLIENT||'TechCorp India';
+const ROLE=params.get('role')||window.SAMPARK_ROLE||'Software Engineer';
 
-// ── FLOW ─────────────────────────────────────────────────────────
-const FLOW = [
-  { id:'welcome', bot:`Hi there! 👋 I'm Sampark AI, your screening assistant for <strong>${CONFIG.clientName}</strong>.\n\nI'll ask you a few quick questions for the <strong>${CONFIG.role}</strong> position. It only takes 3 minutes!\n\nReady to start?`, options:['Yes, let\'s go! 🚀','Tell me more first'] },
-  { id:'name', bot:'Great! What\'s your full name?', field:'name', placeholder:'Your full name' },
-  { id:'phone', bot:'Nice to meet you, {name}! 📞 What\'s your mobile number?', field:'phone', placeholder:'e.g. 9876543210' },
-  { id:'email', bot:'Thanks! What\'s your email address?', field:'email', placeholder:'your@email.com' },
-  { id:'experience', bot:'How many years of experience do you have in this field?', field:'experience', options:['0-1 years','1-3 years','3-5 years','5-10 years','10+ years'] },
-  { id:'currentRole', bot:'What\'s your current role/designation?', field:'current_role', placeholder:'e.g. Senior Developer' },
-  { id:'noticePeriod', bot:'What\'s your notice period?', field:'notice_period', options:['Immediate','15 days','1 month','2 months','3 months'] },
-  { id:'ctc', bot:'What\'s your current CTC (approximate)?', field:'current_ctc', options:['Under 5 LPA','5-10 LPA','10-20 LPA','20-35 LPA','35+ LPA'] },
-  { id:'expectedCtc', bot:'What\'s your expected CTC?', field:'expected_ctc', options:['5-8 LPA','8-15 LPA','15-25 LPA','25-40 LPA','40+ LPA'] },
-  { id:'location', bot:'Are you open to relocating or working from office?', field:'location_pref', options:['Yes, open to relocation','Prefer remote','Open to hybrid','Within same city only'] },
-  { id:'skills', bot:'Briefly tell me about your key skills or what makes you a great fit for this role:', field:'skills', placeholder:'e.g. React, Node.js, 3 years team lead experience…' },
-  { id:'done', bot:null }
+document.getElementById('widgetTitle').textContent=CLIENT_NAME+' — AI Screener';
+document.getElementById('widgetSub').textContent='Applying for: '+ROLE;
+
+const FLOW=[
+  {bot:`Hi there! 👋 I'm the AI screener for <strong>${CLIENT_NAME}</strong>.\n\nI'll ask you a few quick questions for the <strong>${ROLE}</strong> role. It takes just 3–4 minutes!\n\nReady to start?`,opts:['Yes, let\'s go! 🚀','Tell me more first']},
+  {bot:'Great! First, what\'s your full name?',field:'name',ph:'Your full name'},
+  {bot:'Nice to meet you, {name}! What\'s your mobile number?',field:'phone',ph:'10-digit mobile number'},
+  {bot:'What\'s your email address?',field:'email',ph:'your@email.com'},
+  {bot:'How many years of work experience do you have?',field:'experience',opts:['Fresher (0–1 yr)','1–3 years','3–5 years','5–10 years','10+ years']},
+  {bot:'What\'s your current job title?',field:'current_role',ph:'e.g. Business Development Manager'},
+  {bot:'What\'s your notice period?',field:'notice_period',opts:['Immediately available','15 days','1 month','2 months','3 months']},
+  {bot:'What\'s your current CTC (annual package)?',field:'current_ctc',opts:['Under 3 LPA','3–6 LPA','6–12 LPA','12–20 LPA','20–35 LPA','35+ LPA']},
+  {bot:'What\'s your expected CTC?',field:'expected_ctc',opts:['3–6 LPA','6–12 LPA','12–20 LPA','20–35 LPA','35–50 LPA','50+ LPA']},
+  {bot:'Are you open to relocating or working from office?',field:'location_pref',opts:['Yes, open to relocation','Prefer remote work','Hybrid is fine','Only within current city']},
+  {bot:'Tell me about your key skills and why you\'re a great fit for this role:',field:'skills',ph:'e.g. 5 years in B2B sales, led team of 8, CRM expertise…'},
+  {bot:null}
 ];
 
-let step = 0;
-let answers = {};
-let conversationDone = false;
+let step=0,answers={},done=false;
 
-function addMessage(text, role='bot') {
-  const body = document.getElementById('chatBody');
-  const msg = document.createElement('div');
-  msg.className = 'msg ' + role;
-  const now = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
-  msg.innerHTML = `<div class="bubble">${text.replace(/\n/g,'<br/>')}</div><div class="msg-time">${now}</div>`;
-  body.appendChild(msg);
-  body.scrollTop = body.scrollHeight;
+function addMsg(html,role='bot'){
+  const body=document.getElementById('chatBody');
+  const d=document.createElement('div');
+  d.className='msg '+role;
+  const now=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+  d.innerHTML=`<div class="bubble">${html.replace(/\n/g,'<br>')}</div><div class="msg-time">${now}</div>`;
+  body.appendChild(d);
+  body.scrollTop=body.scrollHeight;
 }
 
-function showTyping() {
-  const body = document.getElementById('chatBody');
-  const t = document.createElement('div');
-  t.className = 'msg bot'; t.id = 'typing';
-  t.innerHTML = `<div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
-  body.appendChild(t);
-  body.scrollTop = body.scrollHeight;
+function showTyping(){
+  const body=document.getElementById('chatBody');
+  const d=document.createElement('div');
+  d.className='msg bot';d.id='typing';
+  d.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  body.appendChild(d);
+  body.scrollTop=body.scrollHeight;
+}
+function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+
+function setOpts(opts){
+  const o=document.getElementById('chatOptions');
+  if(!opts||!opts.length){o.innerHTML='';return;}
+  o.innerHTML=opts.map(op=>`<button class="opt" onclick="selectOpt('${op.replace(/'/g,'&#39;')}')">${op}</button>`).join('');
 }
 
-function removeTyping() {
-  const t = document.getElementById('typing');
-  if (t) t.remove();
-}
+function setProgress(n){document.getElementById('progressFill').style.width=Math.round(n/(FLOW.length-1)*100)+'%';}
 
-function setOptions(opts) {
-  const area = document.getElementById('chatOptions');
-  if (!opts || !opts.length) { area.innerHTML=''; return; }
-  area.innerHTML = opts.map(o=>`<button class="option-btn" onclick="selectOption('${o}')">${o}</button>`).join('');
-}
+function interpolate(t){return t.replace(/\{(\w+)\}/g,(_,k)=>answers[k]||'');}
 
-function selectOption(val) {
-  if (conversationDone) return;
-  addMessage(val, 'user');
-  setOptions([]);
-
-  if (step === 0) {
-    if (val.includes('Tell me more')) {
-      setTimeout(() => {
-        addMessage('Sampark AI screens candidates using AI-powered conversations. Your responses help our team find the best fit quickly. No waiting — just answer a few questions! Ready?');
-        setOptions(['Yes, let\'s start! 🚀']);
-      }, 600);
+function selectOpt(val){
+  if(done)return;
+  addMsg(val,'user');
+  setOpts([]);
+  if(step===0){
+    if(val.includes('Tell me more')){
+      setTimeout(()=>{addMsg('Sampark AI uses conversational AI to screen candidates — no lengthy forms, no waiting. Your answers are analysed and scored, and only top candidates are passed to the hiring team. Ready?');setOpts(['Yes, start now!']);},600);
       return;
     }
-    nextStep();
-    return;
+    nextStep();return;
   }
-
-  const current = FLOW[step];
-  if (current.field) answers[current.field] = val;
+  const s=FLOW[step];
+  if(s.field)answers[s.field]=val;
   nextStep();
 }
 
-function sendMessage() {
-  if (conversationDone) return;
-  const input = document.getElementById('chatInput');
-  const val = input.value.trim();
-  if (!val) return;
-  addMessage(val, 'user');
-  input.value = '';
-  setOptions([]);
-
-  if (step === 0) { nextStep(); return; }
-
-  const current = FLOW[step];
-  if (current.field) answers[current.field] = val;
+function sendMsg(){
+  if(done)return;
+  const inp=document.getElementById('chatInput');
+  const val=inp.value.trim();
+  if(!val)return;
+  addMsg(val,'user');
+  inp.value='';
+  setOpts([]);
+  if(step===0){nextStep();return;}
+  const s=FLOW[step];
+  if(s.field)answers[s.field]=val;
   nextStep();
 }
+function handleKey(e){if(e.key==='Enter')sendMsg();}
 
-function handleKey(e) { if (e.key==='Enter') sendMessage(); }
-
-function interpolate(text) {
-  return text.replace(/\{(\w+)\}/g, (_, k) => answers[k] || '');
-}
-
-async function nextStep() {
+async function nextStep(){
   step++;
-  if (step >= FLOW.length - 1) {
-    await finishScreening();
-    return;
-  }
-  const s = FLOW[step];
+  setProgress(step);
+  if(step>=FLOW.length-1){await finish();return;}
+  const s=FLOW[step];
   showTyping();
-  setTimeout(() => {
+  setTimeout(()=>{
     removeTyping();
-    addMessage(interpolate(s.bot));
-    if (s.options) setOptions(s.options);
-    else setOptions([]);
-    if (!s.options) document.getElementById('chatInput').placeholder = s.placeholder || 'Type your answer…';
-    else document.getElementById('chatInput').placeholder = 'Or type your answer…';
-  }, 700);
+    addMsg(interpolate(s.bot));
+    if(s.opts)setOpts(s.opts);
+    else setOpts([]);
+    document.getElementById('chatInput').placeholder=s.ph||'Type your answer…';
+  },700);
 }
 
-async function finishScreening() {
-  conversationDone = true;
-  setOptions([]);
+function computeScore(){
+  const expMap={'Fresher (0–1 yr)':1,'1–3 years':2,'3–5 years':3,'5–10 years':4,'10+ years':5};
+  const e=expMap[answers.experience]||2;
+  let s=3+e;
+  if(answers.skills&&answers.skills.length>60)s+=1;
+  if(answers.email&&answers.email.includes('@'))s+=0.5;
+  if(answers.phone&&answers.phone.length>=10)s+=0.5;
+  return Math.min(10,Math.round(s*10)/10);
+}
 
-  const score = computeScore();
-
+async function finish(){
+  done=true;
+  setOpts([]);
+  document.getElementById('chatInput').disabled=true;
+  document.querySelector('.send').disabled=true;
+  const score=computeScore();
   showTyping();
-  await new Promise(r => setTimeout(r, 1000));
+  await new Promise(r=>setTimeout(r,1000));
   removeTyping();
-  addMessage(`Thank you, <strong>${answers.name||'there'}</strong>! 🎉\n\nI've completed your screening. Here's a quick summary:\n\n📋 Role: ${CONFIG.role}\n⭐ AI Score: ${score}/10\n📍 Notice Period: ${answers.notice_period||'–'}\n💰 Expected CTC: ${answers.expected_ctc||'–'}\n\nOur team at <strong>${CONFIG.clientName}</strong> will review your profile and reach out within 2 hours. Good luck!`);
+  addMsg(`Thank you, <strong>${answers.name||'there'}</strong>! 🎉\n\nScreening complete. Here's your summary:\n\n📋 <strong>Role:</strong> ${ROLE}\n⭐ <strong>AI Score:</strong> ${score}/10\n⏱ <strong>Notice:</strong> ${answers.notice_period||'–'}\n💰 <strong>Expected CTC:</strong> ${answers.expected_ctc||'–'}\n\n<strong>${CLIENT_NAME}</strong>'s HR team will review your profile and reach out within 2 hours if you're shortlisted. Good luck!`);
 
-  // Save to Supabase
-  const summary = `${answers.name} applied for ${CONFIG.role}. Experience: ${answers.experience||'–'}. Current role: ${answers.current_role||'–'}. Skills: ${answers.skills||'–'}. Notice: ${answers.notice_period||'–'}. Expected CTC: ${answers.expected_ctc||'–'}.`;
+  const summary=`${answers.name} applied for ${ROLE} at ${CLIENT_NAME}. Experience: ${answers.experience||'–'}. Current: ${answers.current_role||'–'}. Skills: ${answers.skills||'–'}. Notice: ${answers.notice_period||'–'}. Expected CTC: ${answers.expected_ctc||'–'}. Score: ${score}/10.`;
 
-  const { error } = await sb.from('candidates').insert([{
-    name: answers.name || 'Unknown',
-    phone: answers.phone || '',
-    email: answers.email || '',
-    role: CONFIG.role,
-    experience: answers.experience || '',
-    current_role: answers.current_role || '',
-    notice_period: answers.notice_period || '',
-    current_ctc: answers.current_ctc || '',
-    expected_ctc: answers.expected_ctc || '',
-    location_pref: answers.location_pref || '',
-    skills: answers.skills || '',
-    score: score,
-    status: 'pending',
-    client_name: CONFIG.clientName,
-    job_id: CONFIG.jobId,
-    summary: summary
+  const {error}=await sb.from('candidates').insert([{
+    name:answers.name||'Unknown',
+    phone:answers.phone||'',
+    email:answers.email||'',
+    role:ROLE,
+    experience:answers.experience||'',
+    current_role:answers.current_role||'',
+    notice_period:answers.notice_period||'',
+    current_ctc:answers.current_ctc||'',
+    expected_ctc:answers.expected_ctc||'',
+    location_pref:answers.location_pref||'',
+    skills:answers.skills||'',
+    score:score,
+    status:'pending',
+    client_name:CLIENT_NAME,
+    job_id:JOB_ID?parseInt(JOB_ID):null,
+    summary:summary
   }]);
 
-  if (error) console.error('Supabase save error:', error);
-  else {
-    document.getElementById('successBanner').style.display='block';
-    document.getElementById('chatInput').disabled=true;
-    document.querySelector('.send-btn').disabled=true;
-  }
+  if(error){console.error('Save error:',error);}
+  else{document.getElementById('successBanner').style.display='block';}
+  setProgress(FLOW.length-1);
 }
 
-function computeScore() {
-  let score = 5;
-  const expMap = {'0-1 years':1,'1-3 years':2,'3-5 years':3,'5-10 years':4,'10+ years':5};
-  const exp = expMap[answers.experience] || 2;
-  score = Math.min(10, 3 + exp + (answers.skills?.length > 50 ? 1 : 0) + (answers.email ? 0.5 : 0));
-  return Math.round(score * 10) / 10;
-}
-
-// ── START ─────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded',()=>{
   showTyping();
-  setTimeout(() => {
-    removeTyping();
-    addMessage(FLOW[0].bot);
-    setOptions(FLOW[0].options);
-  }, 800);
+  setTimeout(()=>{removeTyping();addMsg(FLOW[0].bot);setOpts(FLOW[0].opts);},800);
 });
 </script>
 </body>
