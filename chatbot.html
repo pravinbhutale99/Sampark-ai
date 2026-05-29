@@ -1,252 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Sampark AI — Candidate Screening</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<style>
-:root{--primary:#FF6B35;--primary-light:#FFF0EB;--green:#10B981;--blue:#3B82F6;--bg:#F8F9FC;--surface:#fff;--border:#E5E7EB;--text:#111827;--muted:#6B7280;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:'Inter',sans-serif;background:var(--bg);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px;}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sampark AI — Candidate Screening</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --orange: #f4501e; --navy: #0d1b2a;
+      --text: #1a1a2e; --muted: #6b7280; --border: #e5e7eb;
+      --bg: #f9fafb; --card: #ffffff; --green: #22c55e;
+    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
 
-.wrapper{width:100%;max-width:440px;}
-.powered{text-align:center;font-size:11px;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:5px;}
-.powered span{font-weight:700;color:var(--primary);}
+    header {
+      flex-shrink: 0; padding: 0 1.5rem; height: 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--navy); border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .h-logo { display: flex; align-items: center; gap: .6rem; }
+    .logo-sq { width: 28px; height: 28px; background: var(--orange); border-radius: 6px; flex-shrink: 0; }
+    .h-logo span { font-weight: 800; color: #fff; font-size: .95rem; }
+    .h-job { font-size: .78rem; color: rgba(255,255,255,.5); }
+    .h-job strong { color: rgba(255,255,255,.85); }
 
-.widget{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,0.1);border:1px solid var(--border);}
+    .prog-wrap { flex-shrink: 0; padding: .6rem 1.5rem .3rem; background: #fff; border-bottom: 1px solid var(--border); }
+    .prog-bar { height: 4px; background: var(--border); border-radius: 999px; overflow: hidden; }
+    .prog-fill { height: 100%; background: linear-gradient(90deg, var(--orange), #ff8c42); border-radius: 999px; transition: width .5s ease; width: 0%; }
+    .prog-label { font-size: .7rem; color: var(--muted); text-align: right; margin-top: .25rem; font-weight: 500; }
 
-.w-header{padding:16px 18px;background:linear-gradient(135deg,var(--primary),#FF8C5A);display:flex;align-items:center;gap:12px;}
-.w-avatar{width:40px;height:40px;border-radius:12px;background:rgba(255,255,255,0.2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.w-title{color:#fff;font-size:14px;font-weight:700;}
-.w-sub{color:rgba(255,255,255,0.8);font-size:11px;margin-top:1px;}
-.w-online{width:8px;height:8px;background:#10B981;border-radius:50%;margin-left:auto;box-shadow:0 0 0 3px rgba(16,185,129,0.3);}
+    .chat-area { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; max-width: 700px; width: 100%; margin: 0 auto; }
+    .chat-area::-webkit-scrollbar { width: 4px; }
+    .chat-area::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-.w-progress{background:rgba(255,255,255,0.2);height:3px;position:relative;}
-.w-progress-fill{height:100%;background:rgba(255,255,255,0.8);transition:width 0.5s ease;border-radius:0 3px 3px 0;}
+    .msg { display: flex; gap: .75rem; max-width: 85%; }
+    .msg.bot { align-self: flex-start; }
+    .msg.usr { align-self: flex-end; flex-direction: row-reverse; }
+    .av { width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: .9rem; }
+    .bot .av { background: rgba(244,80,30,.1); border: 1.5px solid rgba(244,80,30,.2); }
+    .usr .av { background: rgba(13,27,42,.08); border: 1.5px solid rgba(13,27,42,.12); }
+    .bubble { padding: .75rem 1rem; border-radius: 14px; font-size: .9rem; line-height: 1.6; }
+    .bot .bubble { background: var(--card); border: 1.5px solid var(--border); border-top-left-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,.04); }
+    .usr .bubble { background: var(--navy); color: #fff; border-top-right-radius: 4px; }
 
-.w-body{height:360px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.w-body::-webkit-scrollbar{width:3px;}
-.w-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+    .typing { display: flex; gap: .3rem; padding: .75rem 1rem; background: var(--card); border: 1.5px solid var(--border); border-radius: 14px; border-top-left-radius: 4px; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); animation: bop .85s ease-in-out infinite; opacity: .5; }
+    .dot:nth-child(2){animation-delay:.15s;} .dot:nth-child(3){animation-delay:.3s;}
+    @keyframes bop { 0%,80%,100%{transform:scale(.65);opacity:.35} 40%{transform:scale(1);opacity:1} }
 
-.msg{max-width:88%;animation:fadeUp 0.25s ease;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-.msg.bot{align-self:flex-start;}
-.msg.user{align-self:flex-end;}
-.bubble{padding:10px 14px;border-radius:16px;font-size:13px;line-height:1.5;}
-.bot .bubble{background:var(--bg);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:4px;}
-.user .bubble{background:linear-gradient(135deg,var(--primary),#FF8C5A);color:#fff;border-bottom-right-radius:4px;}
-.msg-time{font-size:10px;color:var(--muted);margin-top:3px;}
-.bot .msg-time{text-align:left;}
-.user .msg-time{text-align:right;}
+    .input-row {
+      flex-shrink: 0; padding: 1rem 1.5rem 1.5rem;
+      display: flex; gap: .75rem; max-width: 700px; width: 100%; margin: 0 auto;
+      background: var(--bg);
+    }
+    #uinput {
+      flex: 1; padding: .75rem 1rem; background: var(--card); border: 1.5px solid var(--border);
+      border-radius: 12px; color: var(--text); font-size: .9rem; font-family: inherit;
+      resize: none; min-height: 46px; max-height: 120px; line-height: 1.5; transition: border-color .2s;
+    }
+    #uinput:focus { outline: none; border-color: var(--orange); }
+    #uinput:disabled { opacity: .45; background: var(--bg); }
+    #sendbtn {
+      width: 46px; height: 46px; border-radius: 12px; border: none;
+      background: var(--orange); color: #fff; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: background .2s, transform .15s;
+    }
+    #sendbtn:hover:not(:disabled) { background: #d93d0d; transform: scale(1.05); }
+    #sendbtn:disabled { opacity: .4; cursor: not-allowed; }
 
-.typing{display:flex;gap:4px;padding:10px 14px;background:var(--bg);border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;width:fit-content;}
-.td{width:6px;height:6px;background:var(--muted);border-radius:50%;animation:bounce 1.2s infinite;}
-.td:nth-child(2){animation-delay:0.2s;}
-.td:nth-child(3){animation-delay:0.4s;}
-@keyframes bounce{0%,60%,100%{transform:translateY(0);}30%{transform:translateY(-5px);}}
-
-.w-options{padding:10px 14px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:6px;min-height:0;}
-.opt{padding:6px 14px;border:1.5px solid var(--primary);border-radius:20px;background:var(--primary-light);color:var(--primary);font-size:12px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.15s;}
-.opt:hover{background:var(--primary);color:#fff;}
-
-.w-input{display:flex;align-items:center;gap:8px;padding:12px 14px;border-top:1px solid var(--border);}
-.w-input input{flex:1;padding:9px 12px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;font-family:'Inter',sans-serif;font-size:13px;outline:none;color:var(--text);transition:border-color 0.2s;}
-.w-input input:focus{border-color:var(--primary);background:#fff;}
-.send{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--primary),#FF8C5A);border:none;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;transition:opacity 0.2s;box-shadow:0 2px 8px rgba(255,107,53,0.3);}
-.send:hover{opacity:0.9;}
-
-.w-success{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border-top:1px solid rgba(16,185,129,0.2);padding:16px 18px;display:none;text-align:center;}
-.w-success h3{font-size:15px;font-weight:700;color:var(--green);margin-bottom:4px;}
-.w-success p{font-size:12px;color:#065F46;}
-</style>
+    .done-card {
+      text-align: center; padding: 2.5rem 2rem; background: var(--card);
+      border: 1.5px solid rgba(34,197,94,.25); border-radius: 18px;
+      box-shadow: 0 8px 32px rgba(34,197,94,.06);
+    }
+    .done-card .d-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .done-card h3 { font-size: 1.2rem; font-weight: 800; color: var(--navy); margin-bottom: .6rem; }
+    .done-card p { font-size: .875rem; color: var(--muted); line-height: 1.7; }
+    .done-score { display: inline-block; margin-top: .75rem; padding: .4rem 1.25rem; background: rgba(34,197,94,.1); border-radius: 999px; color: #16a34a; font-weight: 800; font-size: 1rem; }
+  </style>
 </head>
 <body>
 
-<div class="wrapper">
-  <div class="powered">Powered by <span>Sampark AI</span> · AI Candidate Screening</div>
-  <div class="widget">
-    <div class="w-header">
-      <div class="w-avatar">🤖</div>
-      <div>
-        <div class="w-title" id="widgetTitle">AI Screener</div>
-        <div class="w-sub" id="widgetSub">Let's get you screened quickly</div>
-      </div>
-      <div class="w-online"></div>
-    </div>
-    <div class="w-progress"><div class="w-progress-fill" id="progressFill" style="width:0%"></div></div>
-    <div class="w-success" id="successBanner">
-      <h3>Application Submitted! 🎉</h3>
-      <p>Our team will review your profile and respond within 2 hours.</p>
-    </div>
-    <div class="w-body" id="chatBody"></div>
-    <div class="w-options" id="chatOptions"></div>
-    <div class="w-input">
-      <input id="chatInput" placeholder="Type your answer…" onkeydown="handleKey(event)"/>
-      <button class="send" onclick="sendMsg()">➤</button>
-    </div>
-  </div>
+<header>
+  <div class="h-logo"><div class="logo-sq"></div><span>Sampark AI</span></div>
+  <div class="h-job">Screening for: <strong id="h-title">Loading...</strong></div>
+</header>
+
+<div class="prog-wrap">
+  <div class="prog-bar"><div class="prog-fill" id="prog-fill"></div></div>
+  <div class="prog-label" id="prog-label">Question 0 of 10</div>
+</div>
+
+<div class="chat-area" id="chat"></div>
+
+<div class="input-row">
+  <textarea id="uinput" placeholder="Type your answer here..." onkeydown="onKey(event)" oninput="autoH(this)"></textarea>
+  <button id="sendbtn" onclick="send()">➤</button>
 </div>
 
 <script>
-const SUPABASE_URL='https://sebghpbyykplkoootzdg.supabase.co';
-const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMTM5NzUsImV4cCI6MjA1OTU4OTk3NX0.oBMsGVOHnKdz7n8i7kQKBHQ4o7n_8FzNQpTG5Hc_-mA';
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SB_URL = 'https://sebghpbyykplkoootzdg.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MTg5MDMsImV4cCI6MjA1ODk5NDkwM30.F1P7BkKGSNFCt7vmS9fANVAHW8p5z5q-DYlLk_3qzSA';
 
-// Read URL params
-const params=new URLSearchParams(window.location.search);
-const JOB_ID=params.get('job')||null;
-const CLIENT_NAME=params.get('client')||window.SAMPARK_CLIENT||'TechCorp India';
-const ROLE=params.get('role')||window.SAMPARK_ROLE||'Software Engineer';
+const params    = new URLSearchParams(window.location.search);
+const JOB_KEY   = params.get('job')    || 'demo';
+const JOB_TITLE = decodeURIComponent(params.get('title') || 'Open Position');
+const CLIENT_ID = parseInt(params.get('client') || '1');
 
-document.getElementById('widgetTitle').textContent=CLIENT_NAME+' — AI Screener';
-document.getElementById('widgetSub').textContent='Applying for: '+ROLE;
+document.getElementById('h-title').textContent = JOB_TITLE;
+document.title = `Sampark AI — ${JOB_TITLE}`;
 
-const FLOW=[
-  {bot:`Hi there! 👋 I'm the AI screener for <strong>${CLIENT_NAME}</strong>.\n\nI'll ask you a few quick questions for the <strong>${ROLE}</strong> role. It takes just 3–4 minutes!\n\nReady to start?`,opts:['Yes, let\'s go! 🚀','Tell me more first']},
-  {bot:'Great! First, what\'s your full name?',field:'name',ph:'Your full name'},
-  {bot:'Nice to meet you, {name}! What\'s your mobile number?',field:'phone',ph:'10-digit mobile number'},
-  {bot:'What\'s your email address?',field:'email',ph:'your@email.com'},
-  {bot:'How many years of work experience do you have?',field:'experience',opts:['Fresher (0–1 yr)','1–3 years','3–5 years','5–10 years','10+ years']},
-  {bot:'What\'s your current job title?',field:'current_role',ph:'e.g. Business Development Manager'},
-  {bot:'What\'s your notice period?',field:'notice_period',opts:['Immediately available','15 days','1 month','2 months','3 months']},
-  {bot:'What\'s your current CTC (annual package)?',field:'current_ctc',opts:['Under 3 LPA','3–6 LPA','6–12 LPA','12–20 LPA','20–35 LPA','35+ LPA']},
-  {bot:'What\'s your expected CTC?',field:'expected_ctc',opts:['3–6 LPA','6–12 LPA','12–20 LPA','20–35 LPA','35–50 LPA','50+ LPA']},
-  {bot:'Are you open to relocating or working from office?',field:'location_pref',opts:['Yes, open to relocation','Prefer remote work','Hybrid is fine','Only within current city']},
-  {bot:'Tell me about your key skills and why you\'re a great fit for this role:',field:'skills',ph:'e.g. 5 years in B2B sales, led team of 8, CRM expertise…'},
-  {bot:null}
+const QS = [
+  { key:'name',          q:`Hi! I'm Sampark, your AI screening assistant 👋\n\nI'll ask you 10 quick questions for the **${JOB_TITLE}** role — takes about 3 minutes.\n\nLet's start — what's your full name?` },
+  { key:'phone',         q:"Great! What's your phone number? (We'll use this to schedule if you're shortlisted)" },
+  { key:'email',         q:"And your email address?" },
+  { key:'experience',    q:"How many years of relevant work experience do you have?" },
+  { key:'skills',        q:"What are your key skills relevant to this role?" },
+  { key:'current_ctc',   q:"What is your current CTC (annual package)?" },
+  { key:'expected_ctc',  q:"What is your expected CTC for this role?" },
+  { key:'notice_period', q:"What is your notice period / when can you join?" },
+  { key:'location',      q:"What is your current location, and are you open to relocation if needed?" },
+  { key:'why_apply',     q:"Last question — why are you interested in this role? 🙂" },
 ];
 
-let step=0,answers={},done=false;
+let qIdx=0, answers={}, busy=false, done=false;
 
-function addMsg(html,role='bot'){
-  const body=document.getElementById('chatBody');
-  const d=document.createElement('div');
-  d.className='msg '+role;
-  const now=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
-  d.innerHTML=`<div class="bubble">${html.replace(/\n/g,'<br>')}</div><div class="msg-time">${now}</div>`;
-  body.appendChild(d);
-  body.scrollTop=body.scrollHeight;
-}
-
-function showTyping(){
-  const body=document.getElementById('chatBody');
-  const d=document.createElement('div');
-  d.className='msg bot';d.id='typing';
-  d.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
-  body.appendChild(d);
-  body.scrollTop=body.scrollHeight;
-}
-function removeTyping(){const t=document.getElementById('typing');if(t)t.remove();}
-
-function setOpts(opts){
-  const o=document.getElementById('chatOptions');
-  if(!opts||!opts.length){o.innerHTML='';return;}
-  o.innerHTML=opts.map(op=>`<button class="opt" onclick="selectOpt('${op.replace(/'/g,'&#39;')}')">${op}</button>`).join('');
-}
-
-function setProgress(n){document.getElementById('progressFill').style.width=Math.round(n/(FLOW.length-1)*100)+'%';}
-
-function interpolate(t){return t.replace(/\{(\w+)\}/g,(_,k)=>answers[k]||'');}
-
-function selectOpt(val){
-  if(done)return;
-  addMsg(val,'user');
-  setOpts([]);
-  if(step===0){
-    if(val.includes('Tell me more')){
-      setTimeout(()=>{addMsg('Sampark AI uses conversational AI to screen candidates — no lengthy forms, no waiting. Your answers are analysed and scored, and only top candidates are passed to the hiring team. Ready?');setOpts(['Yes, start now!']);},600);
-      return;
-    }
-    nextStep();return;
-  }
-  const s=FLOW[step];
-  if(s.field)answers[s.field]=val;
-  nextStep();
-}
-
-function sendMsg(){
-  if(done)return;
-  const inp=document.getElementById('chatInput');
-  const val=inp.value.trim();
-  if(!val)return;
-  addMsg(val,'user');
-  inp.value='';
-  setOpts([]);
-  if(step===0){nextStep();return;}
-  const s=FLOW[step];
-  if(s.field)answers[s.field]=val;
-  nextStep();
-}
-function handleKey(e){if(e.key==='Enter')sendMsg();}
-
-async function nextStep(){
-  step++;
-  setProgress(step);
-  if(step>=FLOW.length-1){await finish();return;}
-  const s=FLOW[step];
-  showTyping();
-  setTimeout(()=>{
-    removeTyping();
-    addMsg(interpolate(s.bot));
-    if(s.opts)setOpts(s.opts);
-    else setOpts([]);
-    document.getElementById('chatInput').placeholder=s.ph||'Type your answer…';
-  },700);
-}
-
-function computeScore(){
-  const expMap={'Fresher (0–1 yr)':1,'1–3 years':2,'3–5 years':3,'5–10 years':4,'10+ years':5};
-  const e=expMap[answers.experience]||2;
-  let s=3+e;
-  if(answers.skills&&answers.skills.length>60)s+=1;
-  if(answers.email&&answers.email.includes('@'))s+=0.5;
-  if(answers.phone&&answers.phone.length>=10)s+=0.5;
-  return Math.min(10,Math.round(s*10)/10);
-}
-
-async function finish(){
-  done=true;
-  setOpts([]);
-  document.getElementById('chatInput').disabled=true;
-  document.querySelector('.send').disabled=true;
-  const score=computeScore();
-  showTyping();
-  await new Promise(r=>setTimeout(r,1000));
-  removeTyping();
-  addMsg(`Thank you, <strong>${answers.name||'there'}</strong>! 🎉\n\nScreening complete. Here's your summary:\n\n📋 <strong>Role:</strong> ${ROLE}\n⭐ <strong>AI Score:</strong> ${score}/10\n⏱ <strong>Notice:</strong> ${answers.notice_period||'–'}\n💰 <strong>Expected CTC:</strong> ${answers.expected_ctc||'–'}\n\n<strong>${CLIENT_NAME}</strong>'s HR team will review your profile and reach out within 2 hours if you're shortlisted. Good luck!`);
-
-  const summary=`${answers.name} applied for ${ROLE} at ${CLIENT_NAME}. Experience: ${answers.experience||'–'}. Current: ${answers.current_role||'–'}. Skills: ${answers.skills||'–'}. Notice: ${answers.notice_period||'–'}. Expected CTC: ${answers.expected_ctc||'–'}. Score: ${score}/10.`;
-
-  const {error}=await sb.from('candidates').insert([{
-    name:answers.name||'Unknown',
-    phone:answers.phone||'',
-    email:answers.email||'',
-    role:ROLE,
-    experience:answers.experience||'',
-    current_role:answers.current_role||'',
-    notice_period:answers.notice_period||'',
-    current_ctc:answers.current_ctc||'',
-    expected_ctc:answers.expected_ctc||'',
-    location_pref:answers.location_pref||'',
-    skills:answers.skills||'',
-    score:score,
-    status:'pending',
-    client_name:CLIENT_NAME,
-    job_id:JOB_ID?parseInt(JOB_ID):null,
-    summary:summary
-  }]);
-
-  if(error){console.error('Save error:',error);}
-  else{document.getElementById('successBanner').style.display='block';}
-  setProgress(FLOW.length-1);
-}
-
-window.addEventListener('DOMContentLoaded',()=>{
-  showTyping();
-  setTimeout(()=>{removeTyping();addMsg(FLOW[0].bot);setOpts(FLOW[0].opts);},800);
+window.addEventListener('DOMContentLoaded', () => {
+  setTimeout(() => botMsg(QS[0].q), 700);
+  updateProg();
 });
+
+async function sbSave(data) {
+  const r = await fetch(`${SB_URL}/rest/v1/candidates`, {
+    method: 'POST',
+    headers: { 'apikey':SB_KEY, 'Authorization':`Bearer ${SB_KEY}`, 'Content-Type':'application/json', 'Prefer':'return=minimal' },
+    body: JSON.stringify(data)
+  });
+  if (!r.ok) { const t=await r.text(); throw new Error(t); }
+}
+
+function botMsg(text) {
+  const area=document.getElementById('chat');
+  const div=document.createElement('div'); div.className='msg bot';
+  const html=text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>');
+  div.innerHTML=`<div class="av">🤖</div><div class="bubble">${html}</div>`;
+  area.appendChild(div); area.scrollTop=area.scrollHeight;
+}
+function usrMsg(text) {
+  const area=document.getElementById('chat');
+  const div=document.createElement('div'); div.className='msg usr';
+  div.innerHTML=`<div class="av">👤</div><div class="bubble">${text}</div>`;
+  area.appendChild(div); area.scrollTop=area.scrollHeight;
+}
+function showTyping() {
+  const area=document.getElementById('chat');
+  const t=document.createElement('div'); t.className='msg bot'; t.id='typing';
+  t.innerHTML=`<div class="av">🤖</div><div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  area.appendChild(t); area.scrollTop=area.scrollHeight;
+}
+function hideTyping(){const t=document.getElementById('typing');if(t)t.remove();}
+function updateProg() {
+  const pct=(qIdx/QS.length)*100;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-label').textContent=`Question ${qIdx} of ${QS.length}`;
+}
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function autoH(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,120)+'px';}
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+async function send() {
+  if (busy||done) return;
+  const inp=document.getElementById('uinput');
+  const text=inp.value.trim(); if(!text) return;
+  inp.value=''; inp.style.height='';
+  usrMsg(text);
+  answers[QS[qIdx].key]=text;
+  qIdx++; updateProg();
+
+  if (qIdx>=QS.length) {
+    done=true; inp.disabled=true; document.getElementById('sendbtn').disabled=true;
+    showTyping(); await sleep(1400); hideTyping();
+    await finish(); return;
+  }
+  busy=true; document.getElementById('sendbtn').disabled=true;
+  showTyping(); await sleep(700+Math.random()*400); hideTyping();
+  botMsg(QS[qIdx].q);
+  busy=false; document.getElementById('sendbtn').disabled=false;
+  document.getElementById('uinput').focus();
+}
+
+async function finish() {
+  const score  = calcScore(answers);
+  const summary= buildSummary(answers,score,JOB_TITLE);
+
+  const area=document.getElementById('chat');
+  const card=document.createElement('div'); card.className='done-card';
+  card.innerHTML=`
+    <div class="d-icon">🎉</div>
+    <h3>Thank you, ${answers.name||'Candidate'}!</h3>
+    <p>Your screening is complete. Our team will review your responses and reach out shortly.</p>
+    <div class="done-score">Your AI Score: ${score} / 10</div>`;
+  area.appendChild(card); area.scrollTop=area.scrollHeight;
+
+  const record = {
+    name: answers.name||'', phone: answers.phone||'', email: answers.email||'',
+    experience: answers.experience||'', skills: answers.skills||'',
+    current_ctc: answers.current_ctc||'', expected_ctc: answers.expected_ctc||'',
+    notice_period: answers.notice_period||'', location: answers.location||'',
+    why_apply: answers.why_apply||'',
+    ai_score: score, ai_summary: summary, status: 'pending',
+    job_key: JOB_KEY, job_title: JOB_TITLE, client_id: CLIENT_ID,
+    created_at: new Date().toISOString(),
+  };
+
+  try {
+    await sbSave(record);
+    console.log('✅ Saved to Supabase');
+  } catch(e) {
+    console.warn('⚠️ Supabase save failed:', e.message);
+    try {
+      const stored=JSON.parse(localStorage.getItem('sampark_q')||'[]');
+      stored.push(record); localStorage.setItem('sampark_q',JSON.stringify(stored));
+    } catch(_){}
+  }
+}
+
+function calcScore(a) {
+  let s=5.0;
+  const expN=parseInt((a.experience||'').match(/(\d+)/)?.[1]||'0');
+  if(expN>=6)s+=1.5; else if(expN>=4)s+=1.0; else if(expN>=2)s+=0.5; else s-=0.3;
+  const np=(a.notice_period||'').toLowerCase();
+  if(np.includes('immediate')||np==='0')s+=1.0;
+  else if(np.includes('15')||np.includes('2 week'))s+=0.7;
+  else if(np.includes('30')||np.includes('1 month'))s+=0.4;
+  else if(np.includes('60')||np.includes('90'))s-=0.4;
+  const sc=(a.skills||'').split(/[,\n]+/).filter(x=>x.trim()).length;
+  if(sc>=6)s+=0.8; else if(sc>=3)s+=0.4;
+  if((a.why_apply||'').length>80)s+=0.5; else if((a.why_apply||'').length>30)s+=0.2;
+  return Math.min(10,Math.max(1,parseFloat(s.toFixed(1))));
+}
+function buildSummary(a,score,title) {
+  const tone=score>=8?'Strong candidate.':score>=6?'Good candidate.':'Below threshold.';
+  return `${tone} ${a.name||'Candidate'} has ${a.experience||'—'} experience with skills in ${a.skills||'—'}. Notice period: ${a.notice_period||'—'}. Expected CTC: ${a.expected_ctc||'—'}. Applied for ${title}. AI Score: ${score}/10.`;
+}
 </script>
 </body>
 </html>
