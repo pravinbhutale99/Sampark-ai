@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sampark AI — Client Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f7f7fb;
+    --surface: #ffffff;
+    --surface2: #f0f0f8;
+    --border: #e4e4f0;
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --green: #00b894;
+    --yellow: #e17055;
+    --text: #1a1a2e;
+    --muted: #8888a0;
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+
+  /* LOGIN */
+  #loginScreen {
+    display:flex; align-items:center; justify-content:center;
+    min-height:100vh; padding:20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  }
+  .login-card {
+    background:#fff; border-radius:20px; padding:48px 40px;
+    width:100%; max-width:420px; box-shadow:0 20px 60px rgba(0,0,0,0.15);
+  }
+  .login-logo { display:flex; align-items:center; gap:12px; margin-bottom:36px; }
+  .login-logo .dot { width:32px; height:32px; border-radius:8px; background:linear-gradient(135deg,#6c63ff,#ff6584); }
+  .login-logo span { font-size:22px; font-weight:700; letter-spacing:-0.5px; color:var(--text); }
+  .login-card h2 { font-size:24px; font-weight:700; margin-bottom:6px; }
+  .login-card p { color:var(--muted); font-size:14px; margin-bottom:32px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; font-size:13px; font-weight:600; color:var(--muted); margin-bottom:6px; }
+  .form-group input {
+    width:100%; padding:12px 16px; background:var(--surface2); border:1.5px solid var(--border);
+    border-radius:10px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px;
+    outline:none; transition:border-color 0.2s;
+  }
+  .form-group input:focus { border-color:var(--accent); background:#fff; }
+  .btn-primary {
+    width:100%; padding:13px; background:linear-gradient(135deg,#6c63ff,#8b5cf6);
+    border:none; border-radius:10px; color:#fff; font-family:'DM Sans',sans-serif;
+    font-size:15px; font-weight:600; cursor:pointer; margin-top:8px; transition:opacity 0.2s;
+  }
+  .btn-primary:hover { opacity:0.9; }
+  .login-error { color:var(--accent2); font-size:13px; margin-top:10px; display:none; }
+  .login-hint { margin-top:16px; padding:12px; background:var(--surface2); border-radius:8px; font-size:12px; color:var(--muted); }
+  .login-hint strong { color:var(--text); }
+
+  /* APP */
+  #app { display:none; }
+  .topbar {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0 32px; height:64px; background:#fff;
+    border-bottom:1px solid var(--border); position:sticky; top:0; z-index:100;
+    box-shadow:0 1px 3px rgba(0,0,0,0.05);
+  }
+  .logo { display:flex; align-items:center; gap:10px; font-size:18px; font-weight:700; letter-spacing:-0.3px; }
+  .logo .dot { width:26px; height:26px; border-radius:6px; background:linear-gradient(135deg,#6c63ff,#ff6584); }
+  .topbar-right { display:flex; align-items:center; gap:16px; }
+  .company-badge { background:var(--surface2); border:1px solid var(--border); padding:5px 12px; border-radius:20px; font-size:12px; font-weight:600; color:var(--text); }
+  .btn-logout { background:none; border:1.5px solid var(--border); color:var(--muted); padding:7px 16px; border-radius:8px; cursor:pointer; font-size:13px; font-family:'DM Sans',sans-serif; transition:all 0.2s; }
+  .btn-logout:hover { border-color:var(--accent2); color:var(--accent2); }
+
+  /* LAYOUT */
+  .page-inner { max-width:1100px; margin:0 auto; padding:32px 24px; }
+  .page-header { margin-bottom:28px; display:flex; align-items:center; justify-content:space-between; }
+  .page-header h1 { font-size:24px; font-weight:700; letter-spacing:-0.5px; }
+  .page-header p { color:var(--muted); font-size:14px; margin-top:2px; }
+
+  /* TABS */
+  .tabs { display:flex; gap:4px; background:var(--surface2); border-radius:10px; padding:4px; margin-bottom:24px; width:fit-content; }
+  .tab { padding:8px 20px; border-radius:8px; cursor:pointer; font-size:13px; font-weight:600; color:var(--muted); transition:all 0.15s; }
+  .tab.active { background:#fff; color:var(--accent); box-shadow:0 2px 8px rgba(0,0,0,0.08); }
+
+  /* STATS */
+  .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-bottom:28px; }
+  .stat-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:20px 24px; }
+  .stat-label { font-size:12px; color:var(--muted); font-weight:600; margin-bottom:6px; }
+  .stat-value { font-size:30px; font-weight:700; letter-spacing:-1px; }
+  .stat-card.c1 .stat-value { color:var(--accent); }
+  .stat-card.c2 .stat-value { color:var(--green); }
+  .stat-card.c3 .stat-value { color:#f39c12; }
+  .stat-card.c4 .stat-value { color:var(--accent2); }
+
+  /* CARDS */
+  .candidates-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .cand-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:20px; transition:box-shadow 0.2s; }
+  .cand-card:hover { box-shadow:0 4px 20px rgba(0,0,0,0.08); }
+  .cand-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:12px; }
+  .cand-name { font-size:16px; font-weight:700; }
+  .cand-role { font-size:12px; color:var(--muted); margin-top:2px; }
+  .score-badge { background:linear-gradient(135deg,var(--accent),#8b5cf6); color:#fff; font-size:12px; font-weight:700; padding:4px 10px; border-radius:20px; }
+  .cand-meta { display:flex; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+  .meta-item { font-size:12px; color:var(--muted); }
+  .meta-item strong { color:var(--text); }
+  .cand-summary { font-size:12px; color:var(--muted); line-height:1.5; margin-bottom:14px; background:var(--surface2); border-radius:8px; padding:10px; }
+  .cand-actions { display:flex; gap:8px; }
+  .action-btn { flex:1; padding:8px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; font-family:'DM Sans',sans-serif; transition:all 0.15s; }
+  .btn-shortlist { background:rgba(0,184,148,0.12); color:var(--green); }
+  .btn-shortlist:hover { background:rgba(0,184,148,0.25); }
+  .btn-schedule { background:rgba(108,99,255,0.12); color:var(--accent); }
+  .btn-schedule:hover { background:rgba(108,99,255,0.25); }
+  .btn-reject { background:rgba(255,101,132,0.12); color:var(--accent2); }
+  .btn-reject:hover { background:rgba(255,101,132,0.25); }
+  .status-pill { display:inline-block; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
+  .status-shortlisted { background:rgba(0,184,148,0.12); color:var(--green); }
+  .status-pending { background:rgba(243,156,18,0.12); color:#f39c12; }
+  .status-rejected { background:rgba(255,101,132,0.12); color:var(--accent2); }
+  .status-scheduled { background:rgba(108,99,255,0.12); color:var(--accent); }
+
+  /* JOBS */
+  .jobs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; }
+  .job-card { background:#fff; border:1px solid var(--border); border-radius:var(--radius); padding:20px; }
+  .job-title { font-size:16px; font-weight:700; margin-bottom:6px; }
+  .job-meta { font-size:12px; color:var(--muted); margin-bottom:12px; }
+  .job-stat { font-size:13px; color:var(--text); }
+
+  /* FILTERS */
+  .toolbar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin-bottom:20px; }
+  .search-input { padding:9px 14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; outline:none; width:220px; transition:border-color 0.2s; }
+  .search-input:focus { border-color:var(--accent); }
+  select.filter-select { padding:9px 14px; background:#fff; border:1.5px solid var(--border); border-radius:8px; color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; outline:none; cursor:pointer; }
+  .btn-sm { padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; font-family:'DM Sans',sans-serif; cursor:pointer; border:none; transition:all 0.2s; }
+  .btn-accent { background:var(--accent); color:#fff; }
+  .btn-accent:hover { opacity:0.85; }
+
+  /* LOADING */
+  .loading { text-align:center; padding:48px; color:var(--muted); }
+  .spinner { display:inline-block; width:24px; height:24px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.7s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  .empty { text-align:center; padding:48px; color:var(--muted); }
+  .empty-icon { font-size:40px; margin-bottom:12px; }
+
+  /* TOAST */
+  .toast { position:fixed; bottom:24px; right:24px; background:#fff; border:1.5px solid var(--border); border-radius:10px; padding:12px 20px; font-size:13px; font-weight:500; z-index:9999; transform:translateY(80px); opacity:0; transition:all 0.3s; }
+  .toast.show { transform:translateY(0); opacity:1; }
+  .toast.success { border-color:var(--green); }
+  .toast.error { border-color:var(--accent2); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-logo"><div class="dot"></div><span>Sampark AI</span></div>
+    <h2>Client Portal</h2>
+    <p>Access your candidate pipeline</p>
+    <div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="hr@yourcompany.com"/></div>
+    <div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="••••••••"/></div>
+    <button class="btn-primary" onclick="doLogin()">Sign In →</button>
+    <div class="login-error" id="loginError">Invalid credentials. Please check your email and password.</div>
+    <div class="login-hint" style="margin-top:16px">
+      <strong>Demo accounts:</strong><br/>
+      hr@techcorp.in / tech2026<br/>
+      rajiv@nexusbpo.com / nexus2026<br/>
+      ananya@finserve.co / fin2026
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="logo"><div class="dot"></div> Sampark AI</div>
+    <div class="topbar-right">
+      <span class="company-badge" id="companyBadge">Company</span>
+      <button class="btn-logout" onclick="doLogout()">Sign Out</button>
+    </div>
+  </div>
+
+  <div class="page-inner">
+    <div class="page-header">
+      <div>
+        <h1 id="welcomeTitle">Candidate Pipeline</h1>
+        <p id="welcomeSub">Your AI-screened candidates, ready to review</p>
+      </div>
+      <button class="btn-sm btn-accent" onclick="exportPDF()">⬇ Export PDF</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card c1"><div class="stat-label">Total Screened</div><div class="stat-value" id="stTotal">–</div></div>
+      <div class="stat-card c2"><div class="stat-label">Shortlisted</div><div class="stat-value" id="stShortlisted">–</div></div>
+      <div class="stat-card c3"><div class="stat-label">Pending</div><div class="stat-value" id="stPending">–</div></div>
+      <div class="stat-card c4"><div class="stat-label">Scheduled</div><div class="stat-value" id="stScheduled">–</div></div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('all',this)">All Candidates</div>
+      <div class="tab" onclick="switchTab('shortlisted',this)">Shortlisted</div>
+      <div class="tab" onclick="switchTab('scheduled',this)">Scheduled</div>
+      <div class="tab" onclick="switchTab('pending',this)">Pending</div>
+      <div class="tab" onclick="switchTab('jobs',this)">Job Listings</div>
+    </div>
+
+    <div id="tabContent">
+      <div class="toolbar">
+        <input class="search-input" placeholder="Search candidates…" oninput="filterCards(this.value)" id="cardSearch"/>
+      </div>
+      <div class="candidates-grid" id="candidatesGrid">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const SUPABASE_URL = 'https://sebghpbyykplkoootzdg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMTM5NzUsImV4cCI6MjA1OTU4OTk3NX0.oBMsGVOHnKdz7n8i7kQKBHQ4o7n_8FzNQpTG5Hc_-mA';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let allCandidates = [];
+let currentClient = null;
+let currentTab = 'all';
+
+const CLIENT_CREDS = [
+  { email:'hr@techcorp.in', password:'tech2026', company:'TechCorp India' },
+  { email:'rajiv@nexusbpo.com', password:'nexus2026', company:'Nexus BPO' },
+  { email:'ananya@finserve.co', password:'fin2026', company:'FinServe Co' }
+];
+
+// ── AUTH ─────────────────────────────────────────────────────────
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+  const pass = document.getElementById('loginPassword').value;
+
+  // Check hardcoded first, then Supabase
+  let client = CLIENT_CREDS.find(c => c.email===email && c.password===pass);
+  if (!client) {
+    // Try Supabase clients table
+    const { data } = await sb.from('clients').select('*').eq('email',email).eq('password',pass).single();
+    if (data) client = { email: data.email, password: data.password, company: data.name };
+  }
+
+  if (client) {
+    sessionStorage.setItem('clientEmail', email);
+    sessionStorage.setItem('clientCompany', client.company);
+    document.getElementById('loginScreen').style.display='none';
+    document.getElementById('app').style.display='block';
+    document.getElementById('companyBadge').textContent=client.company;
+    document.getElementById('welcomeTitle').textContent=client.company+' — Pipeline';
+    currentClient = client.company;
+    await loadCandidates();
+  } else {
+    document.getElementById('loginError').style.display='block';
+  }
+}
+document.getElementById('loginPassword').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
+
+function doLogout() {
+  sessionStorage.clear();
+  document.getElementById('app').style.display='none';
+  document.getElementById('loginScreen').style.display='flex';
+}
+
+if (sessionStorage.getItem('clientEmail')) {
+  currentClient = sessionStorage.getItem('clientCompany');
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='block';
+  document.getElementById('companyBadge').textContent=currentClient;
+  document.getElementById('welcomeTitle').textContent=currentClient+' — Pipeline';
+  window.addEventListener('DOMContentLoaded', loadCandidates);
+}
+
+// ── DATA ─────────────────────────────────────────────────────────
+async function loadCandidates() {
+  const { data, error } = await sb.from('candidates').select('*')
+    .eq('client_name', currentClient)
+    .order('created_at', { ascending: false });
+  if (error) { console.error(error); return; }
+  allCandidates = data || [];
+  updateStats();
+  renderCards(allCandidates);
+}
+
+function updateStats() {
+  document.getElementById('stTotal').textContent = allCandidates.length;
+  document.getElementById('stShortlisted').textContent = allCandidates.filter(c=>c.status==='shortlisted').length;
+  document.getElementById('stPending').textContent = allCandidates.filter(c=>c.status==='pending').length;
+  document.getElementById('stScheduled').textContent = allCandidates.filter(c=>c.status==='scheduled').length;
+}
+
+// ── RENDER ────────────────────────────────────────────────────────
+function renderCards(candidates) {
+  const g = document.getElementById('candidatesGrid');
+  if (!candidates.length) {
+    g.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="empty-icon">👥</div>No candidates found</div>';
+    return;
+  }
+  g.className = 'candidates-grid';
+  g.innerHTML = candidates.map(c => `
+    <div class="cand-card">
+      <div class="cand-header">
+        <div>
+          <div class="cand-name">${c.name}</div>
+          <div class="cand-role">${c.role||'–'}</div>
+        </div>
+        <div>
+          <span class="score-badge">${c.score||'–'}/10</span>
+        </div>
+      </div>
+      <div style="margin-bottom:10px"><span class="status-pill status-${c.status||'pending'}">${c.status||'pending'}</span></div>
+      <div class="cand-meta">
+        <div class="meta-item"><strong>${c.experience||'–'}</strong> exp</div>
+        ${c.phone ? `<div class="meta-item">📞 ${c.phone}</div>` : ''}
+        ${c.email ? `<div class="meta-item">✉ ${c.email}</div>` : ''}
+      </div>
+      ${c.summary ? `<div class="cand-summary">${c.summary}</div>` : ''}
+      <div class="cand-actions">
+        <button class="action-btn btn-shortlist" onclick="updateStatus(${c.id},'shortlisted')">✓ Shortlist</button>
+        <button class="action-btn btn-schedule" onclick="updateStatus(${c.id},'scheduled')">📅 Schedule</button>
+        <button class="action-btn btn-reject" onclick="updateStatus(${c.id},'rejected')">✕ Reject</button>
+      </div>
+    </div>`).join('');
+}
+
+function switchTab(tab, el) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('cardSearch').value='';
+
+  const content = document.getElementById('tabContent');
+  if (tab==='jobs') {
+    content.innerHTML='<div class="loading"><div class="spinner"></div></div>';
+    loadJobs();
+    return;
+  }
+
+  content.innerHTML=`
+    <div class="toolbar">
+      <input class="search-input" placeholder="Search candidates…" oninput="filterCards(this.value)" id="cardSearch"/>
+    </div>
+    <div class="candidates-grid" id="candidatesGrid"></div>`;
+
+  let filtered = allCandidates;
+  if (tab!=='all') filtered = allCandidates.filter(c=>c.status===tab);
+  renderCards(filtered);
+}
+
+function filterCards(q) {
+  let filtered = allCandidates;
+  if (currentTab!=='all') filtered = filtered.filter(c=>c.status===currentTab);
+  if (q) filtered = filtered.filter(c=>(c.name+c.role).toLowerCase().includes(q.toLowerCase()));
+  renderCards(filtered);
+}
+
+async function loadJobs() {
+  const { data } = await sb.from('jobs').select('*').eq('client_name', currentClient);
+  const jobs = data||[];
+  const content = document.getElementById('tabContent');
+  if (!jobs.length) { content.innerHTML='<div class="empty"><div class="empty-icon">💼</div>No jobs posted yet</div>'; return; }
+  content.innerHTML = `<div class="jobs-grid">${jobs.map(j=>`
+    <div class="job-card">
+      <div class="job-title">${j.title}</div>
+      <div class="job-meta">${j.location||'Remote'}</div>
+      <div class="job-stat">${allCandidates.filter(c=>c.job_id===j.id).length} candidates applied</div>
+    </div>`).join('')}</div>`;
+}
+
+async function updateStatus(id, status) {
+  const { error } = await sb.from('candidates').update({status}).eq('id',id);
+  if (error) { showToast('Error', 'error'); return; }
+  showToast('Updated to '+status, 'success');
+  await loadCandidates();
+  switchTab(currentTab, document.querySelector('.tab.active'));
+}
+
+// ── PDF ───────────────────────────────────────────────────────────
+function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const candidates = currentTab==='all' ? allCandidates : allCandidates.filter(c=>c.status===currentTab);
+
+  doc.setFontSize(18); doc.setFont('helvetica','bold');
+  doc.text(currentClient+' — Candidate Report', 14, 20);
+  doc.setFontSize(10); doc.setFont('helvetica','normal');
+  doc.setTextColor(100);
+  doc.text(`Generated: ${new Date().toLocaleDateString('en-IN')} | Total: ${candidates.length}`, 14, 30);
+  doc.line(14, 34, 196, 34);
+
+  let y=42;
+  candidates.forEach(c => {
+    if (y>270) { doc.addPage(); y=20; }
+    doc.setTextColor(0); doc.setFontSize(12); doc.setFont('helvetica','bold');
+    doc.text(c.name, 14, y);
+    doc.setFont('helvetica','normal'); doc.setFontSize(10);
+    doc.setTextColor(80);
+    doc.text(`${c.role||'–'} | Score: ${c.score||'–'} | Status: ${c.status||'–'}`, 14, y+6);
+    if(c.summary) { const lines=doc.splitTextToSize(c.summary,180); doc.setFontSize(9); doc.text(lines.slice(0,2),14,y+12); y+=8; }
+    y+=20;
+  });
+  doc.save(`${currentClient}-candidates.pdf`);
+  showToast('PDF downloaded!', 'success');
+}
+
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  t.textContent=(type==='success'?'✓ ':'✕ ')+msg;
+  t.className='toast show '+type;
+  setTimeout(()=>t.className='toast',3000);
+}
+</script>
+</body>
+</html>
