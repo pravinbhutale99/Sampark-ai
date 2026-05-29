@@ -511,32 +511,41 @@ body{background:var(--paper);font-family:'DM Sans',sans-serif;color:var(--ink);}
 <script>
 // ── DEMO DATA ──
 
-let data=JSON.parse(localStorage.getItem('sampark_admin_v3')||'null')||DEMO;
+const SURL='https://sebghpbyykplkoootzdg.supabase.co';
+const SKEY='sb_publishable_QUT4DgYu3VJgPJtZJ4Dc6A_zy2qnX8P';
+const db=supabase.createClient(SURL,SKEY);
+let data={clients:[],jobs:[],candidates:[]};
 let currentJobId=null,currentCandId=null,currentCandFilter='all',currentDetailTab='overview',candCardFilter='all',schedCandId=null;
-async function loadAll() {
-  try {
-    const [{ data: clients }, { data: jobs }, { data: candidates }] = await Promise.all([
-      db.from('clients').select('*').order('created_at'),
-      db.from('jobs').select('*').order('created_at'),
-      db.from('candidates').select('*').order('created_at')
-    ]);
-    data.clients = (clients||[]).map(c=>({...c,plan:c.plan||'5000'}));
-    data.jobs = (jobs||[]).map(j=>({...j,clientId:j.client_id,createdAt:j.created_at,exp:j.experience}));
-    data.candidates = (candidates||[]).map(c=>({...c,jobId:c.job_id,clientId:c.client_id,callScheduled:c.call_scheduled,
-      strengths:Array.isArray(c.strengths)?c.strengths:JSON.parse(c.strengths||'[]'),
-      watchpoints:Array.isArray(c.watchpoints)?c.watchpoints:JSON.parse(c.watchpoints||'[]'),
-      answers:Array.isArray(c.answers)?c.answers:JSON.parse(c.answers||'[]'),
-      skills:Array.isArray(c.skills)?c.skills:JSON.parse(c.skills||'[]')}));
-    loadAll();
+function save(){}
+function loadAll(){
+  Promise.all([
+    db.from('clients').select('*').order('created_at'),
+    db.from('jobs').select('*').order('created_at'),
+    db.from('candidates').select('*').order('created_at')
+  ]).then(function(results){
+    var clients=results[0].data||[];
+    var jobs=results[1].data||[];
+    var candidates=results[2].data||[];
+    data.clients=clients.map(function(c){return Object.assign({},c,{plan:c.plan||'5000'});});
+    data.jobs=jobs.map(function(j){return Object.assign({},j,{clientId:j.client_id,createdAt:j.created_at,exp:j.experience});});
+    data.candidates=candidates.map(function(c){
+      return Object.assign({},c,{
+        jobId:c.job_id,clientId:c.client_id,callScheduled:c.call_scheduled,
+        strengths:Array.isArray(c.strengths)?c.strengths:JSON.parse(c.strengths||'[]'),
+        watchpoints:Array.isArray(c.watchpoints)?c.watchpoints:JSON.parse(c.watchpoints||'[]'),
+        answers:Array.isArray(c.answers)?c.answers:JSON.parse(c.answers||'[]'),
+        skills:Array.isArray(c.skills)?c.skills:JSON.parse(c.skills||'[]')
+      });
+    });
+    renderAll();
     showToast('✅ Loaded from Supabase!');
-  } catch(err) { console.error(err); showToast('⚠️ DB error'); }
+  }).catch(function(err){console.error(err);showToast('⚠️ DB error');});
 }
-async function saveStatus(id, status, callScheduled) {
-  const update = {status};
-  if(callScheduled !== undefined) update.call_scheduled = callScheduled;
-  await db.from('candidates').update(update).eq('id',id);
+function dbSave(id,status,cs){
+  var upd={status:status};
+  if(cs!==undefined)upd.call_scheduled=cs;
+  db.from('candidates').update(upd).eq('id',id).then(function(){});
 }
-function save(){} 
 
 // ── AUTH ──
 function adminLogin(){
@@ -544,7 +553,7 @@ function adminLogin(){
   if(e==='admin@samparkai.tech'&&p==='sampark2026'){
     document.getElementById('login-screen').style.display='none';
     document.getElementById('dashboard').classList.add('active');
-    renderAll();
+    loadAll();
   } else showToast('❌ Wrong credentials!');
 }
 function logout(){document.getElementById('dashboard').classList.remove('active');document.getElementById('login-screen').style.display='flex';}
@@ -637,10 +646,9 @@ function populateJobClientSelect(){
 function addClient(){
   const company=document.getElementById('c-company').value.trim(),contact=document.getElementById('c-contact').value.trim();
   if(!company||!contact){showToast('Company name and contact required');return;}
-  const nc={id:'c_'+Date.now(),company,contact,phone:document.getElementById('c-phone').value,email:document.getElementById('c-email').value,password:document.getElementById('c-password').value,plan:document.getElementById('c-plan').value};
-  await db.from('clients').insert([nc]);
-  await loadAll();document.getElementById('add-client-modal').classList.remove('open');
-  showToast('✅ Client saved to database!');
+  data.clients.push({id:'c_'+Date.now(),company,contact,phone:document.getElementById('c-phone').value,email:document.getElementById('c-email').value,password:document.getElementById('c-password').value,plan:document.getElementById('c-plan').value,createdAt:new Date().toISOString()});
+  save();renderAll();document.getElementById('add-client-modal').classList.remove('open');
+  showToast('✅ Client added!');
 }
 function deleteClient(id){if(!confirm('Delete this client?'))return;data.clients=data.clients.filter(c=>c.id!==id);save();renderAll();}
 
@@ -649,10 +657,8 @@ function openAddJob(){populateJobClientSelect();document.getElementById('add-job
 function addJob(){
   const title=document.getElementById('j-title').value.trim();
   if(!title){showToast('Job title required');return;}
-  const nj={id:'j_'+Date.now(),title,client_id:document.getElementById('j-client').value,description:document.getElementById('j-desc').value,experience:document.getElementById('j-exp').value};
-  await db.from('jobs').insert([nj]);
-  await loadAll();document.getElementById('add-job-modal').classList.remove('open');
-  showToast('✅ Job saved to database!');
+  var nj={id:'j_'+Date.now(),title:title,client_id:document.getElementById('j-client').value,description:document.getElementById('j-desc').value,experience:document.getElementById('j-exp').value};
+  db.from('jobs').insert([nj]).then(function(){loadAll();document.getElementById('add-job-modal').classList.remove('open');showToast('✅ Job created!');});
 }
 
 // ── CLIENT PORTAL INFO ──
@@ -898,8 +904,7 @@ function setCandFilter(f,el){candCardFilter=f;document.querySelectorAll('.card-f
 function setCandStatus(id,status){
   const c=data.candidates.find(x=>x.id===id);if(!c)return;
   c.status=status;if(status!=='scheduled')c.callScheduled=null;
-  await db.from('candidates').update({status,call_scheduled:c.callScheduled||null}).eq('id',id);
-  renderCandCards();renderCandHeaderStats();
+  save();renderCandCards();renderCandHeaderStats();
   showToast(status==='shortlisted'?`✓ ${c.name} shortlisted!`:status==='rejected'?`✗ ${c.name} rejected`:`${c.name} updated`);
 }
 
@@ -925,9 +930,7 @@ function confirmSchedule(){
   const dateStr=new Date(date).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
   const timeStr=new Date('2000-01-01T'+time).toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
   c.status='scheduled';c.callScheduled={date:dateStr,time:timeStr,type,notes};
-  const cs={date:dateStr,time:timeStr,type,notes};
-  await db.from('candidates').update({status:'scheduled',call_scheduled:cs}).eq('id',schedCandId);
-  closeSchedModal();
+  save();closeSchedModal();
   showToast(`📞 Call scheduled with ${c.name} on ${dateStr} at ${timeStr}`);
   renderCandCards();renderCandHeaderStats();
   if(currentJobId)renderCandList();
