@@ -1,31 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sampark AI</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:'DM Sans',sans-serif;background:#0a0a0f;color:#e8e8f0;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 20px}
-  .dot{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#6c63ff,#ff6584);display:inline-block;margin-bottom:20px}
-  h1{font-size:40px;font-weight:800;letter-spacing:-1.5px;margin-bottom:16px}
-  h1 span{background:linear-gradient(135deg,#6c63ff,#ff6584);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-  p{color:#6b6b80;font-size:15px;max-width:480px;line-height:1.6;margin-bottom:36px}
-  .btns{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
-  a{padding:12px 28px;border-radius:10px;font-weight:700;text-decoration:none;font-size:14px}
-  .a{background:linear-gradient(135deg,#6c63ff,#8b5cf6);color:#fff}
-  .b{background:rgba(108,99,255,0.1);color:#6c63ff;border:1.5px solid rgba(108,99,255,0.3)}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:#fff;color:#111827;min-height:100vh;}
+.nav{display:flex;align-items:center;padding:0 40px;height:64px;border-bottom:1px solid #E5E7EB;}
+.nav-logo{display:flex;align-items:center;gap:9px;font-size:18px;font-weight:800;}
+.dot{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,#FF6B35,#FF8C5A);}
+.nav-links{margin-left:auto;display:flex;gap:20px;align-items:center;}
+.nav-links a{font-size:13px;color:#6B7280;text-decoration:none;font-weight:500;}
+.nav-links a:hover{color:#FF6B35;}
+.btn-nav{padding:8px 18px;background:linear-gradient(135deg,#FF6B35,#E05520);color:#fff;border-radius:8px;font-weight:700;font-size:13px;}
+.hero{text-align:center;padding:80px 20px 60px;max-width:800px;margin:0 auto;}
+.badge{display:inline-block;background:#FFF0EB;color:#FF6B35;border:1px solid rgba(255,107,53,0.2);padding:5px 14px;border-radius:20px;font-size:12px;font-weight:700;margin-bottom:20px;}
+h1{font-size:52px;font-weight:800;letter-spacing:-2px;line-height:1.05;margin-bottom:18px;}
+h1 span{background:linear-gradient(135deg,#FF6B35,#FF8C5A);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.sub{font-size:16px;color:#6B7280;max-width:520px;margin:0 auto 36px;line-height:1.6;}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}
+.cta a{padding:13px 28px;border-radius:10px;font-weight:700;font-size:14px;text-decoration:none;transition:all 0.2s;}
+.cta .primary{background:linear-gradient(135deg,#FF6B35,#E05520);color:#fff;box-shadow:0 4px 14px rgba(255,107,53,0.3);}
+.cta .secondary{background:#fff;border:1.5px solid #E5E7EB;color:#374151;}
+.cta .secondary:hover{border-color:#FF6B35;color:#FF6B35;}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;max-width:900px;margin:60px auto;padding:0 20px;}
+.feat{background:#F8F9FC;border-radius:14px;padding:24px;border:1px solid #E5E7EB;}
+.feat-icon{font-size:28px;margin-bottom:12px;}
+.feat h3{font-size:15px;font-weight:700;margin-bottom:6px;}
+.feat p{font-size:13px;color:#6B7280;line-height:1.5;}
+.footer{text-align:center;padding:32px;border-top:1px solid #E5E7EB;font-size:12px;color:#9CA3AF;}
 </style>
 </head>
 <body>
-  <div class="dot"></div>
-  <h1>Screen candidates<br/><span>2x faster</span> with AI</h1>
-  <p>Sampark AI screens candidates via conversational AI, scores them, and delivers a shortlist to your clients within 2 hours.</p>
-  <div class="btns">
-    <a href="/admin.html" class="a">Admin Dashboard</a>
-    <a href="/client.html" class="b">Client Portal</a>
-    <a href="/chatbot.html" class="b">Try Chatbot</a>
+<nav class="nav">
+  <div class="nav-logo"><div class="dot"></div>Sampark AI</div>
+  <div class="nav-links">
+    <a href="/chatbot.html">Try Demo</a>
+    <a href="/client.html">Client Portal</a>
+    <a href="/admin.html" class="btn-nav">Admin Login</a>
   </div>
+</nav>
+<div class="hero">
+  <div class="badge">Built for Indian Recruiting Agencies</div>
+  <h1>Screen candidates<br/><span>2x faster</span> with AI</h1>
+  <p class="sub">Sampark AI automatically screens candidates via conversational AI, scores them, and delivers a ready shortlist to your client — no manual calls, zero delay.</p>
+  <div class="cta">
+    <a href="/chatbot.html" class="primary">Try AI Chatbot Demo</a>
+    <a href="/admin.html" class="secondary">Admin Dashboard</a>
+    <a href="/client.html" class="secondary">Client Portal</a>
+  </div>
+</div>
+<div class="features">
+  <div class="feat"><div class="feat-icon">⚡</div><h3>2-Hour Shortlist</h3><p>AI screens candidates 24/7. Your client gets a shortlist while they sleep.</p></div>
+  <div class="feat"><div class="feat-icon">🤖</div><h3>Conversational Screening</h3><p>Candidates answer 10 questions via chat. No forms, no drop-off, high completion rate.</p></div>
+  <div class="feat"><div class="feat-icon">🏷️</div><h3>White Label Ready</h3><p>Your agency name, your brand. Clients see only your product.</p></div>
+  <div class="feat"><div class="feat-icon">🇮🇳</div><h3>India-First Design</h3><p>Built for Indian SME agencies. CTC in LPA, notice periods, local context baked in.</p></div>
+</div>
+<div class="footer">Sampark AI &copy; 2025 · Built for India's recruiting agencies</div>
 </body>
 </html>
