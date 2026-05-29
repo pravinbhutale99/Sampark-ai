@@ -3,249 +3,295 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Job Application – Sampark AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<title>Sampark AI — Chatbot Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  :root { --ink:#0a0a0f; --paper:#f5f3ee; --accent:#e85a2a; --muted:#7a7870; --border:#e2dfd8; }
+  :root {
+    --accent: #6c63ff;
+    --accent2: #ff6584;
+    --green: #00d4aa;
+    --bg: #f7f7fb;
+    --surface: #fff;
+    --border: #e4e4f0;
+    --text: #1a1a2e;
+    --muted: #8888a0;
+  }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    min-height:100vh;
-    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a20 50%, #0a1020 100%);
-    font-family:'DM Sans',sans-serif;
-    display:flex; flex-direction:column; align-items:center; justify-content:center;
-    padding:1rem;
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); display:flex; align-items:center; justify-content:center; min-height:100vh; padding:20px; }
+
+  .demo-wrapper { width:100%; max-width:480px; }
+  .demo-label { text-align:center; margin-bottom:16px; }
+  .demo-label h2 { font-size:22px; font-weight:700; letter-spacing:-0.5px; }
+  .demo-label p { color:var(--muted); font-size:13px; margin-top:4px; }
+
+  /* CHAT WIDGET */
+  .chat-widget {
+    background:#fff; border-radius:20px; box-shadow:0 8px 40px rgba(0,0,0,0.12);
+    overflow:hidden; border:1px solid var(--border);
   }
-  .chat-wrapper { width:100%; max-width:560px; display:flex; flex-direction:column; height:100vh; max-height:720px; }
-  .chat-top {
-    background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1);
-    border-bottom:none; border-radius:20px 20px 0 0;
-    padding:1.2rem 1.5rem; display:flex; align-items:center; gap:1rem;
+  .chat-header {
+    background:linear-gradient(135deg,var(--accent),#8b5cf6);
+    padding:16px 20px; display:flex; align-items:center; gap:12px;
   }
-  .chat-logo { font-family:'Syne',sans-serif; font-weight:800; color:#fff; font-size:1rem; }
-  .chat-logo span { color:var(--accent); }
-  .chat-job-info { flex:1; text-align:right; }
-  .chat-job-title { font-family:'Syne',sans-serif; font-weight:700; color:#fff; font-size:0.95rem; }
-  .chat-company { font-size:0.78rem; color:rgba(255,255,255,0.45); }
-  .status-dot { width:8px; height:8px; border-radius:50%; background:#22c55e; animation:pulse 2s infinite; flex-shrink:0; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .chat-body {
-    flex:1; overflow-y:auto; background:rgba(10,10,15,0.8);
-    border-left:1px solid rgba(255,255,255,0.1); border-right:1px solid rgba(255,255,255,0.1);
-    padding:1.5rem; display:flex; flex-direction:column; gap:1rem; scroll-behavior:smooth;
-  }
+  .chat-avatar { width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,0.2); display:flex; align-items:center; justify-content:center; font-size:20px; }
+  .chat-header-text h3 { color:#fff; font-size:15px; font-weight:600; }
+  .chat-header-text p { color:rgba(255,255,255,0.75); font-size:12px; margin-top:1px; }
+  .chat-online { width:8px; height:8px; background:#00d4aa; border-radius:50%; margin-left:auto; box-shadow:0 0 0 2px rgba(0,212,170,0.3); }
+
+  .chat-body { height:380px; overflow-y:auto; padding:16px; display:flex; flex-direction:column; gap:10px; scroll-behavior:smooth; }
   .chat-body::-webkit-scrollbar { width:4px; }
-  .chat-body::-webkit-scrollbar-thumb { background:rgba(255,255,255,0.15); border-radius:2px; }
-  .msg { display:flex; flex-direction:column; max-width:82%; animation:fadeUp 0.35s ease both; }
+  .chat-body::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+  .msg { max-width:85%; animation:fadeIn 0.2s ease; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
   .msg.bot { align-self:flex-start; }
   .msg.user { align-self:flex-end; }
-  .msg-bubble { padding:0.85rem 1.1rem; border-radius:16px; font-size:0.9rem; line-height:1.55; }
-  .msg.bot .msg-bubble { background:rgba(255,255,255,0.08); color:#fff; border-radius:4px 16px 16px 16px; }
-  .msg.user .msg-bubble { background:var(--accent); color:#fff; border-radius:16px 4px 16px 16px; }
-  .msg-time { font-size:0.7rem; color:rgba(255,255,255,0.3); margin-top:0.3rem; }
-  .msg.user .msg-time { text-align:right; }
-  .typing-bubble { background:rgba(255,255,255,0.08); border-radius:4px 16px 16px 16px; padding:0.85rem 1.1rem; display:inline-flex; gap:5px; align-items:center; }
-  .typing-bubble span { width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.5); animation:bounce 1.2s infinite; }
-  .typing-bubble span:nth-child(2) { animation-delay:0.2s; }
-  .typing-bubble span:nth-child(3) { animation-delay:0.4s; }
-  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-7px)} }
-  .chat-footer {
-    background:rgba(10,10,15,0.95); border:1px solid rgba(255,255,255,0.1);
-    border-top:1px solid rgba(255,255,255,0.15); border-radius:0 0 20px 20px;
-    padding:1rem 1.2rem; display:flex; gap:0.8rem; align-items:center;
-  }
-  .chat-input {
-    flex:1; background:rgba(255,255,255,0.07); border:1px solid rgba(255,255,255,0.15);
-    border-radius:10px; padding:0.75rem 1rem; color:#fff;
-    font-family:'DM Sans',sans-serif; font-size:0.9rem; outline:none; transition:border-color 0.2s;
-    resize:none; max-height:120px;
-  }
-  .chat-input::placeholder { color:rgba(255,255,255,0.3); }
-  .chat-input:focus { border-color:rgba(232,90,42,0.6); }
-  .send-btn {
-    width:42px; height:42px; border-radius:10px; background:var(--accent);
-    border:none; color:#fff; cursor:pointer; display:flex; align-items:center;
-    justify-content:center; font-size:1.1rem; transition:opacity 0.2s; flex-shrink:0;
-  }
+  .bubble { padding:10px 14px; border-radius:16px; font-size:13px; line-height:1.5; }
+  .bot .bubble { background:var(--bg); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; }
+  .user .bubble { background:var(--accent); color:#fff; border-bottom-right-radius:4px; }
+  .msg-time { font-size:10px; color:var(--muted); margin-top:4px; text-align:right; }
+  .bot .msg-time { text-align:left; }
+
+  .typing-indicator { display:flex; gap:4px; padding:12px 14px; }
+  .typing-dot { width:6px; height:6px; background:var(--muted); border-radius:50%; animation:bounce 1.2s infinite; }
+  .typing-dot:nth-child(2) { animation-delay:0.2s; }
+  .typing-dot:nth-child(3) { animation-delay:0.4s; }
+  @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-6px)} }
+
+  .chat-options { padding:10px 16px; display:flex; flex-wrap:wrap; gap:6px; border-top:1px solid var(--border); }
+  .option-btn { padding:6px 12px; border:1.5px solid var(--accent); border-radius:20px; background:transparent; color:var(--accent); font-size:12px; font-weight:600; cursor:pointer; font-family:'DM Sans',sans-serif; transition:all 0.15s; }
+  .option-btn:hover { background:var(--accent); color:#fff; }
+
+  .chat-input-area { padding:12px 16px; border-top:1px solid var(--border); display:flex; gap:8px; align-items:center; }
+  .chat-input { flex:1; padding:10px 14px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; font-family:'DM Sans',sans-serif; font-size:13px; outline:none; transition:border-color 0.2s; }
+  .chat-input:focus { border-color:var(--accent); background:#fff; }
+  .send-btn { width:38px; height:38px; border-radius:10px; background:var(--accent); border:none; color:#fff; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:opacity 0.2s; }
   .send-btn:hover { opacity:0.85; }
-  .send-btn:disabled { opacity:0.4; cursor:not-allowed; }
-  .complete-banner {
-    display:none; background:rgba(22,163,74,0.15); border:1px solid rgba(22,163,74,0.3);
-    border-radius:12px; padding:1.5rem; text-align:center; color:#fff; margin-top:1rem;
-  }
-  .complete-banner.show { display:block; }
-  .complete-banner h3 { font-family:'Syne',sans-serif; font-size:1.1rem; color:#4ade80; margin-bottom:0.5rem; }
-  .complete-banner p { font-size:0.85rem; color:rgba(255,255,255,0.6); }
-  .powered-by { text-align:center; margin-top:0.8rem; font-size:0.72rem; color:rgba(255,255,255,0.25); }
-  .powered-by a { color:rgba(232,90,42,0.6); text-decoration:none; }
-  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* SUCCESS STATE */
+  .success-banner { display:none; background:linear-gradient(135deg,#00d4aa,#00b894); padding:16px 20px; text-align:center; color:#fff; }
+  .success-banner h3 { font-size:16px; font-weight:700; }
+  .success-banner p { font-size:12px; opacity:0.9; margin-top:2px; }
 </style>
 </head>
 <body>
-<div class="chat-wrapper">
-  <div class="chat-top">
-    <div class="status-dot"></div>
-    <div>
-      <div class="chat-logo">Sampark<span>AI</span></div>
-      <div style="font-size:0.72rem;color:rgba(255,255,255,0.4)">AI Screening Assistant</div>
+
+<div class="demo-wrapper">
+  <div class="demo-label">
+    <h2>Sampark AI Chatbot</h2>
+    <p>AI-powered candidate screening — live demo</p>
+  </div>
+
+  <div class="chat-widget">
+    <div class="chat-header">
+      <div class="chat-avatar">🤖</div>
+      <div class="chat-header-text">
+        <h3>Sampark AI Screener</h3>
+        <p>Powered by Sampark AI</p>
+      </div>
+      <div class="chat-online"></div>
     </div>
-    <div class="chat-job-info">
-      <div class="chat-job-title" id="job-title-display">Loading...</div>
-      <div class="chat-company" id="company-display">Please wait</div>
+
+    <div class="success-banner" id="successBanner">
+      <h3>✓ Application Submitted!</h3>
+      <p>Your profile has been saved. Our team will review and respond within 2 hours.</p>
+    </div>
+
+    <div class="chat-body" id="chatBody"></div>
+
+    <div class="chat-options" id="chatOptions"></div>
+
+    <div class="chat-input-area">
+      <input class="chat-input" id="chatInput" placeholder="Type your answer…" onkeydown="handleKey(event)"/>
+      <button class="send-btn" onclick="sendMessage()">➤</button>
     </div>
   </div>
-  <div class="chat-body" id="chat-body"></div>
-  <div class="chat-footer">
-    <textarea class="chat-input" id="chat-input" placeholder="Type your answer here…" rows="1"
-      onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMsg()}"
-      oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'"></textarea>
-    <button class="send-btn" id="send-btn" onclick="sendMsg()">➤</button>
-  </div>
 </div>
-<div class="complete-banner" id="complete-banner">
-  <h3>✅ Screening Complete!</h3>
-  <p>Thank you! The HR team will review your profile and contact you soon.</p>
-</div>
-<div class="powered-by">Powered by <a href="index.html">Sampark AI</a></div>
 
 <script>
-// Read job info from URL params (encoded by admin)
-const params = new URLSearchParams(location.search);
-const jobTitle = decodeURIComponent(params.get('title') || 'Open Position');
-const company = decodeURIComponent(params.get('company') || 'Our Client');
-const experience = decodeURIComponent(params.get('exp') || 'Any');
-const jobDesc = decodeURIComponent(params.get('desc') || '');
-const jobId = params.get('job') || '';
-const clientId = params.get('client') || '';
+const SUPABASE_URL = 'https://sebghpbyykplkoootzdg.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQwMTM5NzUsImV4cCI6MjA1OTU4OTk3NX0.oBMsGVOHnKdz7n8i7kQKBHQ4o7n_8FzNQpTG5Hc_-mA';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Validate — must have title and job id
-if (!jobId || !jobTitle || jobTitle === 'Open Position' && !company) {
-  document.getElementById('job-title-display').textContent = 'Invalid Link';
-  document.getElementById('company-display').textContent = 'Contact the company';
-}
+// Configuration — can be injected by embed script
+const CONFIG = {
+  clientName: window.SAMPARK_CLIENT || 'TechCorp India',
+  jobId: window.SAMPARK_JOB_ID || null,
+  role: window.SAMPARK_ROLE || 'Software Engineer',
+  accentColor: window.SAMPARK_COLOR || '#6c63ff'
+};
 
-document.getElementById('job-title-display').textContent = jobTitle;
-document.getElementById('company-display').textContent = company;
+// ── FLOW ─────────────────────────────────────────────────────────
+const FLOW = [
+  { id:'welcome', bot:`Hi there! 👋 I'm Sampark AI, your screening assistant for <strong>${CONFIG.clientName}</strong>.\n\nI'll ask you a few quick questions for the <strong>${CONFIG.role}</strong> position. It only takes 3 minutes!\n\nReady to start?`, options:['Yes, let\'s go! 🚀','Tell me more first'] },
+  { id:'name', bot:'Great! What\'s your full name?', field:'name', placeholder:'Your full name' },
+  { id:'phone', bot:'Nice to meet you, {name}! 📞 What\'s your mobile number?', field:'phone', placeholder:'e.g. 9876543210' },
+  { id:'email', bot:'Thanks! What\'s your email address?', field:'email', placeholder:'your@email.com' },
+  { id:'experience', bot:'How many years of experience do you have in this field?', field:'experience', options:['0-1 years','1-3 years','3-5 years','5-10 years','10+ years'] },
+  { id:'currentRole', bot:'What\'s your current role/designation?', field:'current_role', placeholder:'e.g. Senior Developer' },
+  { id:'noticePeriod', bot:'What\'s your notice period?', field:'notice_period', options:['Immediate','15 days','1 month','2 months','3 months'] },
+  { id:'ctc', bot:'What\'s your current CTC (approximate)?', field:'current_ctc', options:['Under 5 LPA','5-10 LPA','10-20 LPA','20-35 LPA','35+ LPA'] },
+  { id:'expectedCtc', bot:'What\'s your expected CTC?', field:'expected_ctc', options:['5-8 LPA','8-15 LPA','15-25 LPA','25-40 LPA','40+ LPA'] },
+  { id:'location', bot:'Are you open to relocating or working from office?', field:'location_pref', options:['Yes, open to relocation','Prefer remote','Open to hybrid','Within same city only'] },
+  { id:'skills', bot:'Briefly tell me about your key skills or what makes you a great fit for this role:', field:'skills', placeholder:'e.g. React, Node.js, 3 years team lead experience…' },
+  { id:'done', bot:null }
+];
 
-const systemPrompt = `You are a friendly, professional AI recruitment screening assistant for Sampark AI. You are screening candidates for:
+let step = 0;
+let answers = {};
+let conversationDone = false;
 
-Job Title: ${jobTitle}
-Company: ${company}
-${jobDesc ? 'Job Description: ' + jobDesc : ''}
-Required Experience: ${experience}
-
-Screen the candidate by asking these questions ONE AT A TIME in this exact order:
-1. Ask for their full name
-2. Ask for their total years of work experience
-3. Ask what is their current or most recent job title/role
-4. Ask about their key skills relevant to this position
-5. Ask their expected monthly salary (in rupees)
-6. Ask about their notice period (or when they can join)
-
-Rules:
-- Ask ONLY ONE question at a time
-- Be warm, encouraging, and professional
-- Keep responses SHORT (1-3 sentences max)
-- After they answer question 6, thank them warmly, tell them the HR team at ${company} will review their profile and contact them within 2-3 working days
-- Then output this exact tag on a new line: [SCREENING_COMPLETE]`;
-
-let chatHistory = [];
-let candidateData = { jobId, clientId, jobTitle, company, status:'new', createdAt: new Date().toISOString(), id:'cand_'+Date.now() };
-let isComplete = false;
-
-function addMsg(role, text) {
-  const body = document.getElementById('chat-body');
-  const div = document.createElement('div');
-  div.className = `msg ${role}`;
-  const time = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  div.innerHTML = `<div class="msg-bubble">${text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div><div class="msg-time">${time}</div>`;
-  body.appendChild(div);
+function addMessage(text, role='bot') {
+  const body = document.getElementById('chatBody');
+  const msg = document.createElement('div');
+  msg.className = 'msg ' + role;
+  const now = new Date().toLocaleTimeString('en-IN', { hour:'2-digit', minute:'2-digit' });
+  msg.innerHTML = `<div class="bubble">${text.replace(/\n/g,'<br/>')}</div><div class="msg-time">${now}</div>`;
+  body.appendChild(msg);
   body.scrollTop = body.scrollHeight;
 }
 
 function showTyping() {
-  const body = document.getElementById('chat-body');
-  const div = document.createElement('div');
-  div.className='msg bot'; div.id='typing-indicator';
-  div.innerHTML=`<div class="typing-bubble"><span></span><span></span><span></span></div>`;
-  body.appendChild(div); body.scrollTop = body.scrollHeight;
+  const body = document.getElementById('chatBody');
+  const t = document.createElement('div');
+  t.className = 'msg bot'; t.id = 'typing';
+  t.innerHTML = `<div class="bubble"><div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div></div>`;
+  body.appendChild(t);
+  body.scrollTop = body.scrollHeight;
 }
-function removeTyping() { const el=document.getElementById('typing-indicator'); if(el)el.remove(); }
 
-async function sendMsg() {
-  if(isComplete) return;
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if(!text) return;
-  input.value=''; input.style.height='auto';
-  document.getElementById('send-btn').disabled=true;
-  addMsg('user', text);
-  chatHistory.push({role:'user', content:text});
+function removeTyping() {
+  const t = document.getElementById('typing');
+  if (t) t.remove();
+}
 
-  // Extract data
-  const userCount = chatHistory.filter(m=>m.role==='user').length;
-  if(userCount===1) candidateData.name=text;
-  else if(userCount===2) candidateData.experience=text;
-  else if(userCount===3) candidateData.currentRole=text;
-  else if(userCount===4) candidateData.skills=text;
-  else if(userCount===5) candidateData.salary=text;
-  else if(userCount===6) candidateData.notice=text;
+function setOptions(opts) {
+  const area = document.getElementById('chatOptions');
+  if (!opts || !opts.length) { area.innerHTML=''; return; }
+  area.innerHTML = opts.map(o=>`<button class="option-btn" onclick="selectOption('${o}')">${o}</button>`).join('');
+}
 
-  showTyping();
-  try {
-    const res = await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        model:'claude-sonnet-4-5',
-        max_tokens:300,
-        system:systemPrompt,
-        messages:chatHistory
-      })
-    });
-    const data = await res.json();
-    removeTyping();
-    let reply = data.content?.[0]?.text || "Sorry, please try again.";
+function selectOption(val) {
+  if (conversationDone) return;
+  addMessage(val, 'user');
+  setOptions([]);
 
-    if(reply.includes('[SCREENING_COMPLETE]')) {
-      reply = reply.replace('[SCREENING_COMPLETE]','').trim();
-      isComplete = true;
-      // Save to localStorage under admin key
-      try {
-        let adminData = JSON.parse(localStorage.getItem('sampark_admin')||'{"clients":[],"jobs":[],"candidates":[]}');
-        adminData.candidates = adminData.candidates||[];
-        adminData.candidates.push(candidateData);
-        localStorage.setItem('sampark_admin', JSON.stringify(adminData));
-      } catch(e){}
-      setTimeout(()=>{
-        document.getElementById('complete-banner').classList.add('show');
-        document.getElementById('chat-input').disabled=true;
-        document.getElementById('send-btn').disabled=true;
-        document.getElementById('chat-input').placeholder='Screening complete ✓';
-      },1000);
+  if (step === 0) {
+    if (val.includes('Tell me more')) {
+      setTimeout(() => {
+        addMessage('Sampark AI screens candidates using AI-powered conversations. Your responses help our team find the best fit quickly. No waiting — just answer a few questions! Ready?');
+        setOptions(['Yes, let\'s start! 🚀']);
+      }, 600);
+      return;
     }
-    addMsg('bot', reply);
-    chatHistory.push({role:'assistant', content:reply});
-  } catch(e) {
-    removeTyping();
-    addMsg('bot','Sorry, there was a connection issue. Please refresh and try again.');
-  }
-  document.getElementById('send-btn').disabled=false;
-}
-
-// Start chat
-async function startChat() {
-  if(!jobId) {
-    addMsg('bot','⚠️ This job link seems invalid or expired. Please contact the company for a new link.');
+    nextStep();
     return;
   }
-  showTyping();
-  await new Promise(r=>setTimeout(r,800));
-  removeTyping();
-  const greeting = `👋 Hello! Welcome to **${company}**'s screening process for the **${jobTitle}** position.\n\nI'm the AI screening assistant. This will take about 3–4 minutes. Your answers will be reviewed by the HR team.\n\nLet's get started! Could you please tell me your **full name**?`;
-  addMsg('bot', greeting);
-  chatHistory.push({role:'assistant', content:greeting});
+
+  const current = FLOW[step];
+  if (current.field) answers[current.field] = val;
+  nextStep();
 }
-startChat();
+
+function sendMessage() {
+  if (conversationDone) return;
+  const input = document.getElementById('chatInput');
+  const val = input.value.trim();
+  if (!val) return;
+  addMessage(val, 'user');
+  input.value = '';
+  setOptions([]);
+
+  if (step === 0) { nextStep(); return; }
+
+  const current = FLOW[step];
+  if (current.field) answers[current.field] = val;
+  nextStep();
+}
+
+function handleKey(e) { if (e.key==='Enter') sendMessage(); }
+
+function interpolate(text) {
+  return text.replace(/\{(\w+)\}/g, (_, k) => answers[k] || '');
+}
+
+async function nextStep() {
+  step++;
+  if (step >= FLOW.length - 1) {
+    await finishScreening();
+    return;
+  }
+  const s = FLOW[step];
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    addMessage(interpolate(s.bot));
+    if (s.options) setOptions(s.options);
+    else setOptions([]);
+    if (!s.options) document.getElementById('chatInput').placeholder = s.placeholder || 'Type your answer…';
+    else document.getElementById('chatInput').placeholder = 'Or type your answer…';
+  }, 700);
+}
+
+async function finishScreening() {
+  conversationDone = true;
+  setOptions([]);
+
+  const score = computeScore();
+
+  showTyping();
+  await new Promise(r => setTimeout(r, 1000));
+  removeTyping();
+  addMessage(`Thank you, <strong>${answers.name||'there'}</strong>! 🎉\n\nI've completed your screening. Here's a quick summary:\n\n📋 Role: ${CONFIG.role}\n⭐ AI Score: ${score}/10\n📍 Notice Period: ${answers.notice_period||'–'}\n💰 Expected CTC: ${answers.expected_ctc||'–'}\n\nOur team at <strong>${CONFIG.clientName}</strong> will review your profile and reach out within 2 hours. Good luck!`);
+
+  // Save to Supabase
+  const summary = `${answers.name} applied for ${CONFIG.role}. Experience: ${answers.experience||'–'}. Current role: ${answers.current_role||'–'}. Skills: ${answers.skills||'–'}. Notice: ${answers.notice_period||'–'}. Expected CTC: ${answers.expected_ctc||'–'}.`;
+
+  const { error } = await sb.from('candidates').insert([{
+    name: answers.name || 'Unknown',
+    phone: answers.phone || '',
+    email: answers.email || '',
+    role: CONFIG.role,
+    experience: answers.experience || '',
+    current_role: answers.current_role || '',
+    notice_period: answers.notice_period || '',
+    current_ctc: answers.current_ctc || '',
+    expected_ctc: answers.expected_ctc || '',
+    location_pref: answers.location_pref || '',
+    skills: answers.skills || '',
+    score: score,
+    status: 'pending',
+    client_name: CONFIG.clientName,
+    job_id: CONFIG.jobId,
+    summary: summary
+  }]);
+
+  if (error) console.error('Supabase save error:', error);
+  else {
+    document.getElementById('successBanner').style.display='block';
+    document.getElementById('chatInput').disabled=true;
+    document.querySelector('.send-btn').disabled=true;
+  }
+}
+
+function computeScore() {
+  let score = 5;
+  const expMap = {'0-1 years':1,'1-3 years':2,'3-5 years':3,'5-10 years':4,'10+ years':5};
+  const exp = expMap[answers.experience] || 2;
+  score = Math.min(10, 3 + exp + (answers.skills?.length > 50 ? 1 : 0) + (answers.email ? 0.5 : 0));
+  return Math.round(score * 10) / 10;
+}
+
+// ── START ─────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    addMessage(FLOW[0].bot);
+    setOptions(FLOW[0].options);
+  }, 800);
+});
 </script>
 </body>
 </html>
