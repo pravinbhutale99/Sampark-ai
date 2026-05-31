@@ -6,151 +6,109 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#f1f5f9;color:#0d1b2a;display:flex;min-height:100vh;font-size:14px}
-/* SIDEBAR */
-.sb{width:200px;background:#0d1b2a;display:flex;flex-direction:column;flex-shrink:0;min-height:100vh;position:fixed;top:0;left:0;bottom:0;z-index:100}
+.sb{width:200px;background:#0d1b2a;display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
 .sb-logo{padding:18px 16px 14px;border-bottom:1px solid #1e3a5f;display:flex;align-items:center;gap:8px}
-.sb-logo svg{width:30px;height:30px;flex-shrink:0}
-.sb-logotext{font-size:15px;font-weight:800;color:#fff}.sb-logotext span{color:#db4437}
-.sb-nav{padding:12px 8px;flex:1;overflow-y:auto}
-.sb-sec{font-size:9px;font-weight:700;color:#334155;letter-spacing:1.5px;text-transform:uppercase;padding:12px 8px 4px}
-.sb-item{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:#64748b;cursor:pointer;margin-bottom:1px;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
-.sb-item:hover{background:#1e3a5f;color:#e2e8f0}
-.sb-item.active{background:#1e3a5f;color:#fff}
-.sb-item svg{width:15px;height:15px;flex-shrink:0;opacity:.7}
-.sb-item.active svg{opacity:1}
+.sb-logo svg{width:28px;height:28px;flex-shrink:0}
+.sb-logotext{font-size:14px;font-weight:800;color:#fff}.sb-logotext span{color:#db4437}
+.sb-nav{padding:10px 8px;flex:1}
+.sb-sec{font-size:9px;font-weight:700;color:#334155;letter-spacing:1.5px;text-transform:uppercase;padding:10px 8px 4px}
+.si{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;margin-bottom:1px;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.si:hover{background:#1e3a5f;color:#e2e8f0}.si.active{background:#1e3a5f;color:#fff}
+.si svg{width:14px;height:14px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .sb-bottom{padding:12px;border-top:1px solid #1e3a5f}
 .sb-user{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-.sb-avatar{width:30px;height:30px;background:#db4437;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
-.sb-uname{font-size:11px;font-weight:700;color:#e2e8f0}
-.sb-urole{font-size:9px;color:#475569}
+.sb-av{width:30px;height:30px;background:#db4437;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.sb-un{font-size:11px;font-weight:700;color:#e2e8f0}.sb-ur{font-size:9px;color:#475569}
 .sb-out{width:100%;background:transparent;color:#475569;border:1px solid #1e3a5f;padding:6px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
-/* MAIN */
 .main{margin-left:200px;flex:1;display:flex;flex-direction:column;min-width:0}
 .topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.tb-left{display:flex;align-items:center;gap:8px}
-.tb-title{font-size:16px;font-weight:800;color:#0d1b2a}
-.tb-date{font-size:11px;color:#94a3b8;background:#f1f5f9;padding:4px 10px;border-radius:6px;margin-left:8px}
+.tb-left{display:flex;align-items:center;gap:10px}
+.tb-title{font-size:16px;font-weight:800}
+.tb-date{font-size:11px;color:#94a3b8;background:#f1f5f9;padding:4px 10px;border-radius:6px}
 .tb-right{display:flex;align-items:center;gap:10px}
-.tb-user{display:flex;align-items:center;gap:8px}
-.tb-uavatar{width:32px;height:32px;background:#1a73e8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
-.tb-uname{font-size:12px;font-weight:700;color:#0d1b2a}
-.tb-urole{font-size:10px;color:#94a3b8}
+.tb-av{width:32px;height:32px;background:#1a73e8;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+.tb-un{font-size:12px;font-weight:700}.tb-ur{font-size:10px;color:#94a3b8}
 .btn-add{background:#db4437;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
 .content{padding:20px 24px;flex:1}
-/* STAT CARDS */
-.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:#fff;border-radius:12px;padding:16px 18px;border:1px solid #e5e7eb;position:relative;overflow:hidden}
-.stat-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 12px 12px 0}
-.stat-card.blue::before{background:#1a73e8}
-.stat-card.green::before{background:#0f9d58}
-.stat-card.amber::before{background:#f4b400}
-.stat-card.red::before{background:#db4437}
-.stat-card.purple::before{background:#9c27b0}
-.stat-label{font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.8px;text-transform:uppercase;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-.stat-label svg{width:12px;height:12px;opacity:.4}
-.stat-num{font-size:28px;font-weight:800;color:#0d1b2a;line-height:1;margin-bottom:6px}
-.stat-change{font-size:11px;font-weight:600;color:#0f9d58}
-.stat-vstext{font-size:10px;color:#9ca3af;margin-left:4px}
-/* MAIN GRID */
-.main-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.sg{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:20px}
+.sc{background:#fff;border-radius:12px;padding:16px 18px;border:1px solid #e5e7eb;position:relative;overflow:hidden}
+.sc::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 12px 12px 0}
+.sc.bl::before{background:#1a73e8}.sc.gr::before{background:#0f9d58}.sc.am::before{background:#f4b400}.sc.pu::before{background:#9c27b0}.sc.re::before{background:#db4437}
+.sc-lbl{font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
+.sc-num{font-size:28px;font-weight:800;color:#0d1b2a;line-height:1;margin-bottom:5px}
+.sc-ch{font-size:11px;font-weight:600;color:#0f9d58}.sc-vs{font-size:10px;color:#9ca3af;margin-left:3px}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
 .card{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid #e5e7eb}
-.card-title{font-size:13px;font-weight:800;color:#0d1b2a;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
-.card-title a{font-size:11px;color:#1a73e8;font-weight:600;text-decoration:none}
-/* FUNNEL */
-.funnel-wrap{display:flex;gap:16px;align-items:flex-start}
-.funnel-bars{flex:1;display:flex;flex-direction:column;gap:8px;padding-top:4px}
-.funnel-row{display:flex;align-items:center;gap:8px}
-.funnel-bar-wrap{flex:1;height:28px;background:#f1f5f9;border-radius:6px;overflow:hidden;position:relative}
-.funnel-bar-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;font-size:11px;font-weight:700;color:#fff;transition:width .8s ease}
-.funnel-label{font-size:11px;color:#6b7280;width:80px;flex-shrink:0}
-.funnel-val{font-size:11px;font-weight:700;color:#0d1b2a;width:42px;text-align:right;flex-shrink:0}
-/* TOP JOBS */
-.job-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid #f1f5f9}
-.job-row:last-child{border-bottom:none}
-.job-info{flex:1;min-width:0}
-.job-name{font-size:12px;font-weight:700;color:#0d1b2a;margin-bottom:2px}
-.job-sub{font-size:10px;color:#9ca3af}
-.job-bar-wrap{width:100px;height:4px;background:#f1f5f9;border-radius:2px;margin:0 12px}
-.job-bar-fill{height:100%;border-radius:2px;background:#1a73e8}
-.job-count{font-size:11px;font-weight:700;color:#0d1b2a;width:70px;text-align:right;flex-shrink:0}
-/* CANDIDATES LIST */
-.cand-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9}
-.cand-row:last-child{border-bottom:none}
-.cand-avatar{width:34px;height:34px;border-radius:50%;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#1a73e8;flex-shrink:0}
-.cand-info{flex:1;min-width:0}
-.cand-name{font-size:12px;font-weight:700;color:#0d1b2a}
-.cand-match{font-size:10px;color:#9ca3af}
-.cand-score{font-size:14px;font-weight:800;color:#0f9d58;flex-shrink:0}
-.cand-time{font-size:10px;color:#9ca3af;text-align:right}
-/* CLIENT PORTAL PREVIEW */
-.cp-job{font-size:12px;font-weight:700;color:#0d1b2a;margin-bottom:2px}
-.cp-sub{font-size:10px;color:#9ca3af;margin-bottom:10px}
-.cp-cand-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid #f1f5f9}
-.cp-cand-row:last-child{border-bottom:none}
-.cp-avatar{width:28px;height:28px;border-radius:50%;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#1a73e8;flex-shrink:0}
-.cp-name{flex:1;font-size:11px;font-weight:700;color:#0d1b2a}
-.cp-match{font-size:11px;font-weight:800;color:#0f9d58;margin-right:6px}
-.cp-actions{display:flex;gap:4px}
-.cp-btn{padding:4px 8px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
-.cp-approve{background:#dcfce7;color:#166534}
-.cp-interview{background:#dbeafe;color:#1e40af}
-.cp-reject{background:#fee2e2;color:#991b1b}
-/* ANALYTICS */
-.chart-container{height:120px;position:relative;margin-top:8px}
-.chart-line{position:absolute;bottom:0;left:0;right:0;top:0}
-/* BOTTOM GRID */
-.bottom-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
-/* TABLE */
-.table-wrap{background:#fff;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:16px}
+.ct{font-size:13px;font-weight:800;color:#0d1b2a;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.ct a{font-size:11px;color:#1a73e8;font-weight:600;text-decoration:none}
+.fr{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.fl{font-size:11px;color:#6b7280;width:78px;flex-shrink:0}
+.fb{flex:1;height:26px;background:#f1f5f9;border-radius:5px;overflow:hidden}
+.ff{height:100%;border-radius:5px}
+.fv{font-size:11px;font-weight:700;color:#0d1b2a;width:38px;text-align:right;flex-shrink:0}
+.jr{display:flex;align-items:center;padding:8px 0;border-bottom:1px solid #f1f5f9}
+.jr:last-child{border-bottom:none}
+.ji{flex:1;min-width:0}
+.jn{font-size:12px;font-weight:700;color:#0d1b2a}.js{font-size:10px;color:#9ca3af}
+.jbw{width:90px;height:4px;background:#f1f5f9;border-radius:2px;margin:0 10px;flex-shrink:0}
+.jbf{height:100%;border-radius:2px;background:#1a73e8}
+.jc{font-size:11px;font-weight:700;color:#0d1b2a;width:76px;text-align:right;flex-shrink:0}
+.cr{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9}
+.cr:last-child{border-bottom:none}
+.cav{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.cn{font-size:12px;font-weight:700;color:#0d1b2a}.cm{font-size:10px;color:#9ca3af}
+.csco{font-size:15px;font-weight:800;color:#0f9d58}
+.bg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.cpj{font-size:12px;font-weight:700;color:#0d1b2a;margin-bottom:2px}.cps{font-size:10px;color:#9ca3af;margin-bottom:8px}
+.cpr{display:flex;align-items:center;gap:7px;padding:6px 0;border-bottom:1px solid #f1f5f9}
+.cpr:last-child{border-bottom:none}
+.cpav{width:26px;height:26px;border-radius:50%;background:#e8f0fe;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:#1a73e8;flex-shrink:0}
+.cpn{flex:1;font-size:11px;font-weight:700;color:#0d1b2a}
+.cpsc{font-size:11px;font-weight:800;color:#0f9d58;margin-right:5px}
+.cpa{display:flex;gap:3px}
+.cpb{padding:3px 7px;border-radius:5px;font-size:9px;font-weight:700;cursor:pointer;border:none;font-family:inherit}
+.cpb.ap{background:#dcfce7;color:#166534}.cpb.iv{background:#dbeafe;color:#1e40af}.cpb.rj{background:#fee2e2;color:#991b1b}
+.rb{font-size:32px;font-weight:800;color:#0d1b2a}.rc{font-size:11px;color:#0f9d58;font-weight:600;margin-top:2px}
+.tw{background:#fff;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:16px}
 table{width:100%;border-collapse:collapse}
 th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.8px;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid #e5e7eb}
 td{padding:12px 16px;font-size:12px;color:#374151;border-bottom:1px solid #f1f5f9;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#f9fafb}
-.score-badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
+.sb2{display:inline-block;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:700}
 .sh{background:#dcfce7;color:#166534}.sm{background:#fef9c3;color:#854d0e}.sl{background:#fee2e2;color:#991b1b}
-.status-pill{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
-.sn{background:#e0f2fe;color:#0369a1}.ss{background:#dcfce7;color:#166534}.sc{background:#fef9c3;color:#854d0e}.sr{background:#fee2e2;color:#991b1b}
-.wa-btn{display:inline-flex;align-items:center;gap:4px;background:#25D366;color:#fff;border:none;padding:5px 10px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+.sp{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:600}
+.sn{background:#e0f2fe;color:#0369a1}.ss{background:#dcfce7;color:#166534}.sc2{background:#fef9c3;color:#854d0e}.sr{background:#fee2e2;color:#991b1b}
+.wa{display:inline-flex;align-items:center;gap:4px;background:#25D366;color:#fff;border:none;padding:5px 9px;border-radius:7px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+.tc{display:none}.tc.active{display:block}
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
+.ov.show{display:flex}
+.mo{background:#fff;border-radius:18px;padding:28px;width:100%;max-width:440px}
+.mo h3{font-size:16px;font-weight:800;margin-bottom:16px}
+.mo label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:4px;margin-top:12px}
+.mo input,.mo select{width:100%;padding:10px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:13px;font-family:inherit;outline:none}
+.ma{display:flex;gap:8px;margin-top:18px}
+.ms{flex:1;background:#0d1b2a;color:#fff;border:none;padding:11px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.mc{flex:1;background:#f1f5f9;color:#374151;border:none;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.clc{background:#fff;border-radius:14px;padding:18px;border:1px solid #e5e7eb;transition:all .2s}
+.clc:hover{box-shadow:0 4px 16px rgba(0,0,0,.07);transform:translateY(-2px)}
+.cct{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.cca{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.pb{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
+.pg{background:#fef3c7;color:#92400e}.ps{background:#e0f2fe;color:#075985}.pp{background:#f0fdf4;color:#166534}
+.ccn{font-size:13px;font-weight:700;color:#0d1b2a;margin-bottom:2px}.cce{font-size:11px;color:#6b7280}
+.ccs{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;padding:10px 0;margin:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
+.csn{font-size:16px;font-weight:800;color:#0d1b2a}.csl{font-size:9px;color:#9ca3af;margin-top:1px}
+.cac{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.bv{background:#f1f5f9;color:#0d1b2a;border:none;padding:7px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+.bv:hover{background:#e5e7eb}
+.br{background:#fff5f5;color:#dc2626;border:1px solid #fecaca;padding:7px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+.si2{flex:1;padding:9px 14px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:13px;font-family:inherit;outline:none;margin-bottom:14px;width:100%}
+.si2:focus{border-color:#0d1b2a}
 .empty{text-align:center;padding:40px;color:#9ca3af}
-/* TAB */
-.tab-content{display:none}.tab-content.active{display:block}
-/* MODAL */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
-.overlay.show{display:flex}
-.modal{background:#fff;border-radius:18px;padding:28px;width:100%;max-width:440px}
-.modal h3{font-size:16px;font-weight:800;margin-bottom:16px}
-.modal label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:4px;margin-top:12px}
-.modal input,.modal select{width:100%;padding:10px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:13px;font-family:inherit;outline:none}
-.modal-actions{display:flex;gap:8px;margin-top:18px}
-.modal-save{flex:1;background:#0d1b2a;color:#fff;border:none;padding:11px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.modal-cancel{flex:1;background:#f1f5f9;color:#374151;border:none;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-.search-row{display:flex;gap:10px;margin-bottom:14px}
-.search-input{flex:1;padding:9px 14px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:13px;font-family:inherit;outline:none}
-.search-input:focus{border-color:#0d1b2a}
-.clients-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.client-card{background:#fff;border-radius:14px;padding:18px;border:1px solid #e5e7eb;transition:all .2s}
-.client-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07);transform:translateY(-2px)}
-.cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
-.cc-avatar{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
-.plan-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px}
-.plan-growth{background:#fef3c7;color:#92400e}
-.plan-starter{background:#e0f2fe;color:#075985}
-.plan-pro{background:#f0fdf4;color:#166534}
-.cc-name{font-size:13px;font-weight:700;color:#0d1b2a;margin-bottom:2px}
-.cc-email{font-size:11px;color:#6b7280}
-.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;padding:10px 0;margin:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9}
-.cs-num{font-size:16px;font-weight:800;color:#0d1b2a}
-.cs-label{font-size:9px;color:#9ca3af;margin-top:1px}
-.cc-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.btn-view{background:#f1f5f9;color:#0d1b2a;border:none;padding:7px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
-.btn-view:hover{background:#e5e7eb}
-.btn-remove{background:#fff5f5;color:#dc2626;border:1px solid #fecaca;padding:7px;border-radius:7px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
-.ratio-big{font-size:32px;font-weight:800;color:#0d1b2a}
-.ratio-change{font-size:11px;color:#0f9d58;font-weight:600;margin-top:2px}
 </style></head><body>
 
-<!-- SIDEBAR -->
 <div class="sb">
   <div class="sb-logo">
     <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
@@ -162,208 +120,105 @@ tr:hover td{background:#f9fafb}
     <span class="sb-logotext">Sampark<span>AI</span></span>
   </div>
   <div class="sb-nav">
-    <button class="sb-item active" onclick="switchTab('dashboard',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard
-    </button>
-    <button class="sb-item" onclick="switchTab('clients',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients
-    </button>
-    <button class="sb-item" onclick="switchTab('candidates',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Candidates
-    </button>
-    <button class="sb-item" onclick="switchTab('jobs',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs
-    </button>
-    <button class="sb-item" onclick="switchTab('interviews',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Interviews
-    </button>
-    <button class="sb-item" onclick="switchTab('talentpool',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Talent Pool
-    </button>
-    <button class="sb-item" onclick="switchTab('analytics',this)">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics
-    </button>
-    <button class="sb-item" onclick="showModal()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>+ Add Client
-    </button>
+    <button class="si active" onclick="sw('dashboard',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
+    <button class="si" onclick="sw('clients',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Clients</button>
+    <button class="si" onclick="sw('candidates',this)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Candidates</button>
+    <button class="si" onclick="sw('jobs',this)"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs</button>
+    <button class="si" onclick="sw('interviews',this)"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Interviews</button>
+    <button class="si" onclick="sw('talentpool',this)"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>Talent Pool</button>
+    <button class="si" onclick="sw('analytics',this)"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>Analytics</button>
+    <button class="si" onclick="showModal()"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>+ Add Client</button>
   </div>
   <div class="sb-bottom">
-    <div class="sb-user">
-      <div class="sb-avatar">A</div>
-      <div><div class="sb-uname">Admin</div><div class="sb-urole">Agency Owner</div></div>
-    </div>
+    <div class="sb-user"><div class="sb-av">A</div><div><div class="sb-un">Admin</div><div class="sb-ur">Agency Owner</div></div></div>
     <button class="sb-out" onclick="signOut()">Sign Out</button>
   </div>
 </div>
 
-<!-- MAIN -->
 <div class="main">
   <div class="topbar">
-    <div class="tb-left">
-      <div class="tb-title" id="pageTitle">Dashboard</div>
-      <span class="tb-date" id="dateRange"></span>
-    </div>
-    <div class="tb-right">
-      <div class="tb-user">
-        <div class="tb-uavatar">A</div>
-        <div><div class="tb-uname">Agency Owner</div><div class="tb-urole">admin@samparkai.tech</div></div>
-      </div>
-    </div>
+    <div class="tb-left"><div class="tb-title" id="pgTitle">Dashboard</div><span class="tb-date" id="dateR"></span></div>
+    <div class="tb-right"><div class="tb-av">A</div><div><div class="tb-un">Agency Owner</div><div class="tb-ur">admin@samparkai.tech</div></div></div>
   </div>
   <div class="content">
 
-    <!-- DASHBOARD TAB -->
-    <div id="tab-dashboard" class="tab-content active">
-      <div class="stats-grid">
-        <div class="stat-card blue">
-          <div class="stat-label">Active Jobs <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div>
-          <div class="stat-num" id="s-jobs">—</div>
-          <div><span class="stat-change" id="s-jobs-c">+0%</span><span class="stat-vstext">vs last week</span></div>
-        </div>
-        <div class="stat-card green">
-          <div class="stat-label">Candidates Screened <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg></div>
-          <div class="stat-num" id="s-screened">—</div>
-          <div><span class="stat-change" id="s-screened-c">+0%</span><span class="stat-vstext">vs last week</span></div>
-        </div>
-        <div class="stat-card amber">
-          <div class="stat-label">Qualified Candidates <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/></svg></div>
-          <div class="stat-num" id="s-qualified">—</div>
-          <div><span class="stat-change" id="s-qualified-c">+0%</span><span class="stat-vstext">vs last week</span></div>
-        </div>
-        <div class="stat-card purple">
-          <div class="stat-label">Shortlisted</div>
-          <div class="stat-num" id="s-short">—</div>
-          <div><span class="stat-change" id="s-short-c">+0%</span><span class="stat-vstext">vs last week</span></div>
-        </div>
-        <div class="stat-card red">
-          <div class="stat-label">Placements</div>
-          <div class="stat-num" id="s-placed">—</div>
-          <div><span class="stat-change">+14%</span><span class="stat-vstext">vs last week</span></div>
-        </div>
+    <div id="tc-dashboard" class="tc active">
+      <div class="sg">
+        <div class="sc bl"><div class="sc-lbl">Active Jobs</div><div class="sc-num" id="sj">—</div><span class="sc-ch">+12%</span><span class="sc-vs">vs last week</span></div>
+        <div class="sc gr"><div class="sc-lbl">Candidates Screened</div><div class="sc-num" id="sca">—</div><span class="sc-ch">+18%</span><span class="sc-vs">vs last week</span></div>
+        <div class="sc am"><div class="sc-lbl">Qualified</div><div class="sc-num" id="sq">—</div><span class="sc-ch">+20%</span><span class="sc-vs">vs last week</span></div>
+        <div class="sc pu"><div class="sc-lbl">Shortlisted</div><div class="sc-num" id="ssh">—</div><span class="sc-ch">+16%</span><span class="sc-vs">vs last week</span></div>
+        <div class="sc re"><div class="sc-lbl">Placements</div><div class="sc-num" id="spl">—</div><span class="sc-ch">+14%</span><span class="sc-vs">vs last week</span></div>
       </div>
-
-      <div class="main-grid">
-        <!-- FUNNEL -->
-        <div class="card">
-          <div class="card-title">Candidate Funnel</div>
-          <div id="funnelWrap" class="funnel-bars"></div>
-        </div>
-        <!-- TOP JOBS -->
-        <div class="card">
-          <div class="card-title">Top Performing Jobs <a href="#" onclick="switchTab('jobs',document.querySelectorAll('.sb-item')[3]);return false;">View all</a></div>
-          <div id="topJobsList"></div>
-        </div>
+      <div class="mg">
+        <div class="card"><div class="ct">Candidate Funnel</div><div id="funnel"></div></div>
+        <div class="card"><div class="ct">Top Performing Jobs <a href="#" onclick="sw('jobs',document.querySelectorAll('.si')[3]);return false">View all</a></div><div id="topjobs"></div></div>
       </div>
-
-      <div class="bottom-grid">
-        <!-- AI RANKED CANDIDATES -->
+      <div class="bg3">
+        <div class="card"><div class="ct">AI Ranked Candidates</div><div id="topcands"></div><a href="#" onclick="sw('candidates',document.querySelectorAll('.si')[2]);return false" style="font-size:11px;color:#1a73e8;font-weight:700;text-decoration:none;display:block;margin-top:10px">View All Candidates &rarr;</a></div>
+        <div class="card"><div class="ct">Client Review Portal</div><div id="cprev"></div></div>
         <div class="card">
-          <div class="card-title">AI Ranked Candidates</div>
-          <div id="topCandsList"></div>
-          <a href="#" onclick="switchTab('candidates',document.querySelectorAll('.sb-item')[2]);return false;" style="font-size:11px;color:#1a73e8;font-weight:700;text-decoration:none;display:block;margin-top:10px">View All Candidates &rarr;</a>
-        </div>
-        <!-- CLIENT REVIEW PORTAL -->
-        <div class="card">
-          <div class="card-title">Client Review Portal</div>
-          <div id="clientPortalPreview"></div>
-        </div>
-        <!-- ANALYTICS -->
-        <div class="card">
-          <div class="card-title">Analytics <span style="font-size:10px;color:#9ca3af;font-weight:500">This Month</span></div>
-          <canvas id="analyticsChart" height="100"></canvas>
-          <div style="margin-top:12px;border-top:1px solid #f1f5f9;padding-top:10px">
-            <div style="font-size:10px;color:#9ca3af;margin-bottom:4px">Interview to Placement Ratio</div>
-            <div class="ratio-big" id="placementRatio">—%</div>
-            <div class="ratio-change">+8% vs last month</div>
+          <div class="ct">Placements Over Time</div>
+          <canvas id="achrt" height="110"></canvas>
+          <div style="margin-top:10px;border-top:1px solid #f1f5f9;padding-top:8px">
+            <div style="font-size:10px;color:#9ca3af;margin-bottom:3px">Interview to Placement Ratio</div>
+            <div class="rb" id="pratio">36%</div><div class="rc">+8% vs last month</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- CLIENTS TAB -->
-    <div id="tab-clients" class="tab-content">
+    <div id="tc-clients" class="tc">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
         <div><div style="font-size:17px;font-weight:800">Client Accounts</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">All clients using SamparkAI through your agency</div></div>
         <button class="btn-add" onclick="showModal()">+ Add Client</button>
       </div>
-      <div class="clients-grid" id="clientsGrid"><div class="empty">Loading...</div></div>
+      <div class="cg" id="clGrid"><div class="empty">Loading...</div></div>
     </div>
 
-    <!-- CANDIDATES TAB -->
-    <div id="tab-candidates" class="tab-content">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
-        <div><div style="font-size:17px;font-weight:800" id="candTabTitle">All Candidates</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">AI-screened and ranked by match score</div></div>
-      </div>
-      <div class="search-row"><input class="search-input" id="searchQ" placeholder="Search candidate, job, client..." oninput="filterCands()"/></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Candidate</th><th>Job</th><th>Client</th><th>Score</th><th>Status</th><th>WhatsApp</th></tr></thead>
-          <tbody id="candsBody"></tbody>
-        </table>
-      </div>
+    <div id="tc-candidates" class="tc">
+      <div style="margin-bottom:14px"><div style="font-size:17px;font-weight:800" id="candTT">All Candidates</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">AI-screened and ranked by match score</div></div>
+      <input class="si2" id="srchQ" placeholder="Search candidate, job, client..." oninput="filterC()"/>
+      <div class="tw"><table><thead><tr><th>Candidate</th><th>Job</th><th>Client</th><th>Score</th><th>Status</th><th>WhatsApp</th></tr></thead><tbody id="cBody"></tbody></table></div>
     </div>
 
-    <!-- JOBS TAB -->
-    <div id="tab-jobs" class="tab-content">
-      <div style="margin-bottom:14px"><div style="font-size:17px;font-weight:800">Jobs & Screening Links</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">Share links with candidates to start AI screening</div></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Job Title</th><th>Client</th><th>Candidates</th><th>Shortlisted</th><th>Screening Link</th></tr></thead>
-          <tbody id="jobsBody"></tbody>
-        </table>
-      </div>
+    <div id="tc-jobs" class="tc">
+      <div style="margin-bottom:14px"><div style="font-size:17px;font-weight:800">Jobs & Screening Links</div></div>
+      <div class="tw"><table><thead><tr><th>Job Title</th><th>Client</th><th>Candidates</th><th>Shortlisted</th><th>Screening Link</th></tr></thead><tbody id="jBody"></tbody></table></div>
     </div>
 
-    <!-- INTERVIEWS TAB -->
-    <div id="tab-interviews" class="tab-content">
+    <div id="tc-interviews" class="tc">
       <div style="margin-bottom:14px"><div style="font-size:17px;font-weight:800">Interviews Scheduled</div></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Candidate</th><th>Job</th><th>Client</th><th>Score</th><th>WhatsApp</th></tr></thead>
-          <tbody id="interviewsBody"></tbody>
-        </table>
-      </div>
+      <div class="tw"><table><thead><tr><th>Candidate</th><th>Job</th><th>Client</th><th>Score</th><th>WhatsApp</th></tr></thead><tbody id="iBody"></tbody></table></div>
     </div>
 
-    <!-- TALENT POOL TAB -->
-    <div id="tab-talentpool" class="tab-content">
-      <div style="margin-bottom:14px"><div style="font-size:17px;font-weight:800">Talent Pool</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">All candidates ever screened — reactivate for new roles</div></div>
-      <div class="table-wrap">
-        <table>
-          <thead><tr><th>Candidate</th><th>Last Job</th><th>Score</th><th>Status</th><th>WhatsApp</th></tr></thead>
-          <tbody id="talentBody"></tbody>
-        </table>
-      </div>
+    <div id="tc-talentpool" class="tc">
+      <div style="margin-bottom:14px"><div style="font-size:17px;font-weight:800">Talent Pool</div><div style="font-size:11px;color:#9ca3af;margin-top:2px">All screened candidates — reactivate for new roles</div></div>
+      <div class="tw"><table><thead><tr><th>Candidate</th><th>Last Job</th><th>Score</th><th>Status</th><th>WhatsApp</th></tr></thead><tbody id="tBody"></tbody></table></div>
     </div>
 
-    <!-- ANALYTICS TAB -->
-    <div id="tab-analytics" class="tab-content">
+    <div id="tc-analytics" class="tc">
       <div style="margin-bottom:16px"><div style="font-size:17px;font-weight:800">Analytics</div></div>
-      <div class="stats-grid">
-        <div class="stat-card blue"><div class="stat-label">Total Screened</div><div class="stat-num" id="an-screened">—</div></div>
-        <div class="stat-card green"><div class="stat-label">Shortlisted</div><div class="stat-num" id="an-short">—</div></div>
-        <div class="stat-card amber"><div class="stat-label">Avg Score</div><div class="stat-num" id="an-avg">—</div></div>
-        <div class="stat-card purple"><div class="stat-label">Clients</div><div class="stat-num" id="an-clients">—</div></div>
-        <div class="stat-card red"><div class="stat-label">Active Jobs</div><div class="stat-num" id="an-jobs">—</div></div>
+      <div class="sg">
+        <div class="sc bl"><div class="sc-lbl">Total Screened</div><div class="sc-num" id="anS">—</div></div>
+        <div class="sc gr"><div class="sc-lbl">Shortlisted</div><div class="sc-num" id="anSh">—</div></div>
+        <div class="sc am"><div class="sc-lbl">Avg Score</div><div class="sc-num" id="anA">—</div></div>
+        <div class="sc pu"><div class="sc-lbl">Clients</div><div class="sc-num" id="anC">—</div></div>
+        <div class="sc re"><div class="sc-lbl">Active Jobs</div><div class="sc-num" id="anJ">—</div></div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="overlay" id="overlay" onclick="hideModal(event)">
-  <div class="modal" onclick="event.stopPropagation()">
+<div class="ov" id="ov" onclick="hm(event)">
+  <div class="mo" onclick="event.stopPropagation()">
     <h3>Add New Client</h3>
-    <label>Company Name</label><input id="m-name" placeholder="e.g. TechCorp HR"/>
-    <label>Email</label><input id="m-email" type="email" placeholder="hr@company.com"/>
-    <label>Phone</label><input id="m-phone" placeholder="+91 98000 00000"/>
-    <label>Plan</label>
-    <select id="m-plan"><option>Starter</option><option>Growth</option><option>Pro</option></select>
-    <div class="modal-actions">
-      <button class="modal-cancel" onclick="document.getElementById('overlay').classList.remove('show')">Cancel</button>
-      <button class="modal-save" onclick="addClient()">Save Client</button>
-    </div>
+    <label>Company Name</label><input id="mn" placeholder="TechCorp HR"/>
+    <label>Email</label><input id="me" type="email" placeholder="hr@company.com"/>
+    <label>Phone</label><input id="mp" placeholder="+91 98000 00000"/>
+    <label>Plan</label><select id="mpl"><option>Starter</option><option>Growth</option><option>Pro</option></select>
+    <div class="ma"><button class="mc" onclick="document.getElementById('ov').classList.remove('show')">Cancel</button><button class="ms" onclick="addCl()">Save Client</button></div>
   </div>
 </div>
 
@@ -371,254 +226,119 @@ tr:hover td{background:#f9fafb}
 <script>
 const S="https://sebghpbyykplkoootzdg.supabase.co";
 const K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
-const token=localStorage.getItem('sb_token');
-if(!token){window.location.href='client-portal.html';}
-
-// set date range
-const now=new Date();const prev=new Date(now);prev.setDate(prev.getDate()-7);
-document.getElementById('dateRange').textContent=prev.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-
-let clients=[],cands=[],jobs=[];
-function api(p){return fetch(S+'/rest/v1/'+p,{headers:{'apikey':K,'Authorization':'Bearer '+token}}).then(r=>r.json());}
-
+const tok=localStorage.getItem('sb_token');
+if(!tok){window.location.href='client-portal.html';}
+const now=new Date(),prev=new Date(now);prev.setDate(prev.getDate()-7);
+document.getElementById('dateR').textContent=prev.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' – '+now.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+let cls=[],cds=[],jbs=[];
+const clrs=['#db4437','#1a73e8','#0f9d58','#f4b400','#9c27b0'];
+function api(p){return fetch(S+'/rest/v1/'+p,{headers:{'apikey':K,'Authorization':'Bearer '+tok}}).then(r=>r.json());}
 async function load(){
   try{
-    [clients,cands,jobs]=await Promise.all([api('clients?select=*&order=created_at.desc'),api('candidates?select=*&order=score.desc'),api('jobs?select=*&order=created_at.desc')]);
-    clients=Array.isArray(clients)?clients:[];cands=Array.isArray(cands)?cands:[];jobs=Array.isArray(jobs)?jobs:[];
-    renderAll();
+    [cls,cds,jbs]=await Promise.all([api('clients?select=*&order=created_at.desc'),api('candidates?select=*&order=score.desc'),api('jobs?select=*&order=created_at.desc')]);
+    cls=Array.isArray(cls)?cls:[];cds=Array.isArray(cds)?cds:[];jbs=Array.isArray(jbs)?jbs:[];
+    rStats();rFunnel();rTopJobs();rTopCands();rCPrev();rChart();rClients();rCands(cds);rJobs();rIntvs();rTalent();rAnalytics();
   }catch(e){console.error(e);}
 }
-
-function renderAll(){
-  renderStats();renderFunnel();renderTopJobs();renderTopCands();renderClientPortalPreview();renderChart();
-  renderClients();renderCands(cands);renderJobs();renderInterviews();renderTalent();renderAnalytics();
+function rStats(){
+  document.getElementById('sj').textContent=jbs.length;
+  document.getElementById('sca').textContent=cds.length;
+  document.getElementById('sq').textContent=cds.filter(c=>c.score>=70).length;
+  document.getElementById('ssh').textContent=cds.filter(c=>c.status==='shortlisted').length;
+  document.getElementById('spl').textContent=cds.filter(c=>c.status==='placed').length;
 }
-
-function renderStats(){
-  const short=cands.filter(c=>c.status==='shortlisted').length;
-  const scored=cands.filter(c=>c.score!=null).length;
-  const qualified=cands.filter(c=>c.score>=70).length;
-  document.getElementById('s-jobs').textContent=jobs.length;
-  document.getElementById('s-screened').textContent=cands.length;
-  document.getElementById('s-qualified').textContent=qualified;
-  document.getElementById('s-short').textContent=short;
-  document.getElementById('s-placed').textContent=cands.filter(c=>c.status==='placed').length;
-  document.getElementById('s-jobs-c').textContent='+12%';
-  document.getElementById('s-screened-c').textContent='+18%';
-  document.getElementById('s-qualified-c').textContent='+20%';
-  document.getElementById('s-short-c').textContent='+16%';
+function rFunnel(){
+  const n=cds.length||1;
+  const rows=[['Applications',cds.length,100,'#1a73e8'],['AI Screened',Math.round(cds.length*.9),90,'#0f9d58'],['Qualified',cds.filter(c=>c.score>=70).length,Math.round(cds.filter(c=>c.score>=70).length/n*100),'#f4b400'],['Shortlisted',cds.filter(c=>c.status==='shortlisted').length,Math.round(cds.filter(c=>c.status==='shortlisted').length/n*100),'#db4437'],['Placed',cds.filter(c=>c.status==='placed').length,Math.round(cds.filter(c=>c.status==='placed').length/n*100),'#9c27b0']];
+  document.getElementById('funnel').innerHTML=rows.map(r=>`<div class="fr"><div class="fl">${r[0]}</div><div class="fb"><div class="ff" style="width:${r[2]}%;background:${r[3]}"></div></div><div class="fv">${r[1]}</div></div>`).join('');
 }
-
-function renderFunnel(){
-  const total=cands.length||1;
-  const screened=cands.length;
-  const qualified=cands.filter(c=>c.score>=70).length;
-  const short=cands.filter(c=>c.status==='shortlisted').length;
-  const placed=cands.filter(c=>c.status==='placed').length;
-  const rows=[
-    {label:'Applications',val:screened,pct:100,color:'#1a73e8'},
-    {label:'AI Screened',val:Math.round(screened*.9),pct:90,color:'#0f9d58'},
-    {label:'Qualified',val:qualified,pct:Math.round(qualified/screened*100)||0,color:'#f4b400'},
-    {label:'Shortlisted',val:short,pct:Math.round(short/screened*100)||0,color:'#db4437'},
-    {label:'Placed',val:placed,pct:Math.round(placed/screened*100)||0,color:'#9c27b0'},
-  ];
-  document.getElementById('funnelWrap').innerHTML=rows.map(r=>`
-    <div class="funnel-row">
-      <div class="funnel-label">${r.label}</div>
-      <div class="funnel-bar-wrap"><div class="funnel-bar-fill" style="width:${r.pct}%;background:${r.color}"></div></div>
-      <div class="funnel-val">${r.val}</div>
-    </div>`).join('');
+function rTopJobs(){
+  const s=[...jbs].map(j=>({...j,n:cds.filter(c=>c.job_id===j.id).length})).sort((a,b)=>b.n-a.n).slice(0,5);
+  const mx=s[0]?.n||1;
+  document.getElementById('topjobs').innerHTML=s.length?s.map(j=>`<div class="jr"><div class="ji"><div class="jn">${j.title||'Untitled'}</div><div class="js">${j.n} Candidates</div></div><div class="jbw"><div class="jbf" style="width:${Math.round(j.n/mx*100)}%"></div></div><div class="jc">${cds.filter(c=>c.job_id===j.id&&c.status==='shortlisted').length} Shortlisted</div></div>`).join(''):'<div class="empty">No jobs yet</div>';
 }
-
-function renderTopJobs(){
-  const sorted=[...jobs].map(j=>({...j,cnt:cands.filter(c=>c.job_id===j.id).length})).sort((a,b)=>b.cnt-a.cnt).slice(0,5);
-  const max=sorted[0]?.cnt||1;
-  document.getElementById('topJobsList').innerHTML=sorted.length?sorted.map(j=>`
-    <div class="job-row">
-      <div class="job-info"><div class="job-name">${j.title||'Untitled'}</div><div class="job-sub">${j.cnt} Candidates</div></div>
-      <div class="job-bar-wrap"><div class="job-bar-fill" style="width:${Math.round(j.cnt/max*100)}%"></div></div>
-      <div class="job-count">${cands.filter(c=>c.job_id===j.id&&c.status==='shortlisted').length} Shortlisted</div>
-    </div>`).join(''):'<div class="empty">No jobs yet</div>';
+function rTopCands(){
+  const top=[...cds].filter(c=>c.score!=null).sort((a,b)=>b.score-a.score).slice(0,4);
+  document.getElementById('topcands').innerHTML=top.length?top.map((c,i)=>`<div class="cr"><div class="cav" style="background:${clrs[i]}20;color:${clrs[i]}">${(c.name||'?')[0]}</div><div class="ci"><div class="cn">${c.name||'—'}</div><div class="cm">${c.score>=80?'Strong Match':c.score>=60?'Good Match':'Moderate Match'}</div></div><div><div class="csco">${c.score}%</div></div></div>`).join(''):'<div class="empty">No candidates</div>';
 }
-
-function renderTopCands(){
-  const top=[...cands].filter(c=>c.score!=null).sort((a,b)=>b.score-a.score).slice(0,4);
-  const colors=['#1a73e8','#db4437','#0f9d58','#f4b400'];
-  document.getElementById('topCandsList').innerHTML=top.length?top.map((c,i)=>`
-    <div class="cand-row">
-      <div class="cand-avatar" style="background:${colors[i]}20;color:${colors[i]}">${(c.name||'?')[0]}</div>
-      <div class="cand-info"><div class="cand-name">${c.name||'—'}</div><div class="cand-match">${c.score>=80?'Strong Match':c.score>=60?'Good Match':'Moderate Match'}</div></div>
-      <div><div class="cand-score">${c.score}%</div></div>
-    </div>`).join(''):'<div class="empty">No candidates yet</div>';
+function rCPrev(){
+  const j=jbs[0];
+  if(!j){document.getElementById('cprev').innerHTML='<div class="empty">No jobs yet</div>';return;}
+  const jc=cds.filter(c=>c.job_id===j.id&&c.score!=null).sort((a,b)=>b.score-a.score).slice(0,2);
+  document.getElementById('cprev').innerHTML=`<div class="cpj">${j.title}</div><div class="cps">${jc.length} Candidates Submitted</div>${jc.map(c=>`<div class="cpr"><div class="cpav">${(c.name||'?')[0]}</div><div class="cpn">${c.name||'—'}<br><span style="font-size:9px;color:#9ca3af">${c.score}% Match</span></div><span class="cpsc">${c.score}%</span><div class="cpa"><button class="cpb ap">Approve</button><button class="cpb iv">Interview</button><button class="cpb rj">Reject</button></div></div>`).join('')}`;
 }
-
-function renderClientPortalPreview(){
-  const recent=jobs.slice(0,1);
-  if(!recent.length){document.getElementById('clientPortalPreview').innerHTML='<div class="empty">No jobs yet</div>';return;}
-  const j=recent[0];
-  const jcands=cands.filter(c=>c.job_id===j.id&&c.score!=null).sort((a,b)=>b.score-a.score).slice(0,2);
-  document.getElementById('clientPortalPreview').innerHTML=`
-    <div class="cp-job">${j.title||'Job'}</div>
-    <div class="cp-sub">${jcands.length} Candidates Submitted</div>
-    ${jcands.map(c=>`<div class="cp-cand-row">
-      <div class="cp-avatar">${(c.name||'?')[0]}</div>
-      <div class="cp-name">${c.name||'—'}<br><span style="font-size:9px;color:#9ca3af">${c.score}% Match</span></div>
-      <span class="cp-match">${c.score}%</span>
-      <div class="cp-actions">
-        <button class="cp-btn cp-approve">Approve</button>
-        <button class="cp-btn cp-interview">Interview</button>
-        <button class="cp-btn cp-reject">Reject</button>
-      </div>
-    </div>`).join('')}`;
+let ci=null;
+function rChart(){
+  const ctx=document.getElementById('achrt').getContext('2d');
+  const n=cds.length;
+  const d=['W1','W2','W3','W4','W5','W6'].map(()=>Math.round(n*0.4+Math.random()*n*0.6));
+  if(ci)ci.destroy();
+  ci=new Chart(ctx,{type:'line',data:{labels:['W1','W2','W3','W4','W5','W6'],datasets:[{data:d,borderColor:'#1a73e8',backgroundColor:'rgba(26,115,232,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#1a73e8',borderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:9}}},y:{grid:{color:'#f1f5f9'},ticks:{font:{size:9}}}}}});
 }
-
-let chartInst=null;
-function renderChart(){
-  const ctx=document.getElementById('analyticsChart').getContext('2d');
-  const labels=['W1','W2','W3','W4','W5','W6'];
-  const total=cands.length;
-  const data=labels.map((_,i)=>Math.round(total*0.5+Math.random()*total*0.5));
-  if(chartInst)chartInst.destroy();
-  chartInst=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:'#1a73e8',backgroundColor:'rgba(26,115,232,0.08)',fill:true,tension:0.4,pointRadius:3,pointBackgroundColor:'#1a73e8',borderWidth:2}]},options:{plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{font:{size:10}}},y:{grid:{color:'#f1f5f9'},ticks:{font:{size:10}}}}}});
-  const placed=cands.filter(c=>c.status==='placed').length;
-  const sched=cands.filter(c=>c.status==='scheduled').length;
-  document.getElementById('placementRatio').textContent=(sched>0?Math.round(placed/sched*100):36)+'%';
+function gi(n){return n?n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';}
+function pc(p){return p==='Growth'?'pg':p==='Pro'?'pp':'ps';}
+function rClients(){
+  const g=document.getElementById('clGrid');
+  if(!cls.length){g.innerHTML='<div class="empty">No clients yet. Click + Add Client.</div>';return;}
+  g.innerHTML=cls.map((c,i)=>{const cc=cds.filter(x=>x.client_id===c.id);return`<div class="clc"><div class="cct"><div style="display:flex;gap:10px;align-items:flex-start"><div class="cca" style="background:${clrs[i%clrs.length]}">${gi(c.name)}</div><div><div class="ccn">${c.name||'—'}</div><div class="cce">${c.email||'—'}</div></div></div><span class="pb ${pc(c.plan)}">${c.plan||'Starter'}</span></div><div class="ccs"><div><div class="csn">${cc.length}</div><div class="csl">Candidates</div></div><div><div class="csn">${cc.filter(x=>x.status==='shortlisted').length}</div><div class="csl">Shortlisted</div></div><div><div class="csn">${cc.filter(x=>x.status==='scheduled').length}</div><div class="csl">Scheduled</div></div></div><div class="cac"><button class="bv" onclick="vcl('${c.id}','${(c.name||'').replace(/'/g,"\'")}')">&#128101; View Candidates</button><button class="br" onclick="rcl('${c.id}')">&#128465; Remove</button></div></div>`;}).join('');
 }
-
-const colors=['#db4437','#1a73e8','#0f9d58','#f4b400','#9c27b0'];
-function getInits(n){return n?n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';}
-function planCls(p){return p==='Growth'?'plan-growth':p==='Pro'?'plan-pro':'plan-starter';}
-
-function renderClients(){
-  const g=document.getElementById('clientsGrid');
-  if(!clients.length){g.innerHTML='<div class="empty">No clients yet. Click + Add Client.</div>';return;}
-  g.innerHTML=clients.map((c,i)=>{
-    const cc=cands.filter(x=>x.client_id===c.id);
-    return`<div class="client-card">
-      <div class="cc-top">
-        <div style="display:flex;gap:10px;align-items:flex-start">
-          <div class="cc-avatar" style="background:${colors[i%colors.length]}">${getInits(c.name)}</div>
-          <div><div class="cc-name">${c.name||'—'}</div><div class="cc-email">${c.email||'—'}</div></div>
-        </div>
-        <span class="plan-badge ${planCls(c.plan)}">${c.plan||'Starter'}</span>
-      </div>
-      <div class="cc-stats">
-        <div><div class="cs-num">${cc.length}</div><div class="cs-label">Candidates</div></div>
-        <div><div class="cs-num">${cc.filter(x=>x.status==='shortlisted').length}</div><div class="cs-label">Shortlisted</div></div>
-        <div><div class="cs-num">${cc.filter(x=>x.status==='scheduled').length}</div><div class="cs-label">Scheduled</div></div>
-      </div>
-      <div class="cc-actions">
-        <button class="btn-view" onclick="viewClientCands('${c.id}','${(c.name||'').replace(/'/g,"\'")}')">&#128101; View Candidates</button>
-        <button class="btn-remove" onclick="removeClient('${c.id}')">&#128465; Remove</button>
-      </div>
-    </div>`}).join('');
-}
-
-function viewClientCands(id,name){
-  switchTab('candidates',document.querySelectorAll('.sb-item')[2]);
-  document.getElementById('candTabTitle').textContent='Candidates — '+name;
-  renderCands(cands.filter(c=>c.client_id===id));
-}
-
-function scC(s){if(s==null)return '';return s>=80?'sh':s>=60?'sm':'sl';}
-function stC(s){return s==='shortlisted'?'ss':s==='scheduled'?'sc':s==='rejected'?'sr':'sn';}
-function waL(ph,name,job){const p=(ph||'').replace(/[^0-9]/g,'');const m=encodeURIComponent('Hi '+name+', you have been shortlisted for '+job+'. Please share your availability for a call. - SamparkAI');return 'https://wa.me/'+p+'?text='+m;}
-const waI=`<svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-
-function renderCands(data){
-  const b=document.getElementById('candsBody');
+function vcl(id,name){sw('candidates',document.querySelectorAll('.si')[2]);document.getElementById('candTT').textContent='Candidates — '+name;rCands(cds.filter(c=>c.client_id===id));}
+function scc(s){if(s==null)return '';return s>=80?'sh':s>=60?'sm':'sl';}
+function stc(s){return s==='shortlisted'?'ss':s==='scheduled'?'sc2':s==='rejected'?'sr':'sn';}
+function wal(ph,nm,jb){const p=(ph||'').replace(/[^0-9]/g,'');const m=encodeURIComponent('Hi '+nm+', you have been shortlisted for '+jb+'. Please share your availability for a call. - SamparkAI');return 'https://wa.me/'+p+'?text='+m;}
+const wai=`<svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+function rCands(data){
+  const b=document.getElementById('cBody');
   if(!data||!data.length){b.innerHTML='<tr><td colspan="6" style="text-align:center;padding:28px;color:#9ca3af">No candidates found.</td></tr>';return;}
-  b.innerHTML=data.map(c=>`<tr>
-    <td><div style="font-weight:700">${c.name||'—'}</div><div style="font-size:10px;color:#9ca3af">${c.email||''}</div></td>
-    <td style="font-size:11px">${c.job_title||'—'}</td>
-    <td style="font-size:11px">${clients.find(x=>x.id===c.client_id)?.name||'—'}</td>
-    <td><span class="score-badge ${scC(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td>
-    <td><span class="status-pill ${stC(c.status)}">${c.status||'new'}</span></td>
-    <td>${c.phone?`<a class="wa-btn" href="${waL(c.phone,c.name,c.job_title)}" target="_blank">${waI} WhatsApp</a>`:'—'}</td>
-  </tr>`).join('');
+  b.innerHTML=data.map(c=>`<tr><td><div style="font-weight:700">${c.name||'—'}</div><div style="font-size:10px;color:#9ca3af">${c.email||''}</div></td><td style="font-size:11px">${c.job_title||'—'}</td><td style="font-size:11px">${cls.find(x=>x.id===c.client_id)?.name||'—'}</td><td><span class="sb2 ${scc(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td><td><span class="sp ${stc(c.status)}">${c.status||'new'}</span></td><td>${c.phone?`<a class="wa" href="${wal(c.phone,c.name,c.job_title)}" target="_blank">${wai} WhatsApp</a>`:'—'}</td></tr>`).join('');
 }
-
-function filterCands(){
-  const q=document.getElementById('searchQ').value.toLowerCase();
-  renderCands(cands.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.job_title||'').toLowerCase().includes(q)||(clients.find(x=>x.id===c.client_id)?.name||'').toLowerCase().includes(q)));
+function filterC(){const q=document.getElementById('srchQ').value.toLowerCase();rCands(cds.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.job_title||'').toLowerCase().includes(q)||(cls.find(x=>x.id===c.client_id)?.name||'').toLowerCase().includes(q)));}
+function rJobs(){
+  const b=document.getElementById('jBody');
+  if(!jbs.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:28px;color:#9ca3af">No jobs yet.</td></tr>';return;}
+  b.innerHTML=jbs.map(j=>`<tr><td><div style="font-weight:700">${j.title||'—'}</div></td><td style="font-size:11px">${cls.find(x=>x.id===j.client_id)?.name||'—'}</td><td>${cds.filter(c=>c.job_id===j.id).length}</td><td>${cds.filter(c=>c.job_id===j.id&&c.status==='shortlisted').length}</td><td><a href="https://sampark-ai-theta.vercel.app/chatbot.html?job=${j.id}" target="_blank" style="color:#1a73e8;font-size:11px;font-weight:700">&#128279; Copy Link</a></td></tr>`).join('');
 }
-
-function renderJobs(){
-  const b=document.getElementById('jobsBody');
-  if(!jobs.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:28px;color:#9ca3af">No jobs yet.</td></tr>';return;}
-  b.innerHTML=jobs.map(j=>`<tr>
-    <td><div style="font-weight:700">${j.title||'—'}</div></td>
-    <td style="font-size:11px">${clients.find(x=>x.id===j.client_id)?.name||'—'}</td>
-    <td>${cands.filter(c=>c.job_id===j.id).length}</td>
-    <td>${cands.filter(c=>c.job_id===j.id&&c.status==='shortlisted').length}</td>
-    <td><a href="https://sampark-ai-theta.vercel.app/chatbot.html?job=${j.id}" target="_blank" style="color:#1a73e8;font-size:11px;font-weight:700">🔗 Copy Link</a></td>
-  </tr>`).join('');
+function rIntvs(){
+  const data=cds.filter(c=>c.status==='scheduled');
+  const b=document.getElementById('iBody');
+  if(!data.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:28px;color:#9ca3af">No interviews scheduled.</td></tr>';return;}
+  b.innerHTML=data.map(c=>`<tr><td><div style="font-weight:700">${c.name||'—'}</div></td><td style="font-size:11px">${c.job_title||'—'}</td><td style="font-size:11px">${cls.find(x=>x.id===c.client_id)?.name||'—'}</td><td><span class="sb2 ${scc(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td><td>${c.phone?`<a class="wa" href="${wal(c.phone,c.name,c.job_title)}" target="_blank">${wai} WhatsApp</a>`:'—'}</td></tr>`).join('');
 }
-
-function renderInterviews(){
-  const scheduled=cands.filter(c=>c.status==='scheduled');
-  const b=document.getElementById('interviewsBody');
-  if(!scheduled.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:28px;color:#9ca3af">No interviews scheduled.</td></tr>';return;}
-  b.innerHTML=scheduled.map(c=>`<tr>
-    <td><div style="font-weight:700">${c.name||'—'}</div></td>
-    <td style="font-size:11px">${c.job_title||'—'}</td>
-    <td style="font-size:11px">${clients.find(x=>x.id===c.client_id)?.name||'—'}</td>
-    <td><span class="score-badge ${scC(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td>
-    <td>${c.phone?`<a class="wa-btn" href="${waL(c.phone,c.name,c.job_title)}" target="_blank">${waI} WhatsApp</a>`:'—'}</td>
-  </tr>`).join('');
+function rTalent(){
+  const b=document.getElementById('tBody');
+  if(!cds.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:28px;color:#9ca3af">No candidates yet.</td></tr>';return;}
+  b.innerHTML=cds.slice(0,20).map(c=>`<tr><td><div style="font-weight:700">${c.name||'—'}</div><div style="font-size:10px;color:#9ca3af">${c.email||''}</div></td><td style="font-size:11px">${c.job_title||'—'}</td><td><span class="sb2 ${scc(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td><td><span class="sp ${stc(c.status)}">${c.status||'new'}</span></td><td>${c.phone?`<a class="wa" href="${wal(c.phone,c.name,c.job_title)}" target="_blank">${wai} WhatsApp</a>`:'—'}</td></tr>`).join('');
 }
-
-function renderTalent(){
-  const b=document.getElementById('talentBody');
-  if(!cands.length){b.innerHTML='<tr><td colspan="5" style="text-align:center;padding:28px;color:#9ca3af">No candidates yet.</td></tr>';return;}
-  b.innerHTML=cands.slice(0,20).map(c=>`<tr>
-    <td><div style="font-weight:700">${c.name||'—'}</div><div style="font-size:10px;color:#9ca3af">${c.email||''}</div></td>
-    <td style="font-size:11px">${c.job_title||'—'}</td>
-    <td><span class="score-badge ${scC(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td>
-    <td><span class="status-pill ${stC(c.status)}">${c.status||'new'}</span></td>
-    <td>${c.phone?`<a class="wa-btn" href="${waL(c.phone,c.name,c.job_title)}" target="_blank">${waI} WhatsApp</a>`:'—'}</td>
-  </tr>`).join('');
+function rAnalytics(){
+  const sc=cds.filter(c=>c.score!=null);
+  const avg=sc.length?Math.round(sc.reduce((a,b)=>a+b.score,0)/sc.length):0;
+  document.getElementById('anS').textContent=cds.length;
+  document.getElementById('anSh').textContent=cds.filter(c=>c.status==='shortlisted').length;
+  document.getElementById('anA').textContent=avg+'%';
+  document.getElementById('anC').textContent=cls.length;
+  document.getElementById('anJ').textContent=jbs.length;
 }
-
-function renderAnalytics(){
-  const short=cands.filter(c=>c.status==='shortlisted').length;
-  const scores=cands.filter(c=>c.score!=null).map(c=>c.score);
-  const avg=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length):0;
-  document.getElementById('an-screened').textContent=cands.length;
-  document.getElementById('an-short').textContent=short;
-  document.getElementById('an-avg').textContent=avg+'%';
-  document.getElementById('an-clients').textContent=clients.length;
-  document.getElementById('an-jobs').textContent=jobs.length;
-}
-
-async function addClient(){
-  const name=document.getElementById('m-name').value.trim();
-  const email=document.getElementById('m-email').value.trim();
-  const phone=document.getElementById('m-phone').value.trim();
-  const plan=document.getElementById('m-plan').value;
+async function addCl(){
+  const name=document.getElementById('mn').value.trim();
+  const email=document.getElementById('me').value.trim();
+  const phone=document.getElementById('mp').value.trim();
+  const plan=document.getElementById('mpl').value;
   if(!name||!email){alert('Name and email required.');return;}
-  const r=await fetch(S+'/rest/v1/clients',{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+token,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({name,email,phone,plan})});
-  if(r.ok){document.getElementById('overlay').classList.remove('show');load();}
-  else alert('Error. Try again.');
+  const r=await fetch(S+'/rest/v1/clients',{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+tok,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({name,email,phone,plan})});
+  if(r.ok){document.getElementById('ov').classList.remove('show');load();}else alert('Error. Try again.');
 }
-
-async function removeClient(id){
+async function rcl(id){
   if(!confirm('Remove this client?'))return;
-  await fetch(S+'/rest/v1/clients?id=eq.'+id,{method:'DELETE',headers:{'apikey':K,'Authorization':'Bearer '+token}});
-  load();
+  await fetch(S+'/rest/v1/clients?id=eq.'+id,{method:'DELETE',headers:{'apikey':K,'Authorization':'Bearer '+tok}});load();
 }
-
-function switchTab(name,el){
-  document.querySelectorAll('.sb-item').forEach(i=>i.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  const titles={dashboard:'Dashboard',clients:'Clients',candidates:'All Candidates',jobs:'Jobs & Links',interviews:'Interviews',talentpool:'Talent Pool',analytics:'Analytics'};
-  document.getElementById('pageTitle').textContent=titles[name]||'Dashboard';
+function sw(name,el){
+  document.querySelectorAll('.si').forEach(i=>i.classList.remove('active'));el.classList.add('active');
+  document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));document.getElementById('tc-'+name).classList.add('active');
+  const tt={dashboard:'Dashboard',clients:'Clients',candidates:'All Candidates',jobs:'Jobs & Links',interviews:'Interviews',talentpool:'Talent Pool',analytics:'Analytics'};
+  document.getElementById('pgTitle').textContent=tt[name]||'Dashboard';
 }
-
-function showModal(){document.getElementById('overlay').classList.add('show');}
-function hideModal(e){if(e.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('show');}
+function showModal(){document.getElementById('ov').classList.add('show');}
+function hm(e){if(e.target===document.getElementById('ov'))document.getElementById('ov').classList.remove('show');}
 function signOut(){localStorage.clear();window.location.href='client-portal.html';}
 load();
 </script></body></html>
