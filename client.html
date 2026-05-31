@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en"><head>
+<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SamparkAI — Recruiter Portal</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
@@ -7,125 +6,146 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#f1f5f9;color:#0d1b2a;display:flex;min-height:100vh;font-size:14px}
 .sb{width:210px;background:#0d1b2a;display:flex;flex-direction:column;flex-shrink:0;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
-.sb-logo{padding:18px 16px 14px;border-bottom:1px solid #1e3a5f;display:flex;align-items:center;gap:8px}
+.sb-logo{padding:16px 14px 12px;border-bottom:1px solid #1e3a5f;display:flex;align-items:center;gap:8px}
 .sb-logo svg{width:28px;height:28px;flex-shrink:0}
 .sb-lt{font-size:14px;font-weight:800;color:#fff}.sb-lt span{color:#db4437}
-.sb-sub{font-size:10px;color:#475569;margin-top:1px}
-.sb-nav{padding:10px 8px;flex:1}
+.sb-sub{font-size:9px;color:#475569;margin-top:1px}
+.sb-nav{padding:8px 8px;flex:1}
 .sb-sec{font-size:9px;font-weight:700;color:#334155;letter-spacing:1.5px;text-transform:uppercase;padding:10px 8px 4px}
-.si{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:8px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;margin-bottom:1px;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.si{display:flex;align-items:center;gap:8px;padding:9px 10px;border-radius:8px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;margin-bottom:1px;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
 .si:hover{background:#1e3a5f;color:#e2e8f0}.si.active{background:#1e3a5f;color:#fff}
 .si svg{width:14px;height:14px;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.sb-bottom{padding:12px;border-top:1px solid #1e3a5f}
-.sb-profile{background:#111f30;border-radius:12px;padding:14px;margin-bottom:10px;text-align:center}
-.sb-photo{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:#fff;margin:0 auto 8px;border:2px solid #1e3a5f}
-.sb-pname{font-size:12px;font-weight:800;color:#e2e8f0;margin-bottom:2px}
-.sb-pemail{font-size:10px;color:#475569;word-break:break-all}
-.sb-out{width:100%;background:transparent;color:#475569;border:1px solid #1e3a5f;padding:6px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px}
+.sb-profile{padding:12px;border-top:1px solid #1e3a5f}
+.sb-card{background:#111f30;border-radius:10px;padding:12px;text-align:center;margin-bottom:8px}
+.sb-av{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;margin:0 auto 6px;border:2px solid #1e3a5f}
+.sb-nm{font-size:11px;font-weight:800;color:#e2e8f0;margin-bottom:2px}
+.sb-em{font-size:9px;color:#475569;word-break:break-all}
+.sb-out{width:100%;background:transparent;color:#475569;border:1px solid #1e3a5f;padding:6px;border-radius:7px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit}
 .main{margin-left:210px;flex:1;display:flex;flex-direction:column;min-width:0}
 .topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .tb-title{font-size:16px;font-weight:800}
 .tb-right{display:flex;align-items:center;gap:10px}
-.tb-photo{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff}
-.tb-info{text-align:right}
-.tb-un{font-size:12px;font-weight:700;color:#0d1b2a}
-.tb-ur{font-size:10px;color:#94a3b8}
-.btn-primary{background:#db4437;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-.btn-secondary{background:#0d1b2a;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;margin-left:8px}
+.tb-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.tb-nm{font-size:12px;font-weight:700;color:#0d1b2a}
+.tb-em{font-size:10px;color:#94a3b8}
 .content{padding:20px 24px;flex:1}
 .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
 .sc{background:#fff;border-radius:12px;padding:16px 18px;border:1px solid #e5e7eb;position:relative;overflow:hidden}
-.sc::after{content:'';position:absolute;top:0;right:0;width:4px;height:100%;border-radius:0 12px 12px 0}
-.sc.bl::after{background:#1a73e8}.sc.gr::after{background:#0f9d58}.sc.am::after{background:#f4b400}.sc.pu::after{background:#9c27b0}
+.sc::after{content:'';position:absolute;top:0;right:0;width:4px;height:100%}
+.sc.bl::after{background:#1a73e8}.sc.gr::after{background:#0f9d58}.sc.am::after{background:#f4b400}.sc.pu::after{background:#9c27b0}.sc.re::after{background:#db4437}
 .sc-lbl{font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.8px;text-transform:uppercase;margin-bottom:8px}
-.sc-num{font-size:28px;font-weight:800;color:#0d1b2a;line-height:1}
-/* CLIENT CARDS (recruiter's own clients) */
-.clg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px}
-.clc{background:#fff;border-radius:14px;padding:20px;border:1px solid #e5e7eb;transition:all .2s;cursor:pointer}
-.clc:hover{box-shadow:0 6px 20px rgba(0,0,0,.08);transform:translateY(-2px);border-color:#1a73e8}
-.clc.sel{border:2px solid #1a73e8;background:#f0f7ff}
-.clc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.clc-photo{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
-.clc-name{font-size:14px;font-weight:800;color:#0d1b2a;margin-bottom:2px}
-.clc-email{font-size:11px;color:#6b7280}
-.clc-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;padding:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;margin-bottom:12px}
-.cls-num{font-size:18px;font-weight:800;color:#0d1b2a}
-.cls-lbl{font-size:9px;color:#9ca3af;margin-top:1px}
-.clc-action{display:flex;gap:6px}
-.btn-sm{flex:1;padding:7px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;border:none}
-.btn-view{background:#f1f5f9;color:#0d1b2a}
-.btn-view:hover{background:#e2e8f0}
-/* JOB CARDS */
-.jg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
-.jc{background:#fff;border-radius:14px;padding:18px;border:1px solid #e5e7eb;cursor:pointer;transition:all .2s}
-.jc:hover{border-color:#0d1b2a;transform:translateY(-2px)}
-.jc.sel{border:2px solid #1a73e8;background:#f0f7ff}
-.jct{font-size:13px;font-weight:800;margin-bottom:4px}
-.jcd{font-size:11px;color:#9ca3af;margin-bottom:12px}
-.jcs{display:flex;gap:14px}
-.jci{text-align:center}.jcn{font-size:16px;font-weight:800}.jcl{font-size:9px;color:#9ca3af;margin-top:1px}
-/* CANDIDATE CARDS */
-.cg{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.cc{background:#fff;border-radius:14px;padding:18px;border:1px solid #e5e7eb;transition:all .2s}
-.cc:hover{box-shadow:0 4px 14px rgba(0,0,0,.07);transform:translateY(-2px)}
-.cc-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
-.cc-photo{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
-.cc-info{flex:1;min-width:0}
-.cc-name{font-size:13px;font-weight:800;color:#0d1b2a;margin-bottom:2px}
-.cc-email{font-size:10px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.sc2{font-size:20px;font-weight:800;line-height:1}
-.sc2-sub{font-size:8px;color:#9ca3af;text-align:center}
-.cc-mid{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;margin-bottom:10px}
-.status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
-.sn{background:#e0f2fe;color:#0369a1}.ss{background:#dcfce7;color:#166534}.sc3{background:#fef9c3;color:#854d0e}.sr{background:#fee2e2;color:#991b1b}
-.cc-sum{font-size:10px;color:#6b7280;line-height:1.5;margin-bottom:10px;min-height:28px}
-.cc-acts{display:flex;gap:5px}
-.wa-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:4px;background:#25D366;color:#fff;border:none;padding:7px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
-.act-sl{background:#dcfce7;color:#166534;border:none;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit}
-.act-rj{background:#fee2e2;color:#991b1b;border:none;padding:7px 10px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit}
-.tc{display:none}.tc.active{display:block}
+.sc-num{font-size:28px;font-weight:800;color:#0d1b2a;line-height:1;margin-bottom:4px}
+.sc-ch{font-size:11px;font-weight:600;color:#0f9d58}
 .sh-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .sh-t{font-size:17px;font-weight:800}.sh-s{font-size:11px;color:#9ca3af;margin-top:2px}
-.empty{text-align:center;padding:40px;color:#9ca3af;font-size:13px}
+.btn-p{background:#db4437;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-s{background:#0d1b2a;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+/* CARDS */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card-box{background:#fff;border-radius:14px;padding:20px;border:1px solid #e5e7eb;transition:all .2s}
+.card-box:hover{box-shadow:0 6px 20px rgba(0,0,0,.08);transform:translateY(-2px)}
+.card-box.sel{border:2px solid #1a73e8;background:#f0f7ff}
+/* CLIENT/JOB CARD */
+.cc-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.cc-av{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.cc-nm{font-size:14px;font-weight:800;color:#0d1b2a;margin-bottom:2px}
+.cc-em{font-size:11px;color:#6b7280}
+.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;padding:10px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;margin-bottom:12px}
+.cs-n{font-size:18px;font-weight:800;color:#0d1b2a}
+.cs-l{font-size:9px;color:#9ca3af;margin-top:1px}
+.cc-actions{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.btn-view{background:#f1f5f9;color:#0d1b2a;border:none;padding:7px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-view:hover{background:#e2e8f0}
+.btn-del{background:#fff5f5;color:#dc2626;border:1px solid #fecaca;padding:7px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit}
+/* CANDIDATE CARD */
+.cand-card{background:#fff;border-radius:14px;padding:18px;border:1px solid #e5e7eb;transition:all .2s}
+.cand-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.07);transform:translateY(-2px)}
+.cand-top{display:flex;align-items:flex-start;gap:10px;margin-bottom:12px}
+.cand-av{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
+.cand-info{flex:1;min-width:0}
+.cand-nm{font-size:13px;font-weight:800;color:#0d1b2a;margin-bottom:2px}
+.cand-em{font-size:10px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cand-job{font-size:10px;color:#6b7280;margin-top:2px}
+.score-box{text-align:center;flex-shrink:0}
+.score-big{font-size:20px;font-weight:800;line-height:1}
+.score-sub{font-size:8px;color:#9ca3af}
+.cand-mid{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid #f1f5f9;border-bottom:1px solid #f1f5f9;margin-bottom:10px}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700}
+.sn{background:#e0f2fe;color:#0369a1}.ss{background:#dcfce7;color:#166534}.sc2{background:#fef9c3;color:#854d0e}.sr{background:#fee2e2;color:#991b1b}.spl{background:#f3e8ff;color:#6b21a8}
+.sh{background:#dcfce7;color:#166534}.sm{background:#fef9c3;color:#854d0e}.sl{background:#fee2e2;color:#991b1b}
+.cand-sum{font-size:10px;color:#6b7280;line-height:1.5;margin-bottom:10px;min-height:28px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.cand-acts{display:flex;gap:5px;flex-wrap:wrap}
+.wa-btn{display:inline-flex;align-items:center;gap:4px;background:#25D366;color:#fff;border:none;padding:6px 10px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
+.act-sl{background:#dcfce7;color:#166534;border:none;padding:6px 10px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit}
+.act-rj{background:#fee2e2;color:#991b1b;border:none;padding:6px 10px;border-radius:8px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit}
+/* TABLE */
+.tw{background:#fff;border-radius:14px;border:1px solid #e5e7eb;overflow:hidden;margin-bottom:16px}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 16px;text-align:left;font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.8px;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid #e5e7eb}
+td{padding:12px 16px;font-size:12px;color:#374151;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#f9fafb}
+/* FUNNEL/CHART CARDS */
+.mg2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.bg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+.card{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid #e5e7eb}
+.ct{font-size:13px;font-weight:800;color:#0d1b2a;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+.ct a{font-size:11px;color:#1a73e8;font-weight:600;text-decoration:none}
+.fr{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.fl{font-size:11px;color:#6b7280;width:82px;flex-shrink:0}
+.fb{flex:1;height:24px;background:#f1f5f9;border-radius:5px;overflow:hidden}
+.ff{height:100%;border-radius:5px}
+.fv{font-size:11px;font-weight:700;color:#0d1b2a;width:36px;text-align:right;flex-shrink:0}
+.jr{display:flex;align-items:center;padding:7px 0;border-bottom:1px solid #f1f5f9}
+.jr:last-child{border-bottom:none}
+.ji{flex:1;min-width:0}.jn{font-size:12px;font-weight:700}.js{font-size:10px;color:#9ca3af}
+.jbw{width:80px;height:4px;background:#f1f5f9;border-radius:2px;margin:0 10px;flex-shrink:0}
+.jbf{height:100%;border-radius:2px;background:#1a73e8}
+.jco{font-size:11px;font-weight:700;width:76px;text-align:right;flex-shrink:0}
+.cr2{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f1f5f9}
+.cr2:last-child{border-bottom:none}
+.cav2{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+.rb{font-size:32px;font-weight:800;color:#0d1b2a}
+.rc2{font-size:11px;color:#0f9d58;font-weight:600;margin-top:2px}
+/* MODAL */
 .ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center}
 .ov.show{display:flex}
-.mo{background:#fff;border-radius:18px;padding:28px;width:100%;max-width:440px}
+.mo{background:#fff;border-radius:18px;padding:28px;width:100%;max-width:460px}
 .mo h3{font-size:16px;font-weight:800;margin-bottom:16px}
 .mo label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:4px;margin-top:12px}
 .mo input,.mo select,.mo textarea{width:100%;padding:10px 13px;border:1.5px solid #e5e7eb;border-radius:9px;font-size:13px;font-family:inherit;outline:none}
 .mo textarea{resize:vertical;min-height:80px}
 .ma{display:flex;gap:8px;margin-top:18px}
-.ms{flex:1;background:#0d1b2a;color:#fff;border:none;padding:11px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.mc{flex:1;background:#f1f5f9;color:#374151;border:none;padding:11px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.ms{flex:1;background:#0d1b2a;color:#fff;border:none;padding:12px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.mc{flex:1;background:#f1f5f9;color:#374151;border:none;padding:12px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
+.tc{display:none}.tc.active{display:block}
+.empty{text-align:center;padding:40px;color:#9ca3af;font-size:13px}
+.logo-svg{display:block}
 </style></head><body>
 
 <div class="sb">
-  <div class="sb-logo">
-    <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#1a73e8"/>
-      <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#db4437"/>
-      <polygon points="4,18 12,18 12,26 20,26 20,36 4,36" fill="#f4b400"/>
-      <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#0f9d58"/>
-    </svg>
-    <div><div class="sb-lt">Sampark<span>AI</span></div><div class="sb-sub">Recruiter Portal</div></div>
-  </div>
+  <div class="sb-logo"><svg class="logo-svg" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#1a73e8"/>
+  <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#db4437"/>
+  <polygon points="4,18 12,18 12,26 20,26 20,36 4,36" fill="#f4b400"/>
+  <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#0f9d58"/>
+</svg><div><div class="sb-lt">Sampark<span>AI</span></div><div class="sb-sub">Recruiter Portal</div></div></div>
   <div class="sb-nav">
     <div class="sb-sec">Main</div>
     <button class="si active" onclick="sw('dashboard',this)"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>Dashboard</button>
-    <button class="si" onclick="sw('clients',this)"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>My Clients</button>
     <button class="si" onclick="sw('jobs',this)"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>Jobs</button>
-    <button class="si" onclick="sw('candidates',this)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>All Candidates</button>
+    <button class="si" onclick="sw('all',this)"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>All Candidates</button>
     <button class="si" onclick="sw('shortlisted',this)"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Shortlisted</button>
     <button class="si" onclick="sw('scheduled',this)"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>Scheduled</button>
     <div class="sb-sec">Create</div>
-    <button class="si" onclick="showModal('client')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>+ Add Client</button>
-    <button class="si" onclick="showModal('job')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>+ Create Job</button>
+    <button class="si" onclick="openMo('job')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>+ Create Job</button>
+    <button class="si" onclick="openMo('client')"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>+ Add Client</button>
   </div>
-  <div class="sb-bottom">
-    <div class="sb-profile">
-      <div class="sb-photo" id="sbPhoto" style="background:#1a73e8">?</div>
-      <div class="sb-pname" id="sbName">Recruiter</div>
-      <div class="sb-pemail" id="sbEmail">Loading...</div>
+  <div class="sb-profile">
+    <div class="sb-card">
+      <div class="sb-av" id="sbAv" style="background:#1a73e8">?</div>
+      <div class="sb-nm" id="sbNm">Recruiter</div>
+      <div class="sb-em" id="sbEm">Loading...</div>
     </div>
     <button class="sb-out" onclick="signOut()">Sign Out</button>
   </div>
@@ -135,11 +155,8 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f1f5f9;color:#0d1b2a
   <div class="topbar">
     <div class="tb-title" id="pgT">Dashboard</div>
     <div class="tb-right">
-      <div class="tb-photo" id="tbPhoto" style="background:#1a73e8">?</div>
-      <div class="tb-info">
-        <div class="tb-un" id="tbName">Recruiter</div>
-        <div class="tb-ur" id="tbEmail">Loading...</div>
-      </div>
+      <div class="tb-av" id="tbAv" style="background:#1a73e8">?</div>
+      <div><div class="tb-nm" id="tbNm">Recruiter</div><div class="tb-em" id="tbEm">Loading...</div></div>
     </div>
   </div>
   <div class="content">
@@ -147,308 +164,262 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:#f1f5f9;color:#0d1b2a
     <!-- DASHBOARD -->
     <div id="tc-dashboard" class="tc active">
       <div class="sg">
-        <div class="sc bl"><div class="sc-lbl">My Clients</div><div class="sc-num" id="sCl">—</div></div>
-        <div class="sc gr"><div class="sc-lbl">Total Candidates</div><div class="sc-num" id="sCa">—</div></div>
-        <div class="sc am"><div class="sc-lbl">Shortlisted</div><div class="sc-num" id="sSh">—</div></div>
+        <div class="sc bl"><div class="sc-lbl">Total Candidates</div><div class="sc-num" id="sCa">—</div></div>
+        <div class="sc gr"><div class="sc-lbl">Shortlisted</div><div class="sc-num" id="sSh">—</div></div>
+        <div class="sc am"><div class="sc-lbl">Scheduled</div><div class="sc-num" id="sSc">—</div></div>
         <div class="sc pu"><div class="sc-lbl">Active Jobs</div><div class="sc-num" id="sJb">—</div></div>
       </div>
       <div class="sh-head">
-        <div><div class="sh-t">My Clients</div><div class="sh-s">Click a client to view their candidate pipeline</div></div>
-        <button class="btn-primary" onclick="showModal('client')">+ Add Client</button>
+        <div><div class="sh-t">Your Jobs</div><div class="sh-s">Click a job to see its candidates</div></div>
+        <button class="btn-p" onclick="openMo('job')">+ Create Job</button>
       </div>
-      <div class="clg" id="clGrid"><div class="empty">Loading clients...</div></div>
-      <div id="clientCands" style="display:none">
-        <div class="sh-head" style="margin-top:8px">
-          <div><div class="sh-t" id="clientCandsTitle">Candidates</div><div class="sh-s">AI-screened, ranked by score</div></div>
-          <button class="btn-secondary" onclick="showModal('job')">+ Create Job for this Client</button>
-        </div>
-        <div class="cg" id="clientCandsGrid"></div>
+      <div class="grid3" id="jobCardsD"><div class="empty">Loading...</div></div>
+      <div id="jobCandsWrap" style="display:none;margin-top:20px">
+        <div class="sh-head"><div><div class="sh-t" id="jobCandsT">Candidates</div><div class="sh-s">Ranked by AI score</div></div></div>
+        <div class="grid3" id="jobCandsGrid"></div>
       </div>
-    </div>
-
-    <!-- MY CLIENTS TAB -->
-    <div id="tc-clients" class="tc">
-      <div class="sh-head">
-        <div><div class="sh-t">My Clients</div><div class="sh-s">All clients you manage</div></div>
-        <button class="btn-primary" onclick="showModal('client')">+ Add Client</button>
-      </div>
-      <div class="clg" id="clGrid2"><div class="empty">Loading...</div></div>
     </div>
 
     <!-- JOBS TAB -->
     <div id="tc-jobs" class="tc">
       <div class="sh-head">
-        <div><div class="sh-t">Jobs</div><div class="sh-s">All jobs you have created</div></div>
-        <button class="btn-primary" onclick="showModal('job')">+ Create Job</button>
+        <div><div class="sh-t">Jobs</div><div class="sh-s">All your active jobs</div></div>
+        <button class="btn-p" onclick="openMo('job')">+ Create Job</button>
       </div>
-      <div class="jg" id="jobGrid"><div class="empty">Loading jobs...</div></div>
-      <div id="jobCands" style="display:none">
-        <div class="sh-head" style="margin-top:8px">
-          <div><div class="sh-t" id="jobCandsTitle">Candidates</div><div class="sh-s">Ranked by AI match score</div></div>
-        </div>
-        <div class="cg" id="jobCandsGrid"></div>
-      </div>
+      <div class="grid3" id="jobCardsJ"><div class="empty">Loading...</div></div>
     </div>
 
     <!-- ALL CANDIDATES -->
-    <div id="tc-candidates" class="tc">
-      <div class="sh-head"><div><div class="sh-t">All Candidates</div><div class="sh-s">Across all your jobs and clients</div></div></div>
-      <div class="cg" id="allCandsGrid"><div class="empty">Loading...</div></div>
+    <div id="tc-all" class="tc">
+      <div class="sh-head"><div><div class="sh-t">All Candidates</div><div class="sh-s">Across all your jobs</div></div></div>
+      <div class="grid3" id="allGrid"><div class="empty">Loading...</div></div>
     </div>
 
     <!-- SHORTLISTED -->
     <div id="tc-shortlisted" class="tc">
-      <div class="sh-head"><div><div class="sh-t">Shortlisted Candidates</div><div class="sh-s">Ready for client presentation</div></div></div>
-      <div class="cg" id="shortGrid"><div class="empty">No shortlisted candidates yet.</div></div>
+      <div class="sh-head"><div><div class="sh-t">Shortlisted</div><div class="sh-s">Approved for next steps</div></div></div>
+      <div class="grid3" id="shortGrid"><div class="empty">No shortlisted candidates yet.</div></div>
     </div>
 
     <!-- SCHEDULED -->
     <div id="tc-scheduled" class="tc">
       <div class="sh-head"><div><div class="sh-t">Scheduled Interviews</div></div></div>
-      <div class="cg" id="schedGrid"><div class="empty">No interviews scheduled yet.</div></div>
+      <div class="grid3" id="schedGrid"><div class="empty">No scheduled interviews yet.</div></div>
     </div>
 
   </div>
 </div>
 
 <!-- MODAL -->
-<div class="ov" id="ov" onclick="hm(event)">
-  <div class="mo" onclick="event.stopPropagation()">
-    <h3 id="moT">Add Client</h3>
-    <div id="moClientFields">
-      <label>Company / Client Name</label><input id="cName" placeholder="e.g. TechCorp HR"/>
-      <label>Contact Email</label><input id="cEmail" type="email" placeholder="hr@company.com"/>
-      <label>Phone</label><input id="cPhone" placeholder="+91 98000 00000"/>
-    </div>
-    <div id="moJobFields" style="display:none">
+<div class="ov" id="ov" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="mo">
+    <h3 id="moT">Create New Job</h3>
+    <div id="jobFields">
       <label>Job Title</label><input id="jTitle" placeholder="e.g. Senior Sales Executive"/>
-      <label>Client</label><select id="jClient"></select>
-      <label>Job Description</label><textarea id="jDesc" placeholder="Describe the role, requirements..."></textarea>
+      <label>Location</label><input id="jLoc" placeholder="e.g. Riyadh, KSA"/>
+      <label>Experience Required</label><input id="jExp" placeholder="e.g. 3-5 years"/>
+      <label>Job Description</label><textarea id="jDesc" placeholder="Describe the role and requirements..."></textarea>
     </div>
-    <div class="ma"><button class="mc" onclick="document.getElementById('ov').classList.remove('show')">Cancel</button><button class="ms" onclick="saveMo()">Save</button></div>
+    <div id="clientFields" style="display:none">
+      <label>Company Name</label><input id="cComp" placeholder="e.g. Gulf Logistics Co."/>
+      <label>Contact Person</label><input id="cCont" placeholder="Ahmed Khan"/>
+      <label>Email</label><input id="cEmail" type="email" placeholder="hr@company.com"/>
+      <label>Phone</label><input id="cPhone" placeholder="+966 5X XXX XXXX"/>
+    </div>
+    <div class="ma">
+      <button class="mc" onclick="document.getElementById('ov').classList.remove('show')">Cancel</button>
+      <button class="ms" onclick="saveMo()">Save</button>
+    </div>
   </div>
 </div>
 
 <script>
+
 const S="https://sebghpbyykplkoootzdg.supabase.co";
 const K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
 const tok=localStorage.getItem('sb_token');
-const em=localStorage.getItem('sb_email');
-if(!tok){window.location.href='client-portal.html';}
-
-// Set profile info
-const initials=(em||'?')[0].toUpperCase();
-const dispName=em?em.split('@')[0].replace(/[._]/g,' ').replace(/\w/g,c=>c.toUpperCase()):'Recruiter';
-document.getElementById('sbPhoto').textContent=initials;
-document.getElementById('tbPhoto').textContent=initials;
-document.getElementById('sbName').textContent=dispName;
-document.getElementById('tbName').textContent=dispName;
-document.getElementById('sbEmail').textContent=em||'';
-document.getElementById('tbEmail').textContent=em||'';
-
-let myId=null,myCls=[],myJbs=[],myCds=[];
-const clrs=['#db4437','#1a73e8','#0f9d58','#f4b400','#9c27b0','#e91e63'];
+const userEmail=localStorage.getItem('sb_email');
 function api(p){return fetch(S+'/rest/v1/'+p,{headers:{'apikey':K,'Authorization':'Bearer '+tok}}).then(r=>r.json());}
-function fmtScore(s){if(s==null)return null;if(s<=1)return Math.round(s*10);if(s<=10)return Math.round(s);return Math.round(s/10);}
+function apiPost(p,body){return fetch(S+'/rest/v1/'+p,{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+tok,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify(body)}).then(r=>{if(!r.ok)throw new Error(r.status);return r.json();}));}
+function fmtScore(s){if(s==null)return null;if(s<=1)return+(s*10).toFixed(1);if(s<=10)return+s.toFixed(1);return+(s/10).toFixed(1);}
 function scoreDisp(s){const n=fmtScore(s);return n!=null?n+'/10':null;}
-function scc(s){const n=fmtScore(s)||0;return n>=8?'ss':n>=6?'sc3':'sr';}
-function stc(s){return s==='shortlisted'?'ss':s==='scheduled'?'sc3':s==='rejected'?'sr':'sn';}
+function scoreColor(s){const n=fmtScore(s)||0;return n>=8?'#0f9d58':n>=6?'#f4b400':'#db4437';}
+function scc(s){const n=fmtScore(s)||0;return n>=8?'sh':n>=6?'sm':'sl';}
+function stPill(s){const m={'shortlisted':'ss','scheduled':'sc2','rejected':'sr','placed':'spl'};return m[s]||'sn';}
 function gi(n){return n?n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';}
 function wal(ph,nm,jb){const p=(ph||'').replace(/[^0-9]/g,'');const m=encodeURIComponent('Hi '+nm+', you have been shortlisted for '+jb+'. Please share your availability for a call. - SamparkAI');return 'https://wa.me/'+p+'?text='+m;}
-const wai=`<svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+const CLRS=['#db4437','#1a73e8','#0f9d58','#f4b400','#9c27b0','#e91e63','#00bcd4','#ff5722'];
+const WAI=`<svg width="11" height="11" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+if(!tok){window.location.href='client-portal.html';}
+
+// Set profile
+const initials=(userEmail||'?')[0].toUpperCase();
+const dispName=userEmail?userEmail.split('@')[0].replace(/[._-]/g,' ').replace(/\b\w/g,c=>c.toUpperCase()):'Recruiter';
+['sbAv','tbAv'].forEach(id=>document.getElementById(id).textContent=initials);
+['sbNm','tbNm'].forEach(id=>document.getElementById(id).textContent=dispName);
+['sbEm','tbEm'].forEach(id=>document.getElementById(id).textContent=userEmail||'');
+
+let myRec=null, myJbs=[], myCds=[];
 
 async function load(){
   try{
-    // find this recruiter's record
-    const cl=await api('clients?email=eq.'+encodeURIComponent(em)+'&select=*');
-    if(cl&&cl.length)myId=cl[0].id;
-    // load ALL clients where this recruiter is the parent (using recruiter_id if exists, else client_id)
-    // For now, load clients + jobs + candidates filtered by this recruiter's id
-    const cQ=myId?'clients?recruiter_id=eq.'+myId+'&select=*':'clients?select=*&limit=0';
-    const jQ=myId?'jobs?client_id=eq.'+myId+'&select=*':'jobs?recruiter_id=eq.'+encodeURIComponent(em)+'&select=*';
-    const cdQ=myId?'candidates?client_id=eq.'+myId+'&select=*&order=score.desc':'candidates?select=*&order=score.desc&limit=0';
-    
-    // Try recruiter_id first, fallback to client_id match
-    let [cls,jbs,cds]=await Promise.all([api(cQ),api(jQ),api(cdQ)]);
-    
-    // If no sub-clients found, get jobs by client_id = myId (recruiter is the client)
-    if((!cls||!cls.length||cls.error)&&myId){
-      jbs=await api('jobs?client_id=eq.'+myId+'&select=*');
-      const jobIds=(Array.isArray(jbs)?jbs:[]).map(j=>j.id);
-      if(jobIds.length){
-        cds=await api('candidates?job_id=in.('+jobIds.join(',')+')'+'&select=*&order=score.desc');
-      } else cds=[];
-      cls=[];
+    // Find this recruiter's client record by email
+    const recs=await api('clients?email=eq.'+encodeURIComponent(userEmail)+'&select=*');
+    if(Array.isArray(recs)&&recs.length){
+      myRec=recs[0];
     }
-    
-    myCls=Array.isArray(cls)?cls.filter(c=>!c.error):[];
-    myJbs=Array.isArray(jbs)?jbs.filter(j=>!j.error):[];
-    myCds=Array.isArray(cds)?cds.filter(c=>!c.error):[];
-    
-    rStats();rClients();rClients2();rJobs();rCands(myCds,'allCandsGrid');
-    rCands(myCds.filter(c=>c.status==='shortlisted'),'shortGrid');
-    rCands(myCds.filter(c=>c.status==='scheduled'),'schedGrid');
+
+    // Load all jobs — filter by client_id if found, else show all
+    const allJbs=await api('jobs?select=*&order=created_at.desc');
+    myJbs=Array.isArray(allJbs)?allJbs:[];
+    if(myRec){
+      myJbs=myJbs.filter(j=>j.client_id===myRec.id);
+    }
+
+    // Load candidates for these jobs
+    if(myJbs.length){
+      const jobIds=myJbs.map(j=>j.id);
+      const allCds=await api('candidates?job_id=in.('+jobIds.join(',')+')'+'&select=*&order=score.desc');
+      myCds=Array.isArray(allCds)?allCds:[];
+    } else {
+      myCds=[];
+    }
+
+    rStats();
+    rJobCards('jobCardsD');
+    rJobCards('jobCardsJ');
+    rCandCards(myCds,'allGrid');
+    rCandCards(myCds.filter(c=>c.status==='shortlisted'),'shortGrid');
+    rCandCards(myCds.filter(c=>c.status==='scheduled'),'schedGrid');
   }catch(e){console.error(e);}
 }
 
 function rStats(){
-  document.getElementById('sCl').textContent=myCls.length||myJbs.length;
   document.getElementById('sCa').textContent=myCds.length;
   document.getElementById('sSh').textContent=myCds.filter(c=>c.status==='shortlisted').length;
+  document.getElementById('sSc').textContent=myCds.filter(c=>c.status==='scheduled').length;
   document.getElementById('sJb').textContent=myJbs.length;
 }
 
-function rClients(){
-  const g=document.getElementById('clGrid');
-  if(!myCls.length&&!myJbs.length){
-    // Show jobs as "client cards" if no sub-clients exist
-    if(myJbs.length){
-      g.innerHTML=myJbs.map((j,i)=>{
-        const jc=myCds.filter(c=>c.job_id===j.id);
-        const col=clrs[i%clrs.length];
-        return`<div class="clc" onclick="showJobCands('${j.id}','${(j.title||'').replace(/'/g,"\'")}',this)">
-          <div class="clc-top">
-            <div class="clc-photo" style="background:${col}">${gi(j.title)}</div>
-            <div><div class="clc-name">${j.title||'Job'}</div><div class="clc-email">Active Job</div></div>
-          </div>
-          <div class="clc-stats">
-            <div><div class="cls-num">${jc.length}</div><div class="cls-lbl">Total</div></div>
-            <div><div class="cls-num">${jc.filter(c=>c.status==='shortlisted').length}</div><div class="cls-lbl">Shortlisted</div></div>
-            <div><div class="cls-num">${jc.filter(c=>c.status==='scheduled').length}</div><div class="cls-lbl">Scheduled</div></div>
-          </div>
-        </div>`;}).join('');
-    } else {
-      g.innerHTML='<div class="empty">No clients yet. Click + Add Client to get started.</div>';
-    }
-    return;
-  }
-  g.innerHTML=myCls.map((c,i)=>{
-    const cc=myCds.filter(x=>x.client_id===c.id);
-    const col=clrs[i%clrs.length];
-    return`<div class="clc" onclick="showClientCands('${c.id}','${(c.name||'').replace(/'/g,"\'")}',this)">
-      <div class="clc-top">
-        <div class="clc-photo" style="background:${col}">${gi(c.name)}</div>
-        <div><div class="clc-name">${c.name||'—'}</div><div class="clc-email">${c.email||''}</div></div>
-      </div>
-      <div class="clc-stats">
-        <div><div class="cls-num">${cc.length}</div><div class="cls-lbl">Candidates</div></div>
-        <div><div class="cls-num">${cc.filter(x=>x.status==='shortlisted').length}</div><div class="cls-lbl">Shortlisted</div></div>
-        <div><div class="cls-num">${cc.filter(x=>x.status==='scheduled').length}</div><div class="cls-lbl">Scheduled</div></div>
-      </div>
-    </div>`;}).join('');
-}
-
-function rClients2(){document.getElementById('clGrid2').innerHTML=document.getElementById('clGrid').innerHTML;}
-
-function showClientCands(cid,cname,el){
-  document.querySelectorAll('.clc').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
-  const fc=myCds.filter(c=>c.client_id===cid);
-  document.getElementById('clientCandsTitle').textContent='Candidates — '+cname;
-  document.getElementById('clientCands').style.display='block';
-  rCands(fc,'clientCandsGrid');
-  document.getElementById('clientCands').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-
-function rJobs(){
-  const g=document.getElementById('jobGrid');
-  if(!myJbs.length){g.innerHTML='<div class="empty">No jobs yet. Click + Create Job.</div>';return;}
+function rJobCards(gridId){
+  const g=document.getElementById(gridId);
+  if(!myJbs.length){g.innerHTML='<div class="empty">No jobs yet. Click + Create Job to get started.</div>';return;}
   g.innerHTML=myJbs.map((j,i)=>{
     const jc=myCds.filter(c=>c.job_id===j.id);
-    return`<div class="jc" onclick="showJobCands('${j.id}','${(j.title||'').replace(/'/g,"\'")}',this)">
-      <div class="jct">${j.title||'Untitled'}</div>
-      <div class="jcd">${j.created_at?new Date(j.created_at).toLocaleDateString():''}</div>
-      <div class="jcs">
-        <div class="jci"><div class="jcn">${jc.length}</div><div class="jcl">Total</div></div>
-        <div class="jci"><div class="jcn">${jc.filter(c=>c.status==='shortlisted').length}</div><div class="jcl">Shortlisted</div></div>
-        <div class="jci"><div class="jcn">${jc.filter(c=>c.status==='scheduled').length}</div><div class="jcl">Scheduled</div></div>
+    const col=CLRS[i%CLRS.length];
+    return`<div class="card-box" style="cursor:pointer" onclick="showJobCands('${j.id}','${(j.title||'').replace(/'/g,"\'")}',this)">
+      <div class="cc-top">
+        <div class="cand-av" style="background:${col}">${gi(j.title)}</div>
+        <div style="flex:1;min-width:0">
+          <div class="cc-nm">${j.title||'Untitled'}</div>
+          <div class="cc-em">${j.location||''} ${j.experience?'· '+j.experience:''}</div>
+        </div>
       </div>
-    </div>`;}).join('');
+      <div class="cc-stats">
+        <div><div class="cs-n">${jc.length}</div><div class="cs-l">Total</div></div>
+        <div><div class="cs-n">${jc.filter(c=>c.status==='shortlisted').length}</div><div class="cs-l">Shortlisted</div></div>
+        <div><div class="cs-n">${jc.filter(c=>c.status==='scheduled').length}</div><div class="cs-l">Scheduled</div></div>
+      </div>
+      <div style="margin-top:8px;padding-top:8px;border-top:1px solid #f1f5f9;display:flex;justify-content:space-between;align-items:center">
+        <span style="font-size:10px;color:#9ca3af">${j.created_at?new Date(j.created_at).toLocaleDateString():''}</span>
+        <a href="https://sampark-ai-theta.vercel.app/chatbot.html?job=${j.id}" target="_blank" onclick="event.stopPropagation()" style="font-size:11px;color:#1a73e8;font-weight:700;text-decoration:none">&#128279; Share Link</a>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 function showJobCands(jid,jname,el){
-  document.querySelectorAll('.jc').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
+  document.querySelectorAll('#jobCardsD .card-box').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
   const fc=myCds.filter(c=>c.job_id===jid);
-  document.getElementById('jobCandsTitle').textContent='Candidates — '+jname;
-  document.getElementById('jobCands').style.display='block';
-  rCands(fc,'jobCandsGrid');
-  document.getElementById('jobCands').scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('jobCandsT').textContent='Candidates — '+jname;
+  document.getElementById('jobCandsWrap').style.display='block';
+  rCandCards(fc,'jobCandsGrid');
+  document.getElementById('jobCandsWrap').scrollIntoView({behavior:'smooth',block:'nearest'});
 }
 
-function rCands(data,gridId){
+function rCandCards(data,gridId){
   const g=document.getElementById(gridId);
   if(!data||!data.length){g.innerHTML='<div class="empty">No candidates yet.</div>';return;}
   g.innerHTML=data.map((c,i)=>{
-    const col=clrs[i%clrs.length];
+    const col=CLRS[i%CLRS.length];
     const sc=scoreDisp(c.score);
-    const jname=c.job_title||myJbs.find(j=>j.id===c.job_id)?.title||'—';
-    return`<div class="cc">
-      <div class="cc-top">
-        <div class="cc-photo" style="background:${col}">${gi(c.name)}</div>
-        <div class="cc-info">
-          <div class="cc-name">${c.name||'—'}</div>
-          <div class="cc-email">${c.email||''}</div>
+    const scol=scoreColor(c.score);
+    const jname=c.client_name||myJbs.find(j=>j.id===c.job_id)?.title||'—';
+    return`<div class="cand-card">
+      <div class="cand-top">
+        <div class="cand-av" style="background:${col}">${gi(c.name)}</div>
+        <div class="cand-info">
+          <div class="cand-nm">${c.name||'—'}</div>
+          <div class="cand-em">${c.email||''}</div>
+          <div class="cand-job">${jname}</div>
         </div>
-        <div style="text-align:center;flex-shrink:0">
-          <div class="sc2" style="color:${(fmtScore(c.score)||0)>=8?'#0f9d58':(fmtScore(c.score)||0)>=6?'#f4b400':'#db4437'}">${sc||'—'}</div>
-          <div class="sc2-sub">score</div>
+        <div class="score-box">
+          <div class="score-big" style="color:${scol}">${sc||'—'}</div>
+          <div class="score-sub">score</div>
         </div>
       </div>
-      <div class="cc-mid">
-        <span class="status-pill ${stc(c.status)}">${c.status||'new'}</span>
-        <span style="font-size:10px;color:#9ca3af">${jname}</span>
+      <div class="cand-mid">
+        <span class="pill ${stPill(c.status)}">${c.status||'new'}</span>
+        ${c.experience?`<span style="font-size:10px;color:#9ca3af">${c.experience}</span>`:''}
       </div>
-      <div class="cc-sum">${c.summary||c.key_answer||'No summary available.'}</div>
-      <div class="cc-acts">
-        ${c.phone?`<a class="wa-btn" href="${wal(c.phone,c.name,jname)}" target="_blank">${wai} WhatsApp</a>`:''}
+      <div class="cand-sum">${c.summary||c.strengths||'No summary available.'}</div>
+      <div class="cand-acts">
+        ${c.phone?`<a class="wa-btn" href="${wal(c.phone,c.name,jname)}" target="_blank">${WAI} WhatsApp</a>`:''}
         <button class="act-sl" onclick="upd('${c.id}','shortlisted')">Shortlist</button>
         <button class="act-rj" onclick="upd('${c.id}','rejected')">Reject</button>
       </div>
-    </div>`;}).join('');
+    </div>`;
+  }).join('');
 }
 
 async function upd(id,status){
   await fetch(S+'/rest/v1/candidates?id=eq.'+id,{method:'PATCH',headers:{'apikey':K,'Authorization':'Bearer '+tok,'Content-Type':'application/json'},body:JSON.stringify({status})});
-  await load();
+  load();
 }
 
-let moType='client';
-function showModal(t){
+let moType='job';
+function openMo(t){
   moType=t;
-  document.getElementById('moT').textContent=t==='client'?'Add New Client':'Create New Job';
-  document.getElementById('moClientFields').style.display=t==='client'?'block':'none';
-  document.getElementById('moJobFields').style.display=t==='job'?'block':'none';
-  if(t==='job'){
-    const sel=document.getElementById('jClient');
-    sel.innerHTML=myJbs.length?'<option value="">-- Select Client --</option>'+myCls.map(c=>`<option value="${c.id}">${c.name}</option>`).join(''):'<option value="">No clients yet</option>';
-  }
+  document.getElementById('moT').textContent=t==='job'?'Create New Job':'Add New Client';
+  document.getElementById('jobFields').style.display=t==='job'?'block':'none';
+  document.getElementById('clientFields').style.display=t==='client'?'block':'none';
   document.getElementById('ov').classList.add('show');
 }
 
 async function saveMo(){
-  if(moType==='client'){
-    const name=document.getElementById('cName').value.trim();
-    const email=document.getElementById('cEmail').value.trim();
-    const phone=document.getElementById('cPhone').value.trim();
-    if(!name||!email){alert('Name and email required.');return;}
-    const r=await fetch(S+'/rest/v1/clients',{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+tok,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({name,email,phone,recruiter_id:myId})});
-    if(r.ok){document.getElementById('ov').classList.remove('show');['cName','cEmail','cPhone'].forEach(id=>document.getElementById(id).value='');load();}else alert('Error saving client.');
-  } else {
-    const title=document.getElementById('jTitle').value.trim();
-    const client_id=document.getElementById('jClient').value||myId;
-    const description=document.getElementById('jDesc').value.trim();
-    if(!title){alert('Job title required.');return;}
-    const r=await fetch(S+'/rest/v1/jobs',{method:'POST',headers:{'apikey':K,'Authorization':'Bearer '+tok,'Content-Type':'application/json','Prefer':'return=representation'},body:JSON.stringify({title,client_id,description})});
-    if(r.ok){document.getElementById('ov').classList.remove('show');['jTitle','jDesc'].forEach(id=>document.getElementById(id).value='');load();}else alert('Error saving job.');
-  }
+  try{
+    if(moType==='job'){
+      const title=document.getElementById('jTitle').value.trim();
+      if(!title){alert('Job title required.');return;}
+      const loc=document.getElementById('jLoc').value.trim();
+      const exp=document.getElementById('jExp').value.trim();
+      const desc=document.getElementById('jDesc').value.trim();
+      const client_id=myRec?myRec.id:null;
+      const client_name=myRec?(myRec.company||myRec.name||''):userEmail;
+      await apiPost('jobs',{title,location:loc,experience:exp,description:desc,client_id,client_name});
+      ['jTitle','jLoc','jExp','jDesc'].forEach(id=>document.getElementById(id).value='');
+    } else {
+      const company=document.getElementById('cComp').value.trim();
+      const contact=document.getElementById('cCont').value.trim();
+      const email=document.getElementById('cEmail').value.trim();
+      const phone=document.getElementById('cPhone').value.trim();
+      if(!company||!email){alert('Company and email required.');return;}
+      await apiPost('clients',{company,contact,email,phone,plan:'Starter'});
+      ['cComp','cCont','cEmail','cPhone'].forEach(id=>document.getElementById(id).value='');
+    }
+    document.getElementById('ov').classList.remove('show');
+    load();
+  }catch(e){alert('Error saving. Please check and try again.');console.error(e);}
 }
 
 function sw(name,el){
   document.querySelectorAll('.si').forEach(i=>i.classList.remove('active'));el.classList.add('active');
   document.querySelectorAll('.tc').forEach(t=>t.classList.remove('active'));document.getElementById('tc-'+name).classList.add('active');
-  const tt={dashboard:'Dashboard',clients:'My Clients',jobs:'Jobs',candidates:'All Candidates',shortlisted:'Shortlisted',scheduled:'Scheduled'};
+  const tt={dashboard:'Dashboard',jobs:'Jobs',all:'All Candidates',shortlisted:'Shortlisted',scheduled:'Scheduled'};
   document.getElementById('pgT').textContent=tt[name]||'';
 }
-function hm(e){if(e.target===document.getElementById('ov'))document.getElementById('ov').classList.remove('show');}
 function signOut(){localStorage.clear();window.location.href='client-portal.html';}
 load();
 </script></body></html>
