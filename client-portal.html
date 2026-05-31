@@ -2,69 +2,70 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>SamparkAI - Login</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SamparkAI — Login</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;min-height:100vh;display:flex;align-items:center;justify-content:center}
-.card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
-.logo-text{font-size:26px;font-weight:800;color:#0d1b2a;text-align:center;margin-bottom:6px}
+.card{background:#fff;border-radius:20px;padding:44px 40px;width:100%;max-width:420px;box-shadow:0 4px 32px rgba(0,0,0,0.09)}
+.mark{width:40px;height:40px;margin:0 auto 12px;display:block}
+.logo-text{font-size:28px;font-weight:800;color:#0d1b2a;text-align:center;letter-spacing:-0.5px}
 .logo-text span{color:#db4437}
-.subtitle{text-align:center;font-size:13px;color:#6b7280;margin-bottom:20px}
-.role-badge{display:block;text-align:center;background:#f3f4f6;border-radius:8px;padding:8px;font-size:13px;font-weight:600;color:#374151;margin-bottom:24px}
-label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px}
-input{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:16px;outline:none;transition:border-color 0.2s}
+.subtitle{text-align:center;font-size:13px;color:#6b7280;margin:6px 0 28px}
+label{display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:6px;letter-spacing:0.3px}
+input{width:100%;padding:13px 16px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:16px;outline:none;transition:border-color 0.2s;color:#0d1b2a}
 input:focus{border-color:#0d1b2a}
-.btn{width:100%;background:#0d1b2a;color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s}
-.btn:hover{opacity:0.88}
-.btn:disabled{opacity:0.6;cursor:not-allowed}
-.error{color:#dc2626;font-size:13px;margin-top:12px;text-align:center;display:none}
-.powered{text-align:center;font-size:12px;color:#9ca3af;margin-top:20px}
-.powered span{color:#db4437;font-weight:600}
+.btn{width:100%;background:#0d1b2a;color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:4px;transition:opacity 0.2s}
+.btn:hover{opacity:0.85}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.err{color:#dc2626;font-size:13px;margin-top:12px;text-align:center;display:none;font-weight:500}
+.foot{text-align:center;font-size:12px;color:#9ca3af;margin-top:24px}
+.foot a{color:#0d1b2a;font-weight:600;text-decoration:none}
 </style>
 </head>
 <body>
 <div class="card">
+  <svg class="mark" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#1a73e8"/>
+    <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#db4437"/>
+    <polygon points="4,18 12,18 12,26 20,26 20,36 4,36" fill="#f4b400"/>
+    <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#0f9d58"/>
+  </svg>
   <div class="logo-text">Sampark<span>AI</span></div>
-  <div class="subtitle">Client Portal</div>
-  <div class="role-badge">Sampark AI Client</div>
-  <label>Your email address</label>
-  <input type="email" id="email" placeholder="Your email address"/>
-  <label>Your password</label>
-  <input type="password" id="password" placeholder="Your password"/>
-  <button class="btn" id="loginBtn" onclick="doLogin()">Access My Portal &rarr;</button>
-  <div class="error" id="errorMsg"></div>
-  <div class="powered">Powered by <span>Sampark AI</span></div>
+  <div class="subtitle">Sign in to your portal</div>
+  <label>EMAIL ADDRESS</label>
+  <input type="email" id="em" placeholder="your@email.com" autocomplete="email"/>
+  <label>PASSWORD</label>
+  <input type="password" id="pw" placeholder="Your password" autocomplete="current-password"/>
+  <button class="btn" id="btn" onclick="go()">Access My Portal &rarr;</button>
+  <div class="err" id="err">Wrong email or password. Please try again.</div>
+  <div class="foot">Powered by <a href="index.html">Sampark AI</a></div>
 </div>
 <script>
-const SURL = "https://sebghpbyykplkoootzdg.supabase.co";
-const AKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
-async function doLogin(){
-  const email=document.getElementById('email').value.trim();
-  const password=document.getElementById('password').value;
-  const btn=document.getElementById('loginBtn');
-  const err=document.getElementById('errorMsg');
-  if(!email||!password){err.style.display='block';err.textContent='Please enter email and password.';return;}
+const S="https://sebghpbyykplkoootzdg.supabase.co";
+const K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
+async function go(){
+  const em=document.getElementById('em').value.trim();
+  const pw=document.getElementById('pw').value;
+  const btn=document.getElementById('btn');
+  const err=document.getElementById('err');
+  if(!em||!pw){err.style.display='block';err.textContent='Please enter email and password.';return;}
   btn.disabled=true;btn.textContent='Signing in...';err.style.display='none';
   try{
-    const res=await fetch(SURL+'/auth/v1/token?grant_type=password',{
+    const r=await fetch(S+'/auth/v1/token?grant_type=password',{
       method:'POST',
-      headers:{'apikey':AKEY,'Content-Type':'application/json'},
-      body:JSON.stringify({email,password})
+      headers:{'apikey':K,'Content-Type':'application/json'},
+      body:JSON.stringify({email:em,password:pw})
     });
-    const data=await res.json();
-    if(data.access_token){
-      localStorage.setItem('sb_token',data.access_token);
-      localStorage.setItem('sb_email',email);
-      if(email==='admin@samparkai.tech'){
-        window.location.href='admin.html';
-      } else {
-        window.location.href='client.html';
-      }
+    const d=await r.json();
+    if(d.access_token){
+      localStorage.setItem('sb_token',d.access_token);
+      localStorage.setItem('sb_email',em);
+      localStorage.setItem('sb_uid',d.user.id);
+      window.location.href = em==='admin@samparkai.tech' ? 'admin.html' : 'client.html';
     } else {
       err.style.display='block';
-      err.textContent='Wrong email or password. Please try again.';
       btn.disabled=false;btn.textContent='Access My Portal →';
     }
   } catch(e){
@@ -72,7 +73,7 @@ async function doLogin(){
     btn.disabled=false;btn.textContent='Access My Portal →';
   }
 }
-document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+document.addEventListener('keydown',e=>{if(e.key==='Enter')go();});
 </script>
 </body>
 </html>
