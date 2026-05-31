@@ -1,376 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sampark AI — AI Screening for Recruiting Agencies</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --orange: #f4501e;
-      --orange-hover: #d93d0d;
-      --navy: #0d1b2a;
-      --navy-light: #1a2d42;
-      --text: #1a1a2e;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --bg: #ffffff;
-      --light-bg: #fdf8f6;
-      --green: #22c55e;
-    }
-    html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
-
-    /* ── NAV ── */
-    nav {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(255,255,255,0.95); backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 5%; height: 68px;
-    }
-    .nav-logo { display: flex; align-items: center; gap: .625rem; }
-    .logo-sq { width: 36px; height: 36px; background: var(--orange); border-radius: 8px; flex-shrink: 0; }
-    .logo-name { font-size: 1.1rem; font-weight: 800; color: var(--navy); letter-spacing: -0.02em; }
-    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
-    .nav-links a { color: var(--muted); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
-    .nav-links a:hover { color: var(--text); }
-    .nav-ctas { display: flex; gap: .75rem; align-items: center; }
-    .btn-ghost { color: var(--text); font-size: .875rem; font-weight: 600; text-decoration: none; padding: .45rem 1rem; border-radius: 8px; transition: color .2s; }
-    .btn-ghost:hover { color: var(--orange); }
-    .btn-orange { padding: .5rem 1.25rem; background: var(--orange); color: #fff; border-radius: 8px; font-size: .875rem; font-weight: 700; text-decoration: none; transition: background .2s; }
-    .btn-orange:hover { background: var(--orange-hover); }
-
-    /* ── HERO ── */
-    .hero {
-      text-align: center; padding: 6rem 5% 5rem;
-      background: linear-gradient(180deg, #fff9f7 0%, #ffffff 100%);
-    }
-    .hero-badge {
-      display: inline-flex; align-items: center; gap: .4rem;
-      padding: .35rem 1rem; border-radius: 999px;
-      background: rgba(244,80,30,.08); border: 1px solid rgba(244,80,30,.2);
-      font-size: .78rem; font-weight: 600; color: var(--orange); margin-bottom: 1.75rem;
-    }
-    .hero-badge::before { content: '●'; font-size: .5rem; }
-    .hero h1 {
-      font-size: clamp(2.8rem, 6vw, 5rem); font-weight: 900;
-      letter-spacing: -0.04em; line-height: 1.05; color: var(--navy); margin-bottom: 1.25rem;
-    }
-    .hero h1 span { color: var(--orange); }
-    .hero p { font-size: 1.05rem; color: var(--muted); max-width: 520px; margin: 0 auto 2.5rem; line-height: 1.7; }
-    .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .875rem 2rem; background: var(--orange); color: #fff;
-      border-radius: 10px; font-size: 1rem; font-weight: 700; text-decoration: none;
-      border: none; cursor: pointer; transition: background .2s, transform .15s;
-    }
-    .btn-primary:hover { background: var(--orange-hover); transform: translateY(-1px); }
-    .btn-outline {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .875rem 2rem; background: #fff; color: var(--navy);
-      border-radius: 10px; font-size: 1rem; font-weight: 600; text-decoration: none;
-      border: 1.5px solid var(--border); cursor: pointer; transition: border-color .2s, transform .15s;
-    }
-    .btn-outline:hover { border-color: var(--orange); color: var(--orange); transform: translateY(-1px); }
-    .hero-checks { display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap; margin-top: 2.25rem; }
-    .hero-checks span { font-size: .83rem; color: var(--muted); display: flex; align-items: center; gap: .4rem; }
-    .hero-checks span::before { content: '✓'; color: var(--green); font-weight: 800; font-size: 1rem; }
-
-    /* ── STATS BAR ── */
-    .stats-bar {
-      background: var(--navy);
-      display: grid; grid-template-columns: repeat(4, 1fr);
-    }
-    .stat-item { text-align: center; padding: 3rem 1rem; border-right: 1px solid rgba(255,255,255,.08); }
-    .stat-item:last-child { border-right: none; }
-    .stat-item strong { display: block; font-size: 2.8rem; font-weight: 900; color: var(--orange); letter-spacing: -0.03em; line-height: 1; }
-    .stat-item span { font-size: .8rem; color: rgba(255,255,255,.55); margin-top: .5rem; display: block; font-weight: 500; }
-
-    /* ── SECTIONS ── */
-    section { padding: 6rem 5%; }
-    .section-label { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--orange); margin-bottom: .75rem; }
-    .section-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 800; letter-spacing: -0.03em; color: var(--navy); margin-bottom: 1rem; line-height: 1.15; }
-    .section-title span { color: var(--orange); }
-    .section-sub { color: var(--muted); max-width: 480px; font-size: .95rem; margin-bottom: 3rem; line-height: 1.7; }
-
-    /* ── HOW IT WORKS ── */
-    .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.5rem; }
-    .how-card {
-      background: #fff; border: 1.5px solid var(--border); border-radius: 16px;
-      padding: 2rem; position: relative; overflow: hidden; transition: border-color .25s, box-shadow .25s;
-    }
-    .how-card:hover { border-color: var(--orange); box-shadow: 0 8px 32px rgba(244,80,30,.08); }
-    .how-num { position: absolute; top: 1.25rem; right: 1.5rem; font-size: 4rem; font-weight: 900; color: rgba(244,80,30,.06); line-height: 1; }
-    .how-icon { font-size: 2rem; margin-bottom: 1rem; }
-    .how-card h3 { font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: .5rem; }
-    .how-card p { font-size: .875rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── FEATURES ── */
-    #features { background: var(--light-bg); }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
-    .feat-card {
-      background: #fff; border: 1.5px solid var(--border); border-radius: 16px;
-      padding: 1.75rem; transition: border-color .25s, box-shadow .25s, transform .25s;
-    }
-    .feat-card:hover { border-color: var(--orange); transform: translateY(-4px); box-shadow: 0 12px 40px rgba(244,80,30,.07); }
-    .feat-icon { font-size: 1.75rem; margin-bottom: 1rem; }
-    .feat-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: .4rem; }
-    .feat-card p { font-size: .85rem; color: var(--muted); line-height: 1.65; }
-
-    /* ── PRICING ── */
-    .pricing-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.5rem; }
-    .global-pill {
-      display: inline-flex; align-items: center; gap: .5rem;
-      padding: .45rem 1rem; background: rgba(244,80,30,.06);
-      border: 1px solid rgba(244,80,30,.15); border-radius: 8px;
-      font-size: .8rem; color: var(--orange); font-weight: 600;
-    }
-    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 1.5rem; }
-    .price-card {
-      background: #fff; border: 1.5px solid var(--border); border-radius: 18px;
-      padding: 2rem; position: relative; transition: border-color .25s, box-shadow .25s, transform .25s;
-    }
-    .price-card:hover { transform: translateY(-4px); box-shadow: 0 16px 48px rgba(0,0,0,.08); }
-    .price-card.popular { border-color: var(--orange); box-shadow: 0 8px 32px rgba(244,80,30,.12); }
-    .popular-badge {
-      position: absolute; top: -1px; left: 50%; transform: translateX(-50%);
-      background: var(--orange); color: #fff; font-size: .68rem; font-weight: 800;
-      padding: .25rem 1rem; border-radius: 0 0 10px 10px; letter-spacing: .08em;
-    }
-    .price-tier { font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
-    .price-inr { font-size: 2.6rem; font-weight: 900; color: var(--navy); letter-spacing: -0.03em; line-height: 1; }
-    .price-per { font-size: .9rem; color: var(--muted); font-weight: 500; }
-    .price-global { font-size: .78rem; color: var(--muted); margin: .5rem 0 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
-    .price-global strong { color: var(--orange); font-weight: 700; }
-    .price-desc { font-size: .83rem; color: var(--muted); margin-bottom: 1.5rem; }
-    .price-features { list-style: none; display: flex; flex-direction: column; gap: .6rem; margin-bottom: 2rem; }
-    .price-features li { font-size: .85rem; color: var(--muted); display: flex; align-items: center; gap: .6rem; }
-    .price-features li::before { content: '✓'; color: var(--green); font-weight: 800; font-size: .9rem; flex-shrink: 0; }
-    .price-features li.no { color: #d1d5db; }
-    .price-features li.no::before { content: '—'; color: #d1d5db; }
-    .price-btn {
-      display: block; width: 100%; padding: .8rem; border-radius: 10px;
-      text-align: center; font-size: .9rem; font-weight: 700; text-decoration: none;
-      cursor: pointer; border: none; font-family: inherit; transition: all .2s;
-    }
-    .price-btn.orange { background: var(--orange); color: #fff; }
-    .price-btn.orange:hover { background: var(--orange-hover); }
-    .price-btn.outline { background: #fff; border: 1.5px solid var(--border); color: var(--navy); }
-    .price-btn.outline:hover { border-color: var(--orange); color: var(--orange); }
-
-    .global-box {
-      margin-top: 2rem; padding: 1.5rem 2rem;
-      background: rgba(244,80,30,.04); border: 1.5px solid rgba(244,80,30,.15);
-      border-radius: 14px; display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
-    }
-    .global-box .g-icon { font-size: 2rem; flex-shrink: 0; }
-    .global-box p { font-size: .875rem; color: var(--muted); line-height: 1.6; }
-    .global-box p a { color: var(--orange); font-weight: 600; text-decoration: none; }
-    .global-box p strong { color: var(--navy); }
-
-    /* ── CTA BANNER ── */
-    .cta-section {
-      background: var(--navy); padding: 6rem 5%; text-align: center;
-    }
-    .cta-section h2 { font-size: clamp(2rem, 4.5vw, 3.5rem); font-weight: 900; letter-spacing: -0.03em; color: #fff; margin-bottom: 1rem; }
-    .cta-section h2 span { color: var(--orange); }
-    .cta-section p { color: rgba(255,255,255,.6); font-size: 1rem; max-width: 460px; margin: 0 auto 2.5rem; line-height: 1.7; }
-    .cta-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
-    .btn-white {
-      display: inline-block; padding: .875rem 2rem;
-      background: #fff; color: var(--navy); border-radius: 10px;
-      font-size: .95rem; font-weight: 700; text-decoration: none;
-      transition: transform .15s, opacity .2s;
-    }
-    .btn-white:hover { transform: translateY(-2px); opacity: .92; }
-    .btn-outline-white {
-      display: inline-block; padding: .875rem 2rem;
-      background: transparent; color: #fff; border-radius: 10px;
-      font-size: .95rem; font-weight: 600; text-decoration: none;
-      border: 1.5px solid rgba(255,255,255,.25); transition: border-color .2s;
-    }
-    .btn-outline-white:hover { border-color: rgba(255,255,255,.6); }
-
-    /* ── FOOTER ── */
-    footer {
-      padding: 2rem 5%; border-top: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
-      font-size: .8rem; color: var(--muted); background: #fff;
-    }
-    .footer-logo { display: flex; align-items: center; gap: .5rem; }
-    .footer-logo .logo-sq { width: 26px; height: 26px; border-radius: 6px; }
-    .footer-logo span { font-weight: 800; color: var(--navy); font-size: .95rem; }
-
-    @media (max-width: 768px) {
-      .nav-links { display: none; }
-      .stats-bar { grid-template-columns: repeat(2, 1fr); }
-      .stat-item:nth-child(2) { border-right: none; }
-      .pricing-top { flex-direction: column; }
-    }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SamparkAI — AI Candidate Screening for Recruitment Agencies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#1a73e8;
+  --red:#db4437;
+  --yellow:#f4b400;
+  --green:#0f9d58;
+  --navy:#0d1b2a;
+  --navy2:#111f30;
+  --white:#ffffff;
+  --gray50:#f9fafb;
+  --gray100:#f3f4f6;
+  --gray200:#e5e7eb;
+  --gray400:#9ca3af;
+  --gray600:#6b7280;
+  --gray800:#374151;
+  --font-head:'Plus Jakarta Sans',sans-serif;
+  --font-body:'DM Sans',sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:#fff;color:var(--navy);overflow-x:hidden}
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray200);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-placeholder{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-placeholder svg{width:22px;height:22px}
+.logo-text{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.5px}
+.logo-text span{color:var(--red)}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:14px;color:var(--gray600);text-decoration:none;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--navy)}
+.nav-right{display:flex;gap:12px;align-items:center}
+.btn-login{font-size:14px;color:var(--gray600);background:none;border:none;cursor:pointer;font-weight:500;padding:8px 16px;border-radius:8px;transition:background 0.2s}
+.btn-login:hover{background:var(--gray100)}
+.btn-demo-nav{background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:opacity 0.2s}
+.btn-demo-nav:hover{opacity:0.85}
+.hero{padding:72px 40px 60px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;max-width:1200px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;border-radius:100px;padding:5px 14px;font-size:12px;font-weight:600;letter-spacing:0.3px;margin-bottom:24px}
+.hero-badge::before{content:'';width:6px;height:6px;background:#f4b400;border-radius:50%}
+.hero h1{font-family:var(--font-head);font-size:46px;font-weight:800;line-height:1.1;color:var(--navy);margin-bottom:12px;letter-spacing:-1px}
+.hero h1 em{font-style:normal;color:var(--red)}
+.hero-sub{font-size:16px;color:var(--gray600);line-height:1.65;margin-bottom:28px;max-width:460px}
+.bullets{list-style:none;margin-bottom:32px;display:flex;flex-direction:column;gap:10px}
+.bullets li{font-size:14px;color:var(--gray800);display:flex;align-items:center;gap:10px;font-weight:500}
+.bullet-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:700;color:#fff}
+.hero-ctas{display:flex;gap:12px;align-items:center}
+.cta-primary{background:var(--navy);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;transition:transform 0.15s,opacity 0.15s}
+.cta-primary:hover{opacity:0.88;transform:translateY(-1px)}
+.cta-secondary{background:#fff;color:var(--navy);padding:13px 22px;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid var(--gray200);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;transition:border-color 0.2s,transform 0.15s}
+.cta-secondary:hover{border-color:var(--gray400);transform:translateY(-1px)}
+.dashboard-wrap{background:var(--navy);border-radius:16px;padding:12px;border:1px solid #1e3a5f;animation:floatUp 0.8s ease both}
+@keyframes floatUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.dash-topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 10px}
+.dash-brand{display:flex;align-items:center;gap:6px}
+.dash-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.dash-brand-name{color:#fff;font-size:12px;font-weight:700}
+.dash-user{color:#94a3b8;font-size:10px}
+.dash-layout{display:flex;gap:8px;height:340px}
+.dash-sidebar{width:96px;background:#0a1520;border-radius:10px;padding:10px 0;flex-shrink:0}
+.si{padding:7px 10px;font-size:10px;color:#64748b;cursor:pointer;border-radius:6px;margin:1px 6px;font-weight:500;display:flex;align-items:center;gap:5px}
+.si.active{background:#1e3a5f;color:#fff}
+.si-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.dash-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.sc{background:#0a1520;border-radius:8px;padding:8px 10px}
+.sc-label{font-size:8px;color:#64748b;margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.sc-num{font-size:18px;font-weight:800;color:#fff;line-height:1}
+.sc-change{font-size:8px;color:#22c55e;margin-top:2px}
+.charts-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1}
+.chart-box{background:#0a1520;border-radius:8px;padding:8px 10px;overflow:hidden}
+.chart-title{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.funnel-item{margin-bottom:5px}
+.funnel-meta{display:flex;justify-content:space-between;margin-bottom:2px}
+.funnel-name{font-size:8px;color:#94a3b8}
+.funnel-val{font-size:8px;color:#e2e8f0;font-weight:600}
+.funnel-bar{height:5px;border-radius:3px}
+.job-item{padding:4px 0;border-bottom:0.5px solid #1e3a5f;display:flex;justify-content:space-between;align-items:center}
+.job-name{font-size:9px;color:#e2e8f0;font-weight:500}
+.job-badge{font-size:8px;color:#64748b}
+.job-progress{height:3px;border-radius:2px;margin-top:3px}
+.how-section{background:var(--gray50);padding:80px 40px;border-top:1px solid var(--gray200)}
+.section-header{text-align:center;margin-bottom:60px}
+.section-label{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+.section-title{font-family:var(--font-head);font-size:34px;font-weight:800;color:var(--navy);margin-bottom:12px;letter-spacing:-0.5px}
+.section-sub{font-size:15px;color:var(--gray600);max-width:520px;margin:0 auto;line-height:1.6}
+.steps-row{display:flex;align-items:flex-start;gap:0;max-width:1100px;margin:0 auto;position:relative}
+.steps-row::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--gray200);z-index:0}
+.step{flex:1;text-align:center;padding:0 12px;position:relative;z-index:1}
+.step-icon-wrap{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #fff}
+.step-num{font-size:11px;font-weight:700;color:var(--gray400);margin-bottom:6px;letter-spacing:0.5px}
+.step-name{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.step-desc{font-size:12px;color:var(--gray600);line-height:1.5}
+.features-section{padding:80px 40px;max-width:1200px;margin:0 auto}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
+.feature-card{background:#fff;border:1px solid var(--gray200);border-radius:16px;padding:28px;transition:border-color 0.2s,transform 0.2s}
+.feature-card:hover{border-color:var(--gray400);transform:translateY(-3px)}
+.feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px}
+.feature-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.feature-desc{font-size:13px;color:var(--gray600);line-height:1.6}
+.feature-tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
+.wa-section{background:var(--navy);padding:60px 40px}
+.wa-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+.wa-left h2{font-family:var(--font-head);font-size:32px;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.2}
+.wa-left p{font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:24px}
+.wa-badge{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;margin-bottom:16px}
+.wa-steps{display:flex;flex-direction:column;gap:12px}
+.wa-step{display:flex;align-items:flex-start;gap:12px}
+.wa-step-num{width:24px;height:24px;background:#1e3a5f;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#94a3b8;flex-shrink:0;margin-top:1px}
+.wa-step-text{font-size:13px;color:#cbd5e1;line-height:1.5}
+.wa-step-text strong{color:#fff}
+.wa-phone{background:#0a1520;border-radius:24px;padding:16px;border:1px solid #1e3a5f;max-width:260px;margin:0 auto}
+.wa-phone-header{background:#075E54;border-radius:12px 12px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;margin:-16px -16px 0}
+.wa-avatar{width:32px;height:32px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
+.wa-contact-name{font-size:12px;font-weight:700;color:#fff}
+.wa-contact-status{font-size:10px;color:#a7f3d0}
+.wa-messages{padding:14px 0;display:flex;flex-direction:column;gap:10px}
+.wa-msg{border-radius:12px;padding:8px 12px;max-width:90%;font-size:11px;line-height:1.5}
+.wa-msg.received{background:#1e3a5f;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:2px}
+.wa-msg.sent{background:#25D366;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
+.wa-msg strong{display:block;font-size:10px;margin-bottom:3px;opacity:0.8}
+.wa-cta-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px}
+.bottom-cta{background:#0d1b2a;padding:72px 40px;text-align:center}
+.bottom-cta h2{font-family:var(--font-head);font-size:38px;font-weight:800;color:#fff;margin-bottom:12px;letter-spacing:-0.5px}
+.bottom-cta p{font-size:15px;color:#94a3b8;margin-bottom:32px}
+.bottom-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.bcta1{background:var(--red);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);transition:opacity 0.2s}
+.bcta1:hover{opacity:0.88}
+.bcta2{background:transparent;color:#fff;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #334155;cursor:pointer;font-family:var(--font-body)}
+.bottom-perks{display:flex;gap:24px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.perk{font-size:12px;color:#64748b;display:flex;align-items:center;gap:5px}
+.perk::before{content:'✓';color:#22c55e;font-weight:700}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-left{animation:fadeInUp 0.6s ease both}
+.hero-right{animation:fadeInUp 0.7s ease 0.15s both}
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;padding:48px 24px}
+  .hero-right{display:none}
+  .features-grid{grid-template-columns:1fr}
+  .steps-row{flex-direction:column;align-items:center}
+  .steps-row::before{display:none}
+  .wa-inner{grid-template-columns:1fr}
+  nav{padding:0 20px}
+  .nav-links{display:none}
+}
+</style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
-  <div class="nav-logo">
-    <div class="logo-sq"></div>
-    <span class="logo-name">Sampark AI</span>
+  <a href="#" class="nav-logo">
+    <div class="logo-placeholder">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#1a73e8"/>
+        <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#db4437"/>
+        <polygon points="4,18 12,18 12,26 20,26 20,36 4,36" fill="#f4b400"/>
+        <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#0f9d58"/>
+      </svg>
+    </div>
+    <span class="logo-text">Sampark<span>AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how">How It Works</a>
+    <a href="#agencies">For Agencies</a>
+    <a href="#whatsapp">WhatsApp Screening</a>
   </div>
-  <ul class="nav-links">
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-  </ul>
-  <div class="nav-ctas">
-    <a href="client.html" class="btn-ghost">Client Login</a>
-    <a href="admin.html" class="btn-orange">Admin Login</a>
+  <div class="nav-right">
+    <button class="btn-login" onclick="window.location.href='client-portal.html'">Login</button>
+    <button class="btn-demo-nav" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book Demo</button>
   </div>
 </nav>
-
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">AI-Powered Candidate Screening</div>
-  <h1>Hire smarter.<br><span>Screen 10x faster.</span></h1>
-  <p>Sampark AI screens candidates via conversational AI, scores them instantly, and delivers a shortlist to your clients — while you focus on closing.</p>
-  <div class="hero-btns">
-    <a href="chatbot.html" class="btn-primary">🤖 Try Live Demo</a>
-    <a href="client.html" class="btn-outline">View Client Portal →</a>
+  <div class="hero-left">
+    <div class="hero-badge">AI Candidate Screening Platform for Recruitment Agencies</div>
+    <h1>Stop Wasting Time<br>Screening<br><em>Unqualified Candidates</em></h1>
+    <p class="hero-sub">AI interviews every applicant, ranks the best candidates, and delivers recruiter-ready shortlists — in under 2 hours. No calls. No scheduling. Just results.</p>
+    <ul class="bullets">
+      <li><span class="bullet-dot" style="background:#1a73e8">✓</span> Reduce screening calls by 80%</li>
+      <li><span class="bullet-dot" style="background:#db4437">✓</span> Shortlist better candidates, faster</li>
+      <li><span class="bullet-dot" style="background:#0f9d58">✓</span> Delight clients with faster submissions</li>
+      <li><span class="bullet-dot" style="background:#f4b400;color:#0d1b2a">✓</span> Turn one recruiter into three</li>
+    </ul>
+    <div class="hero-ctas">
+      <button class="cta-primary" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book a Live Demo &rarr;</button>
+      <button class="cta-secondary">&#9654; Watch 3-Min Demo</button>
+    </div>
   </div>
-  <div class="hero-checks">
-    <span>No setup required</span>
-    <span>Shortlist in 2 hours</span>
-    <span>White-label ready</span>
-    <span>Transparent AI scoring</span>
+  <div class="hero-right">
+    <div class="dashboard-wrap">
+      <div class="dash-topbar">
+        <div class="dash-brand"><div class="dash-brand-dot"></div><span class="dash-brand-name">SamparkAI Dashboard</span></div>
+        <span class="dash-user">Ahmed Khan · Agency Owner</span>
+      </div>
+      <div class="dash-layout">
+        <div class="dash-sidebar">
+          <div class="si active"><div class="si-dot" style="background:#1a73e8"></div>Dashboard</div>
+          <div class="si"><div class="si-dot" style="background:#db4437"></div>Jobs</div>
+          <div class="si"><div class="si-dot" style="background:#0f9d58"></div>Candidates</div>
+          <div class="si"><div class="si-dot" style="background:#f4b400"></div>Clients</div>
+          <div class="si">Interviews</div>
+          <div class="si">Talent Pool</div>
+          <div class="si">Analytics</div>
+          <div class="si">Settings</div>
+        </div>
+        <div class="dash-content">
+          <div class="stats-row">
+            <div class="sc"><div class="sc-label">Active Jobs</div><div class="sc-num">28</div><div class="sc-change">+12% ↑</div></div>
+            <div class="sc"><div class="sc-label">Screened</div><div class="sc-num">421</div><div class="sc-change">+18% ↑</div></div>
+            <div class="sc"><div class="sc-label">Qualified</div><div class="sc-num">73</div><div class="sc-change">+20% ↑</div></div>
+            <div class="sc"><div class="sc-label">Placed</div><div class="sc-num">8</div><div class="sc-change">+14% ↑</div></div>
+          </div>
+          <div class="charts-row">
+            <div class="chart-box">
+              <div class="chart-title">Candidate Funnel</div>
+              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Applications</span><span class="funnel-val">2,057</span></div><div class="funnel-bar" style="background:#1a73e8;width:100%"></div></div>
+              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">AI Screened</span><span class="funnel-val">1,842</span></div><div class="funnel-bar" style="background:#0f9d58;width:89%"></div></div>
+              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Qualified</span><span class="funnel-val">173</span></div><div class="funnel-bar" style="background:#f4b400;width:42%"></div></div>
+              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Shortlisted</span><span class="funnel-val">58</span></div><div class="funnel-bar" style="background:#db4437;width:20%"></div></div>
+              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Placed</span><span class="funnel-val">8</span></div><div class="funnel-bar" style="background:#9c27b0;width:8%"></div></div>
+            </div>
+            <div class="chart-box">
+              <div class="chart-title">Top Performing Jobs</div>
+              <div class="job-item"><div><div class="job-name">Sales Manager</div><div class="job-progress" style="background:#1a73e8;width:80%"></div></div><span class="job-badge">12 shortlisted</span></div>
+              <div class="job-item"><div><div class="job-name">HR Executive</div><div class="job-progress" style="background:#0f9d58;width:65%"></div></div><span class="job-badge">9</span></div>
+              <div class="job-item"><div><div class="job-name">Accountant</div><div class="job-progress" style="background:#f4b400;width:50%"></div></div><span class="job-badge">7</span></div>
+              <div class="job-item"><div><div class="job-name">Logistics Coord.</div><div class="job-progress" style="background:#db4437;width:35%"></div></div><span class="job-badge">5</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
-
-<!-- STATS -->
-<div class="stats-bar">
-  <div class="stat-item"><strong>2hrs</strong><span>Average Shortlist Time</span></div>
-  <div class="stat-item"><strong>10x</strong><span>Faster than Manual Screening</span></div>
-  <div class="stat-item"><strong>94%</strong><span>Candidate Completion Rate</span></div>
-  <div class="stat-item"><strong>0</strong><span>Manual Phone Screens Needed</span></div>
-</div>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="section-label">How It Works</div>
-  <h2 class="section-title">Three steps to a <span>ready shortlist</span></h2>
-  <p class="section-sub">No training. No integrations. Just share a link and get candidates screened.</p>
-  <div class="how-grid">
-    <div class="how-card"><div class="how-num">01</div><div class="how-icon">💼</div><h3>Create a Job</h3><p>Add a job listing in seconds. A unique AI chatbot link is generated instantly for that role.</p></div>
-    <div class="how-card"><div class="how-num">02</div><div class="how-icon">🔗</div><h3>Share the Link</h3><p>Send the chatbot link to candidates via WhatsApp, email, or job boards. Works on any device.</p></div>
-    <div class="how-card"><div class="how-num">03</div><div class="how-icon">✅</div><h3>Get Your Shortlist</h3><p>Candidates are AI-scored and ranked. Review, shortlist, and schedule — all in one dashboard.</p></div>
+<section class="how-section" id="how">
+  <div class="section-header">
+    <div class="section-label">How It Works</div>
+    <h2 class="section-title">From Job Opening To Shortlist In Minutes</h2>
+    <p class="section-sub">No phone calls. No scheduling. No manual screening. Just AI-powered results your clients will love.</p>
+  </div>
+  <div class="steps-row">
+    <div class="step">
+      <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+      <div class="step-num">01</div><div class="step-name">Create Job</div>
+      <div class="step-desc">Upload job description or enter requirements for your client</div>
+    </div>
+    <div class="step">
+      <div class="step-icon-wrap" style="background:#fce8e6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#db4437" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div class="step-num">02</div><div class="step-name">AI Creates Questions</div>
+      <div class="step-desc">Smart screening questions generated automatically for the role</div>
+    </div>
+    <div class="step">
+      <div class="step-icon-wrap" style="background:#e6f4ea"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f9d58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+      <div class="step-num">03</div><div class="step-name">Share Screening Link</div>
+      <div class="step-desc">Via WhatsApp, email, job boards or QR code</div>
+    </div>
+    <div class="step">
+      <div class="step-icon-wrap" style="background:#fef9e7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4b400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="step-num">04</div><div class="step-name">AI Interviews Candidates</div>
+      <div class="step-desc">Candidates complete AI chat interview — no app, no login needed</div>
+    </div>
+    <div class="step">
+      <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="step-num">05</div><div class="step-name">Receive Ranked Candidates</div>
+      <div class="step-desc">Get ranked shortlist with scores and WhatsApp contact buttons</div>
+    </div>
   </div>
 </section>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="section-label">Features</div>
-  <h2 class="section-title">Everything your agency <span>needs to scale</span></h2>
-  <p class="section-sub">Built for recruiting agencies. No bloat, no enterprise complexity.</p>
+<section class="features-section" id="features">
+  <div class="section-header">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything Your Agency Needs</h2>
+    <p class="section-sub">Built specifically for recruitment agencies who want to scale without hiring more screeners.</p>
+  </div>
   <div class="features-grid">
-    <div class="feat-card"><div class="feat-icon">🤖</div><h3>Conversational AI Screening</h3><p>Candidates answer 10 smart questions via chat. High completion, zero drop-off, consistent quality.</p></div>
-    <div class="feat-card"><div class="feat-icon">⭐</div><h3>AI Scoring & Ranking</h3><p>Every candidate gets an AI score out of 10 based on experience, CTC fit, notice period and skills.</p></div>
-    <div class="feat-card"><div class="feat-icon">🏷️</div><h3>White Label</h3><p>Your logo, your colours, your domain. Clients see your brand — not ours.</p></div>
-    <div class="feat-card"><div class="feat-icon">📊</div><h3>Live Dashboard</h3><p>Real-time candidate pipeline. Shortlist, schedule, reject — one click per action.</p></div>
-    <div class="feat-card"><div class="feat-icon">📅</div><h3>Interview Scheduling</h3><p>Schedule calls and interviews directly from the candidate card. No back-and-forth.</p></div>
-    <div class="feat-card"><div class="feat-icon">📄</div><h3>PDF Reports</h3><p>One-click export of the full candidate report to share with clients professionally.</p></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#e8f0fe">🤖</div><div class="feature-title">AI Candidate Screening</div><div class="feature-desc">AI conducts structured interviews with every applicant, assessing skills, experience and role fit. You get a ranked shortlist — not a pile of CVs.</div><span class="feature-tag" style="background:#e8f0fe;color:#1a5276">Saves 80% screening time</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#fce8e6">👥</div><div class="feature-title">Multi-Client Management</div><div class="feature-desc">Manage all your clients from one dashboard. Each client gets their own portal to view shortlisted candidates — branded with your agency name.</div><span class="feature-tag" style="background:#fce8e6;color:#922b21">White-label ready</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#e6f4ea">📱</div><div class="feature-title">WhatsApp Integration</div><div class="feature-desc">Candidates complete interviews on WhatsApp — no app, no login. Recruiters contact shortlisted candidates directly via WhatsApp with one tap.</div><span class="feature-tag" style="background:#e6f4ea;color:#0b5345">No app needed</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#fef9e7">📊</div><div class="feature-title">Client Review Portal</div><div class="feature-desc">Share shortlisted candidates with your clients through a secure, professional portal. Clients approve, reject or request interviews with one click.</div><span class="feature-tag" style="background:#fef9e7;color:#7d6608">Impresses your clients</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#f3e5f5">🏊</div><div class="feature-title">Talent Pool Reactivation</div><div class="feature-desc">Never lose a great candidate again. AI re-screens your existing talent pool when new jobs open — turning old CVs into new placements.</div><span class="feature-tag" style="background:#f3e5f5;color:#6a1b9a">Unlock hidden value</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#e8f5e9">📈</div><div class="feature-title">Analytics Dashboard</div><div class="feature-desc">Track placements, screening velocity, qualified rates and revenue per job. Know exactly where your agency's time is being spent.</div><span class="feature-tag" style="background:#e8f5e9;color:#1b5e20">Data-driven decisions</span></div>
   </div>
 </section>
-
-<!-- PRICING -->
-<section id="pricing">
-  <div class="pricing-top">
-    <div>
-      <div class="section-label">Pricing</div>
-      <h2 class="section-title" style="margin-bottom:.5rem;">Simple, transparent pricing</h2>
-      <p class="section-sub" style="margin-bottom:0;">Start free. Scale as you grow. No hidden fees.</p>
+<section class="wa-section" id="whatsapp">
+  <div class="wa-inner">
+    <div class="wa-left">
+      <div class="wa-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp-Powered Screening</div>
+      <h2>Candidates Interview on WhatsApp.<br>You Get a Ranked Shortlist.</h2>
+      <p>No apps to download. No scheduling headaches. Candidates simply reply to a WhatsApp message — our AI conducts the full screening interview and sends you a ranked list with scores and summaries.</p>
+      <div class="wa-steps">
+        <div class="wa-step"><div class="wa-step-num">1</div><div class="wa-step-text"><strong>You share the screening link</strong> — via WhatsApp broadcast, job board, or QR code</div></div>
+        <div class="wa-step"><div class="wa-step-num">2</div><div class="wa-step-text"><strong>AI interviews every candidate</strong> — structured questions, instant responses, 24/7</div></div>
+        <div class="wa-step"><div class="wa-step-num">3</div><div class="wa-step-text"><strong>You receive ranked shortlist</strong> — tap WhatsApp button to contact top candidates directly</div></div>
+      </div>
     </div>
-    <div class="global-pill">🌍 Global clients welcome · Pay in any currency</div>
-  </div>
-
-  <div class="pricing-grid">
-    <div class="price-card">
-      <div class="price-tier">Starter</div>
-      <div><span class="price-inr">₹2,999</span><span class="price-per">/mo</span></div>
-      <div class="price-global"><strong>≈ $36/mo</strong></div>
-      <div class="price-desc">Up to 10 jobs · 100 candidates/mo</div>
-      <ul class="price-features">
-        <li>AI chatbot screening</li>
-        <li>Candidate scoring & ranking</li>
-        <li>Client portal</li>
-        <li>PDF reports</li>
-        <li class="no">White-label chatbot</li>
-        <li class="no">Multiple client accounts</li>
-        <li class="no">API access</li>
-      </ul>
-      <a href="admin.html" class="price-btn outline">Get Started</a>
+    <div class="wa-right">
+      <div class="wa-phone">
+        <div class="wa-phone-header">
+          <div class="wa-avatar">S</div>
+          <div><div class="wa-contact-name">SamparkAI Screening</div><div class="wa-contact-status">AI Interviewer · Online</div></div>
+        </div>
+        <div class="wa-messages">
+          <div class="wa-msg received"><strong>SamparkAI</strong>Hi Ahmed! You've applied for Sales Manager at TechCorp. Ready to start your 5-min screening? Reply YES to begin.</div>
+          <div class="wa-msg sent">YES</div>
+          <div class="wa-msg received"><strong>SamparkAI</strong>Great! Q1: How many years of B2B sales experience do you have?</div>
+          <div class="wa-msg sent">7 years, FMCG and tech sectors</div>
+          <div class="wa-msg received"><strong>SamparkAI</strong>Excellent! Q2: What was your largest deal size?</div>
+        </div>
+        <a href="#" class="wa-cta-btn">📱 Contact Candidate on WhatsApp</a>
+      </div>
     </div>
-
-    <div class="price-card popular">
-      <div class="popular-badge">MOST POPULAR</div>
-      <div class="price-tier">Growth</div>
-      <div><span class="price-inr">₹5,999</span><span class="price-per">/mo</span></div>
-      <div class="price-global"><strong>≈ $72/mo</strong></div>
-      <div class="price-desc">Up to 25 jobs · 500 candidates/mo</div>
-      <ul class="price-features">
-        <li>Everything in Starter</li>
-        <li>White-label chatbot</li>
-        <li>Multiple client accounts</li>
-        <li>Priority support</li>
-        <li>Custom branding</li>
-        <li class="no">Custom domain</li>
-        <li class="no">API access</li>
-      </ul>
-      <a href="admin.html" class="price-btn orange">Get Started</a>
-    </div>
-
-    <div class="price-card">
-      <div class="price-tier">Pro</div>
-      <div><span class="price-inr">₹9,999</span><span class="price-per">/mo</span></div>
-      <div class="price-global"><strong>≈ $120/mo</strong></div>
-      <div class="price-desc">Up to 50 jobs · Unlimited candidates</div>
-      <ul class="price-features">
-        <li>Everything in Growth</li>
-        <li>Custom domain</li>
-        <li>Dedicated account manager</li>
-        <li>API access</li>
-        <li>SLA guarantee</li>
-        <li>Onboarding support</li>
-        <li>Bulk candidate import</li>
-      </ul>
-      <a href="admin.html" class="price-btn outline">Get Started</a>
-    </div>
-  </div>
-
-  <div class="global-box">
-    <div class="g-icon">🌍</div>
-    <p><strong>Available worldwide.</strong> Recruiting agencies globally use Sampark AI. <a href="mailto:admin@samparkai.tech">Contact us</a> for pricing in your currency.</p>
   </div>
 </section>
-
-<!-- CTA -->
-<div class="cta-section">
-  <h2>Ready to land your <span>first client?</span></h2>
-  <p>See the full demo — admin dashboard, client portal, and live AI chatbot. Set up in under 5 minutes.</p>
-  <div class="cta-btns">
-    <a href="chatbot.html" class="btn-primary">Try Live Chatbot Demo</a>
-    <a href="admin.html" class="btn-white">Open Admin Dashboard</a>
-    <a href="client.html" class="btn-outline-white">View Client Portal</a>
+<section class="bottom-cta" id="demo-form">
+  <h2>Ready to Screen Smarter?</h2>
+  <p>Join recruitment agencies saving 20+ hours per week on candidate screening.</p>
+  <div class="bottom-ctas">
+    <button class="bcta1" onclick="window.location.href='mailto:hello@samparkai.tech?subject=Book a Demo'">Book a Live Demo &rarr;</button>
+    <button class="bcta2" onclick="window.location.href='chatbot.html'">Try Free Screening</button>
   </div>
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div class="footer-logo"><div class="logo-sq"></div><span>Sampark AI</span></div>
-  <span>AI-powered candidate screening for recruiting agencies · © 2025</span>
-  <span>admin@samparkai.tech</span>
-</footer>
-
+  <div class="bottom-perks">
+    <span class="perk">Free 14-day trial</span>
+    <span class="perk">No credit card required</span>
+    <span class="perk">Setup in under 10 minutes</span>
+    <span class="perk">Cancel anytime</span>
+  </div>
+</section>
 </body>
 </html>
