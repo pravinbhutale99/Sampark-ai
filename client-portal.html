@@ -3,623 +3,78 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Client Portal – Sampark AI</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<title>SamparkAI - Client Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
 <style>
-:root{--ink:#0a0a0f;--paper:#f5f3ee;--accent:#e85a2a;--muted:#7a7870;--card:#ffffff;--border:#e2dfd8;--sidebar:#0a0a0f;--sidebar-w:240px;--green:#16a34a;--yellow:#854d0e;--red:#991b1b;--green-bg:#dcfce7;--yellow-bg:#fef9c3;--red-bg:#fee2e2;--purple:#6d28d9;--purple-bg:#ede9fe;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--paper);font-family:'DM Sans',sans-serif;color:var(--ink);}
-
-/* LOGIN */
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a0a0f 0%,#1a1020 100%);padding:1rem;}
-.login-box{background:#fff;border-radius:20px;padding:3rem;width:100%;max-width:420px;text-align:center;box-shadow:0 24px 80px rgba(0,0,0,0.4);}
-.login-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;margin-bottom:0.3rem;}
-.login-logo span{color:var(--accent);}
-.login-sub{color:var(--muted);font-size:0.88rem;margin-bottom:0.5rem;}
-.login-company{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:2rem;padding:0.5rem 1rem;background:var(--paper);border-radius:8px;display:inline-block;}
-.login-box input{width:100%;padding:0.8rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:0.95rem;margin-bottom:1rem;outline:none;transition:border-color 0.2s;}
-.login-box input:focus{border-color:var(--accent);}
-.login-btn{width:100%;background:var(--ink);color:#fff;padding:0.9rem;border-radius:8px;border:none;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:background 0.2s;}
-.login-btn:hover{background:var(--accent);}
-.login-error{color:var(--red);font-size:0.83rem;margin-top:0.75rem;display:none;}
-.login-powered{font-size:0.75rem;color:var(--muted);margin-top:1.5rem;}
-.login-powered span{color:var(--accent);font-weight:600;}
-
-/* DASHBOARD */
-.dashboard{display:none;}
-.dashboard.active{display:flex;min-height:100vh;}
-
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);background:var(--sidebar);color:#fff;display:flex;flex-direction:column;padding:2rem 1.5rem;position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;}
-.sidebar-logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;margin-bottom:0.15rem;}
-.sidebar-logo span{color:var(--accent);}
-.sidebar-tagline{font-size:0.68rem;color:rgba(255,255,255,0.28);margin-bottom:0.75rem;letter-spacing:0.05em;}
-.sidebar-client-badge{background:rgba(232,90,42,0.15);border:1px solid rgba(232,90,42,0.3);border-radius:8px;padding:0.6rem 0.85rem;margin-bottom:2rem;}
-.sidebar-client-name{font-family:'Syne',sans-serif;font-weight:700;font-size:0.88rem;color:#fff;}
-.sidebar-client-plan{font-size:0.68rem;color:rgba(255,255,255,0.4);margin-top:0.15rem;}
-.nav-section{font-size:0.65rem;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:0.1em;margin:1.2rem 0 0.5rem 1rem;}
-.nav-item{display:flex;align-items:center;gap:0.8rem;padding:0.75rem 1rem;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.6);font-size:0.88rem;margin-bottom:0.25rem;transition:all 0.2s;border:none;background:transparent;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
-.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
-.nav-item.active{background:var(--accent);color:#fff;}
-.nav-icon{width:18px;text-align:center;font-size:0.9rem;}
-.sidebar-bottom{margin-top:auto;}
-
-/* MAIN */
-.main{margin-left:var(--sidebar-w);flex:1;padding:2.5rem;min-width:0;}
-.page{display:none;}
-.page.active{display:block;}
-
-/* PAGE HEADER */
-.page-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem;}
-.page-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.8rem;}
-.page-subtitle{color:var(--muted);font-size:0.88rem;margin-top:0.25rem;}
-
-/* BUTTONS */
-.btn{padding:0.6rem 1.2rem;border-radius:8px;border:none;cursor:pointer;font-family:'Syne',sans-serif;font-weight:600;font-size:0.82rem;transition:all 0.2s;display:inline-flex;align-items:center;gap:0.4rem;}
-.btn-dark{background:var(--ink);color:#fff;}.btn-dark:hover{background:var(--accent);}
-.btn-accent{background:var(--accent);color:#fff;}.btn-accent:hover{background:#c94820;}
-.btn-outline{background:transparent;color:var(--ink);border:1.5px solid var(--border);}.btn-outline:hover{border-color:var(--ink);}
-.btn-purple{background:var(--purple);color:#fff;}
-.btn-sm{padding:0.4rem 0.8rem;font-size:0.78rem;}
-
-/* STATS */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.25rem;margin-bottom:2rem;}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.4rem 1.5rem;position:relative;overflow:hidden;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);opacity:0;transition:opacity 0.2s;}
-.stat-card:hover::before{opacity:1;}
-.stat-card .label{font-size:0.75rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:0.06em;}
-.stat-card .value{font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;margin-top:0.35rem;line-height:1;}
-.stat-card .sub{font-size:0.78rem;color:var(--muted);margin-top:0.4rem;}
-.stat-card .sub.green{color:var(--green);}
-
-/* JOB CARDS */
-.jobs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem;}
-.job-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:1.5rem;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;overflow:hidden;}
-.job-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#f59e0b);}
-.job-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.08);}
-.job-card-title{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:0.5rem;}
-.job-card-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1rem;}
-.job-card-meta span{font-size:0.78rem;color:var(--muted);display:flex;align-items:center;gap:0.25rem;}
-.job-funnel{display:flex;gap:0;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:1rem;}
-.jf-step{flex:1;padding:0.6rem 0.5rem;text-align:center;border-right:1px solid var(--border);}
-.jf-step:last-child{border-right:none;}
-.jf-val{font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;}
-.jf-lbl{font-size:0.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.04em;margin-top:0.1rem;}
-.job-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:0.75rem;border-top:1px solid var(--border);}
-.badge{display:inline-flex;padding:0.22rem 0.65rem;border-radius:100px;font-size:0.72rem;font-weight:600;}
-.badge.active{background:var(--green-bg);color:var(--green);}
-.badge.shortlisted{background:#dbeafe;color:#1d4ed8;}
-
-/* CANDIDATE CARDS */
-.cands-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:1.25rem;}
-.cand-card{background:var(--card);border:1.5px solid var(--border);border-radius:16px;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;position:relative;animation:fadeUp 0.4s ease both;}
-.cand-card:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,0.08);}
-.cand-card.cc-shortlisted{border-color:#bbf7d0;}.cand-card.cc-shortlisted::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#16a34a,#34d399);}
-.cand-card.cc-top{border-color:var(--accent);}.cand-card.cc-top::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),#f59e0b);}
-.cand-card.cc-scheduled{border-color:#c4b5fd;}.cand-card.cc-scheduled::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#6d28d9,#a78bfa);}
-.cand-card.cc-rejected{border-color:#fecaca;opacity:0.7;}.cand-card.cc-rejected::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:#991b1b;}
-@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.cand-card:nth-child(1){animation-delay:.05s}.cand-card:nth-child(2){animation-delay:.1s}.cand-card:nth-child(3){animation-delay:.15s}.cand-card:nth-child(4){animation-delay:.2s}
-.cc-top-row{padding:1.1rem 1.25rem 0.9rem;display:flex;align-items:flex-start;gap:0.9rem;}
-.cc-avatar{width:44px;height:44px;border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;flex-shrink:0;}
-.cc-nameblock{flex:1;min-width:0;}
-.cc-name{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.cc-role{font-size:0.77rem;color:var(--muted);margin-top:0.15rem;}
-.cc-stars{display:flex;gap:2px;margin-top:0.4rem;}
-.cc-star{font-size:0.9rem;line-height:1;}
-.cc-star.s-full{color:var(--accent)}.cc-star.s-half{color:var(--accent);opacity:0.5}.cc-star.s-empty{color:var(--border)}
-.cc-right{display:flex;flex-direction:column;align-items:flex-end;gap:0.35rem;flex-shrink:0;}
-.cc-sbadge{display:inline-flex;padding:0.18rem 0.6rem;border-radius:100px;font-size:0.68rem;font-weight:600;white-space:nowrap;}
-.cc-sbadge.b-shortlisted{background:var(--green-bg);color:var(--green)}.cc-sbadge.b-pending{background:var(--yellow-bg);color:var(--yellow)}.cc-sbadge.b-scheduled{background:var(--purple-bg);color:var(--purple)}.cc-sbadge.b-top{background:#fef3c7;color:#92400e}
-.cc-scorenum{font-family:'Syne',sans-serif;font-weight:800;font-size:1.45rem;line-height:1;}
-.cc-scorenum.sn-high{color:var(--green)}.cc-scorenum.sn-mid{color:#b45309}.cc-scorenum.sn-low{color:var(--red)}
-.cc-scorelbl{font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;text-align:right;}
-.cc-facts{display:flex;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-.cc-fact{flex:1;padding:0.6rem 0.9rem;border-right:1px solid var(--border);text-align:center;}.cc-fact:last-child{border-right:none;}
-.cc-fval{font-family:'Syne',sans-serif;font-weight:700;font-size:0.85rem;}
-.cc-flbl{font-size:0.64rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:0.1rem;}
-.cc-bars{padding:0.85rem 1.25rem;}
-.cc-bar-row{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.5rem;}.cc-bar-row:last-child{margin-bottom:0;}
-.cc-bar-name{font-size:0.73rem;color:var(--muted);width:85px;flex-shrink:0;}
-.cc-bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.cc-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),#f59e0b);}
-.cc-bar-fill.bf-green{background:linear-gradient(90deg,#16a34a,#34d399);}
-.cc-bar-pct{font-size:0.7rem;font-weight:600;width:24px;text-align:right;flex-shrink:0;}
-.cc-summary{padding:0.8rem 1.25rem;background:#fafaf8;border-top:1px solid var(--border);font-size:0.78rem;color:var(--muted);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.cc-tags{padding:0.65rem 1.25rem;display:flex;flex-wrap:wrap;gap:0.3rem;border-top:1px solid var(--border);}
-.cc-tag{padding:0.16rem 0.5rem;border-radius:4px;font-size:0.69rem;font-weight:500;}
-.cc-tag.t-green{background:var(--green-bg);color:var(--green)}.cc-tag.t-red{background:var(--red-bg);color:var(--red)}
-.cc-sched-strip{padding:0.55rem 1.25rem;background:var(--purple-bg);border-top:1px solid #c4b5fd;font-size:0.75rem;color:var(--purple);}
-.cc-footer{padding:0.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border);}
-.cc-contact{font-size:0.72rem;color:var(--muted);display:flex;flex-direction:column;gap:0.1rem;}
-
-/* FILTER BAR */
-.card-filter-bar{display:flex;align-items:center;gap:0.5rem;margin-bottom:1.25rem;flex-wrap:wrap;}
-.card-filter-pill{padding:0.35rem 0.9rem;border-radius:100px;border:1.5px solid var(--border);background:transparent;font-family:'DM Sans',sans-serif;font-size:0.8rem;cursor:pointer;transition:all 0.2s;color:var(--muted);}
-.card-filter-pill:hover{border-color:var(--ink);color:var(--ink);}
-.card-filter-pill.cfp-active{background:var(--ink);color:#fff;border-color:var(--ink);}
-.card-filter-pill.cfp-green.cfp-active{background:var(--green);border-color:var(--green);}
-.card-filter-pill.cfp-purple.cfp-active{background:var(--purple);border-color:var(--purple);}
-
-/* PROFILE MODAL */
-.cand-profile-modal{position:fixed;inset:0;background:rgba(0,0,0,0.55);backdrop-filter:blur(6px);z-index:1500;display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity 0.25s;}
-.cand-profile-modal.open{opacity:1;pointer-events:all;}
-.cand-profile-inner{background:#fff;border-radius:20px;width:100%;max-width:560px;max-height:88vh;overflow-y:auto;transform:translateY(16px) scale(0.98);transition:transform 0.25s;}
-.cand-profile-modal.open .cand-profile-inner{transform:translateY(0) scale(1);}
-
-/* JOB DETAIL VIEW */
-.back-btn{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.83rem;color:var(--accent);cursor:pointer;margin-bottom:1.5rem;background:none;border:none;font-family:'DM Sans',sans-serif;}
-.back-btn:hover{text-decoration:underline;}
-.job-detail-header{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
-.jd-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.3rem;}
-.jd-meta{display:flex;gap:1.25rem;margin-top:0.5rem;flex-wrap:wrap;}
-.jd-meta span{font-size:0.82rem;color:var(--muted);}
-.funnel-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:2rem;}
-.funnel-step{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.25rem 1.4rem;}
-.funnel-step .f-label{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:600;}
-.funnel-step .f-num{font-family:'Syne',sans-serif;font-weight:800;font-size:2.2rem;margin:0.3rem 0 0.5rem;}
-.funnel-step .f-bar{height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-.funnel-step .f-fill{height:100%;background:var(--accent);border-radius:2px;}
-
-/* TOAST */
-.toast{position:fixed;bottom:2rem;right:2rem;background:var(--ink);color:#fff;padding:0.9rem 1.4rem;border-radius:10px;font-size:0.88rem;z-index:9999;transform:translateY(100px);opacity:0;transition:all 0.3s;}
-.toast.show{transform:translateY(0);opacity:1;}
-
-/* EMPTY */
-.empty-state{padding:4rem 2rem;text-align:center;color:var(--muted);}
-.empty-state .es-icon{font-size:3rem;margin-bottom:0.75rem;}
-.empty-state h3{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;color:var(--ink);margin-bottom:0.35rem;}
-
-/* AI INSIGHT STRIP */
-.ai-strip{background:var(--ink);border-radius:14px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;}
-.ai-strip-icon{font-size:1.5rem;}
-.ai-strip-text{flex:1;font-size:0.85rem;color:rgba(255,255,255,0.7);line-height:1.6;}
-.ai-strip-text strong{color:#fff;}
-
-@media(max-width:768px){.sidebar{width:100%;height:auto;position:relative;}.main{margin-left:0;padding:1.5rem;}.funnel-row{grid-template-columns:repeat(2,1fr);}}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.logo-text{font-size:26px;font-weight:800;color:#0d1b2a;letter-spacing:-0.5px;text-align:center;margin-bottom:6px}
+.logo-text span{color:#db4437}
+.subtitle{text-align:center;font-size:13px;color:#6b7280;margin-bottom:20px}
+.role-badge{display:block;text-align:center;background:#f3f4f6;border-radius:8px;padding:8px;font-size:13px;font-weight:600;color:#374151;margin-bottom:24px}
+label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px}
+input{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:16px;outline:none;transition:border-color 0.2s}
+input:focus{border-color:#0d1b2a}
+.btn{width:100%;background:#0d1b2a;color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s}
+.btn:hover{opacity:0.88}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.error{color:#dc2626;font-size:13px;margin-top:12px;text-align:center;display:none}
+.powered{text-align:center;font-size:12px;color:#9ca3af;margin-top:20px}
+.powered span{color:#db4437;font-weight:600}
 </style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div class="login-screen" id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">Sampark<span>AI</span></div>
-    <div class="login-sub">Client Portal</div>
-    <div class="login-company" id="login-company-name">Loading...</div>
-    <input type="email" id="client-email" placeholder="Your email address"/>
-    <input type="password" id="client-pass" placeholder="Your password"/>
-    <button class="login-btn" onclick="clientLogin()">Access My Portal →</button>
-    <div class="login-error" id="login-error">❌ Wrong email or password. Please try again.</div>
-    <div class="login-powered">Powered by <span>Sampark AI</span></div>
-  </div>
+<div class="card">
+  <div class="logo-text">Sampark<span>AI</span></div>
+  <div class="subtitle">Client Portal</div>
+  <div class="role-badge">Sampark AI Client</div>
+  <label>Your email address</label>
+  <input type="email" id="email" placeholder="Your email address" autocomplete="email"/>
+  <label>Your password</label>
+  <input type="password" id="password" placeholder="Your password" autocomplete="current-password"/>
+  <button class="btn" id="loginBtn" onclick="doLogin()">Access My Portal &rarr;</button>
+  <div class="error" id="errorMsg"></div>
+  <div class="powered">Powered by <span>Sampark AI</span></div>
 </div>
-
-<!-- DASHBOARD -->
-<div class="dashboard" id="dashboard">
-  <div class="sidebar">
-    <div class="sidebar-logo">Sampark<span>AI</span></div>
-    <div class="sidebar-tagline">Client Portal</div>
-    <div class="sidebar-client-badge">
-      <div class="sidebar-client-name" id="sidebar-company">Company</div>
-      <div class="sidebar-client-plan" id="sidebar-plan">Plan</div>
-    </div>
-    <div class="nav-section">Menu</div>
-    <button class="nav-item active" id="nav-overview" onclick="showPage('overview',this)"><span class="nav-icon">📊</span>Overview</button>
-    <button class="nav-item" id="nav-jobs" onclick="showPage('jobs',this)"><span class="nav-icon">💼</span>My Jobs</button>
-    <button class="nav-item" id="nav-candidates" onclick="showPage('candidates',this)"><span class="nav-icon">👥</span>Candidates</button>
-    <div class="sidebar-bottom">
-      <div style="font-size:0.75rem;color:rgba(255,255,255,0.25);padding:0.75rem 1rem;border-top:1px solid rgba(255,255,255,0.06);margin-top:1rem;">
-        <div style="margin-bottom:0.25rem">Need help?</div>
-        <div style="color:var(--accent)">pravin@samparkai.tech</div>
-      </div>
-      <button class="nav-item" onclick="logout()"><span class="nav-icon">🚪</span>Logout</button>
-    </div>
-  </div>
-
-  <div class="main">
-
-    <!-- OVERVIEW PAGE -->
-    <div class="page active" id="page-overview">
-      <div class="page-header">
-        <div>
-          <div class="page-title" id="overview-greeting">Good morning 👋</div>
-          <div class="page-subtitle">Here's your hiring snapshot — updated in real time</div>
-        </div>
-      </div>
-
-      <div class="stats-grid">
-        <div class="stat-card"><div class="label">Active Jobs</div><div class="value" id="ov-jobs">0</div><div class="sub">Roles being screened</div></div>
-        <div class="stat-card"><div class="label">Total Applicants</div><div class="value" id="ov-applied">0</div><div class="sub">Screened by AI</div></div>
-        <div class="stat-card"><div class="label">Shortlisted</div><div class="value" id="ov-shortlisted">0</div><div class="sub green">Ready to interview</div></div>
-        <div class="stat-card"><div class="label">Call Scheduled</div><div class="value" id="ov-scheduled">0</div><div class="sub">Interviews lined up</div></div>
-      </div>
-
-      <div class="ai-strip" id="ov-ai-strip">
-        <div class="ai-strip-icon">🤖</div>
-        <div class="ai-strip-text" id="ov-ai-text">AI is screening your candidates...</div>
-      </div>
-
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1rem;">Your Jobs</div>
-      <div class="jobs-grid" id="ov-jobs-grid"></div>
-    </div>
-
-    <!-- JOBS PAGE -->
-    <div class="page" id="page-jobs">
-      <div class="page-header">
-        <div><div class="page-title">My Jobs</div><div class="page-subtitle">All active roles being screened by AI</div></div>
-      </div>
-      <div class="jobs-grid" id="jobs-grid"></div>
-    </div>
-
-    <!-- CANDIDATES PAGE -->
-    <div class="page" id="page-candidates">
-      <div id="candidates-view">
-        <div class="page-header">
-          <div>
-            <div class="page-title" id="cands-page-title">All Candidates</div>
-            <div class="page-subtitle" id="cands-page-sub">Every candidate screened for your roles</div>
-          </div>
-          <button id="back-to-jobs-btn" class="back-btn" onclick="showAllCandidates()" style="display:none">← Back to all candidates</button>
-        </div>
-        <div class="card-filter-bar" id="cands-filter-bar">
-          <button class="card-filter-pill cfp-active" onclick="setCandFilter('all',this)">All</button>
-          <button class="card-filter-pill cfp-green" onclick="setCandFilter('shortlisted',this)">✓ Shortlisted</button>
-          <button class="card-filter-pill cfp-purple" onclick="setCandFilter('scheduled',this)">📞 Call Scheduled</button>
-          <button class="card-filter-pill" onclick="setCandFilter('pending',this)">⏳ Pending</button>
-        </div>
-        <div class="cands-grid" id="candidates-grid"></div>
-      </div>
-    </div>
-
-    <!-- JOB DETAIL PAGE (inside jobs tab) -->
-    <div class="page" id="page-jobdetail">
-      <button class="back-btn" onclick="showPage('jobs',document.getElementById('nav-jobs'))">← Back to Jobs</button>
-      <div class="job-detail-header">
-        <div class="jd-title" id="jd-title">Job Title</div>
-        <div class="jd-meta"><span>⏱ <span id="jd-exp">Experience</span></span><span>📅 <span id="jd-date">Date</span></span><span class="badge active">Active</span></div>
-      </div>
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1rem;">Screening Funnel</div>
-      <div class="funnel-row">
-        <div class="funnel-step"><div class="f-label">Applied</div><div class="f-num" id="jdf-applied">0</div><div class="f-bar"><div class="f-fill" style="width:100%"></div></div></div>
-        <div class="funnel-step"><div class="f-label">AI Screened</div><div class="f-num" id="jdf-screened">0</div><div class="f-bar"><div class="f-fill" id="jdff-screened"></div></div></div>
-        <div class="funnel-step"><div class="f-label">Shortlisted</div><div class="f-num" id="jdf-shortlisted">0</div><div class="f-bar"><div class="f-fill" id="jdff-shortlisted"></div></div></div>
-        <div class="funnel-step"><div class="f-label">Scheduled</div><div class="f-num" id="jdf-scheduled">0</div><div class="f-bar"><div class="f-fill" id="jdff-scheduled"></div></div></div>
-      </div>
-      <div class="ai-strip" id="jd-ai-strip"><div class="ai-strip-icon">🤖</div><div class="ai-strip-text" id="jd-ai-text"></div></div>
-      <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:1rem;">Candidates</div>
-      <div class="card-filter-bar">
-        <button class="card-filter-pill cfp-active" onclick="setJobCandFilter('all',this)">All</button>
-        <button class="card-filter-pill cfp-green" onclick="setJobCandFilter('shortlisted',this)">✓ Shortlisted</button>
-        <button class="card-filter-pill cfp-purple" onclick="setJobCandFilter('scheduled',this)">📞 Scheduled</button>
-        <button class="card-filter-pill" onclick="setJobCandFilter('pending',this)">⏳ Pending</button>
-      </div>
-      <div class="cands-grid" id="jd-candidates-grid"></div>
-    </div>
-
-  </div>
-</div>
-
-<!-- CANDIDATE PROFILE MODAL -->
-<div class="cand-profile-modal" id="cand-profile-modal" onclick="if(event.target===this)this.classList.remove('open')">
-  <div class="cand-profile-inner" id="cand-profile-inner"></div>
-</div>
-
-<div class="toast" id="toast"></div>
-
 <script>
-// ── SAME DEMO DATA AS ADMIN ──
-const ALL_DATA = {
-  clients:[
-    {id:'c_001',company:'TechCorp India',contact:'Meera Sharma',phone:'+91 98200 11234',email:'hr@techcorp.in',password:'tech2026',plan:'10000'},
-    {id:'c_002',company:'Nexus BPO',contact:'Rajiv Kulkarni',phone:'+91 97300 55678',email:'rajiv@nexusbpo.com',password:'nexus2026',plan:'5000'},
-    {id:'c_003',company:'FinServe Solutions',contact:'Ananya Joshi',phone:'+91 98765 43210',email:'ananya@finserve.co',password:'fin2026',plan:'15000'},
-  ],
-  jobs:[
-    {id:'j_001',title:'Senior Sales Executive',clientId:'c_001',desc:'B2B sales role targeting SME clients.',exp:'3-6 years',createdAt:'2026-04-12T10:00:00Z'},
-    {id:'j_002',title:'Python Developer',clientId:'c_001',desc:'Backend Python developer for fintech APIs.',exp:'2-5 years',createdAt:'2026-04-20T10:00:00Z'},
-    {id:'j_003',title:'Customer Support Lead',clientId:'c_002',desc:'Team lead for inbound support.',exp:'2-4 years',createdAt:'2026-04-25T10:00:00Z'},
-    {id:'j_004',title:'Financial Analyst',clientId:'c_003',desc:'FP&A role with strong Excel and modeling skills.',exp:'4-8 years',createdAt:'2026-05-05T10:00:00Z'},
-  ],
-  candidates:[
-    {id:'cd_001',name:'Arjun Mehta',jobId:'j_001',clientId:'c_001',experience:'5 yrs',salary:'₹9L',score:91,status:'shortlisted',phone:'+91 98001 11001',email:'arjun@email.com',callScheduled:null,summary:'Strong B2B sales background with consistent quota achievement. Handled enterprise accounts at previous firm. High energy and structured approach to pipelines.',strengths:['Consistent target achiever','Enterprise account experience','Excellent communication'],watchpoints:['Prefers large-ticket deals only','May need coaching on SME segment'],answers:[{q:'Describe your last sales role.',a:'Managed 40+ SME clients at Tata Consultancy. Exceeded quarterly targets by 20% for 3 consecutive quarters.'},{q:'How do you handle rejection?',a:'I treat every rejection as data. Document objections and use them to sharpen my pitch.'},{q:'Preferred sales methodology?',a:'SPIN Selling primarily, with Challenger elements for complex deals.'}],skills:[{name:'Communication',score:92},{name:'CRM Tools',score:85},{name:'Negotiation',score:88},{name:'Lead Gen',score:78},{name:'Product Know.',score:80}]},
-    {id:'cd_002',name:'Priya Desai',jobId:'j_001',clientId:'c_001',experience:'4 yrs',salary:'₹7.5L',score:84,status:'shortlisted',phone:'+91 98001 11002',email:'priya@email.com',callScheduled:null,summary:'Solid inside-sales background. Handled inbound and outbound cycles well. Culturally aligned and eager to grow into field sales.',strengths:['Strong follow-up discipline','Data-driven approach','Quick learner'],watchpoints:['Limited field sales experience','Salary ask may stretch budget'],answers:[{q:'Describe your last sales role.',a:'Inside sales rep at Freshworks handling SaaS demos and closing ₹5-15L ARR accounts.'},{q:'How do you handle rejection?',a:'Use rejection to refine ICP. Five identical objections signals a product-market fit gap.'},{q:'Preferred sales methodology?',a:'Consultative selling. Spend more time understanding buyer than pitching.'}],skills:[{name:'Communication',score:88},{name:'CRM Tools',score:90},{name:'Negotiation',score:72},{name:'Lead Gen',score:82},{name:'Product Know.',score:76}]},
-    {id:'cd_003',name:'Vikram Nair',jobId:'j_001',clientId:'c_001',experience:'6 yrs',salary:'₹12L',score:76,status:'pending',phone:'+91 98001 11003',email:'vikram@email.com',callScheduled:null,summary:'Strong experience but salary expectations are significantly above band. Brings enterprise pedigree but may be overqualified.',strengths:['Enterprise sales pedigree','Strong closer'],watchpoints:['Salary ask ₹3L above band','May not be motivated by SME segment'],answers:[{q:'Describe your last sales role.',a:'Led West India territory for SAP, managing a ₹8Cr annual book of business.'},{q:'How do you handle rejection?',a:'Persistence and patience. Enterprise cycle is 6-18 months.'},{q:'Preferred sales methodology?',a:'MEDDIC for enterprise, adaptable otherwise.'}],skills:[{name:'Communication',score:90},{name:'CRM Tools',score:80},{name:'Negotiation',score:91},{name:'Lead Gen',score:65},{name:'Product Know.',score:72}]},
-    {id:'cd_004',name:'Sneha Patil',jobId:'j_001',clientId:'c_001',experience:'2 yrs',salary:'₹5L',score:62,status:'pending',phone:'+91 98001 11004',email:'sneha@email.com',callScheduled:null,summary:'Early career candidate with good attitude and communication skills, but limited deal experience.',strengths:['High energy','Good communication','Coachable'],watchpoints:['Only 2 years experience','No enterprise exposure'],answers:[{q:'Describe your last sales role.',a:'Sales trainee at a D2C startup, managing inbound leads and demos.'},{q:'How do you handle rejection?',a:'Stay positive and try again.'},{q:'Preferred sales methodology?',a:'Still learning, prefer consultative approach.'}],skills:[{name:'Communication',score:78},{name:'CRM Tools',score:60},{name:'Negotiation',score:55},{name:'Lead Gen',score:62},{name:'Product Know.',score:58}]},
-    {id:'cd_005',name:'Karan Iyer',jobId:'j_001',clientId:'c_001',experience:'5 yrs',salary:'₹8L',score:79,status:'shortlisted',phone:'+91 98001 11005',email:'karan@email.com',callScheduled:null,summary:'Well-rounded candidate with channel sales experience. Good understanding of B2B dynamics.',strengths:['Channel sales expertise','Self-managed','Strong market knowledge'],watchpoints:['Prefers autonomous work'],answers:[{q:'Describe your last sales role.',a:'Managed channel partners across Maharashtra. Grew ecosystem from 12 to 35 partners.'},{q:'How do you handle rejection?',a:'Identify root causes then address specifically.'},{q:'Preferred sales methodology?',a:'Channel-led GTM but comfortable with direct sales.'}],skills:[{name:'Communication',score:84},{name:'CRM Tools',score:79},{name:'Negotiation',score:82},{name:'Lead Gen',score:86},{name:'Product Know.',score:77}]},
-    {id:'cd_006',name:'Rohan Verma',jobId:'j_002',clientId:'c_001',experience:'3 yrs',salary:'₹10L',score:88,status:'shortlisted',phone:'+91 98001 11006',email:'rohan@email.com',callScheduled:null,summary:'Strong Django developer with fintech domain exposure. Writes clean, testable code.',strengths:['Django expert','Fintech domain experience','Writes clean code'],watchpoints:['Limited system design experience at scale'],answers:[{q:'Python frameworks used?',a:'Primarily Django and DRF. Also FastAPI for microservices.'},{q:'Complex API you built?',a:'Payment reconciliation API processing 1M+ transactions/day at Razorpay.'},{q:'How do you approach testing?',a:'TDD for business logic. Maintain >80% coverage on all production code.'}],skills:[{name:'Python',score:92},{name:'Django',score:90},{name:'PostgreSQL',score:84},{name:'REST APIs',score:88},{name:'Git/CI',score:80}]},
-    {id:'cd_007',name:'Divya Krishnan',jobId:'j_002',clientId:'c_001',experience:'4 yrs',salary:'₹12L',score:82,status:'shortlisted',phone:'+91 98001 11007',email:'divya@email.com',callScheduled:null,summary:'Full-stack orientation with strong backend Python skills. Has led small engineering teams.',strengths:['Full-stack capability','Team lead experience','Strong fundamentals'],watchpoints:['Salary at top of band','Expects fast growth to tech lead'],answers:[{q:'Python frameworks used?',a:'Flask, Django, and FastAPI. Prefer FastAPI for async support.'},{q:'Complex API you built?',a:'Real-time fraud detection API using Redis streams. Handled 500K events/hour.'},{q:'How do you approach testing?',a:'Pytest for unit tests, locust for load testing, contract tests between services.'}],skills:[{name:'Python',score:88},{name:'Django',score:82},{name:'PostgreSQL',score:86},{name:'REST APIs',score:90},{name:'Git/CI',score:85}]},
-    {id:'cd_008',name:'Pooja Rao',jobId:'j_003',clientId:'c_002',experience:'3 yrs',salary:'₹6L',score:85,status:'shortlisted',phone:'+91 98001 11008',email:'pooja@email.com',callScheduled:null,summary:'Excellent communication skills with prior team lead experience in BPO. Managed 12 agents, 4.7 CSAT.',strengths:['Proven team lead','High CSAT track record','Excellent English'],watchpoints:['Has not handled 24x7 shifts before'],answers:[{q:'Describe your leadership style.',a:'Collaborative but results-focused. Weekly 1-on-1s and transparent performance dashboards.'},{q:'How do you handle escalations?',a:'3-step SOP: acknowledge, empathize, resolve. 90% resolved myself.'},{q:'What metrics matter most?',a:'CSAT, FCR, and AHT. CSAT is king for BPO.'}],skills:[{name:'Communication',score:94},{name:'Team Management',score:86},{name:'CRM Tools',score:80},{name:'Conflict Res.',score:88},{name:'Reporting',score:75}]},
-    {id:'cd_009',name:'Amit Kulkarni',jobId:'j_004',clientId:'c_003',experience:'6 yrs',salary:'₹14L',score:89,status:'shortlisted',phone:'+91 98001 11009',email:'amit@email.com',callScheduled:null,summary:'CFA Level 2 with 6 years of FP&A at a listed fintech. Expert Excel and Power BI. Ready to own planning cycles.',strengths:['CFA Level 2','Strong FP&A experience','Power BI expertise'],watchpoints:['May expect faster promotion track'],answers:[{q:'Walk through a financial model you built.',a:'3-statement model for ₹200Cr capex project with scenario analysis and sensitivity tables.'},{q:'Tools you use?',a:'Excel (advanced), Power BI for dashboards, Python for large datasets.'},{q:'How do you handle month-end close?',a:'Detailed close calendar. Automate via Power Query and flag variances >5%.'}],skills:[{name:'Excel/Modeling',score:94},{name:'Power BI',score:88},{name:'Python',score:72},{name:'Accounting',score:85},{name:'Presentation',score:80}]},
-    {id:'cd_010',name:'Nisha Gupta',jobId:'j_004',clientId:'c_003',experience:'5 yrs',salary:'₹11L',score:77,status:'pending',phone:'+91 98001 11010',email:'nisha@email.com',callScheduled:null,summary:'Solid fundamentals but Excel skills weaker than required. Better fit for a junior analyst role.',strengths:['Good domain knowledge','Strong presentation skills','Articulate'],watchpoints:['Excel skills below requirement','No Power BI experience'],answers:[{q:'Walk through a financial model you built.',a:'Built monthly P&L trackers and variance reports. Have not done full 3-statement models yet.'},{q:'Tools you use?',a:'Excel primarily. Basic Power BI from online courses.'},{q:'How do you handle month-end close?',a:'Help with data collation. Have not owned close process independently.'}],skills:[{name:'Excel/Modeling',score:70},{name:'Power BI',score:45},{name:'Python',score:30},{name:'Accounting',score:80},{name:'Presentation',score:86}]},
-  ]
-};
+const SUPABASE_URL = "https://sebghpbyykplkoootzdg.supabase.co";
+const ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
 
-// ── STATE ──
-let currentClient = null;
-let myJobs = [];
-let myCandidates = [];
-let candCardFilter = 'all';
-let jobCandFilter = 'all';
-let currentJobId = null;
-
-// ── INIT — read URL param ──
-function init() {
-  const params = new URLSearchParams(window.location.search);
-  const clientId = params.get('id');
-  const client = ALL_DATA.clients.find(c => c.id === clientId);
-  const companyEl = document.getElementById('login-company-name');
-  if (client) {
-    companyEl.textContent = client.company;
-  } else {
-    companyEl.textContent = 'Sampark AI Client';
+async function doLogin() {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('errorMsg');
+  if (!email || !password) { err.style.display='block'; err.textContent='Please enter email and password.'; return; }
+  btn.disabled = true; btn.textContent = 'Signing in...'; err.style.display = 'none';
+  try {
+    const res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: { 'apikey': ANON_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if (data.access_token) {
+      localStorage.setItem('sb_token', data.access_token);
+      localStorage.setItem('sb_user_email', email);
+      if (email === 'admin@samparkai.tech') {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'client.html';
+      }
+    } else {
+      err.style.display = 'block';
+      err.textContent = 'Wrong email or password. Please try again.';
+      btn.disabled = false; btn.textContent = 'Access My Portal →';
+    }
+  } catch(e) {
+    err.style.display = 'block';
+    err.textContent = 'Connection error. Please try again.';
+    btn.disabled = false; btn.textContent = 'Access My Portal →';
   }
 }
-
-// ── LOGIN ──
-function clientLogin() {
-  const email = document.getElementById('client-email').value.trim();
-  const pass = document.getElementById('client-pass').value;
-  const params = new URLSearchParams(window.location.search);
-  const clientId = params.get('id');
-
-  // Find client — match by URL id OR by email
-  let client = ALL_DATA.clients.find(c => {
-    const idMatch = clientId ? c.id === clientId : true;
-    return idMatch && c.email === email && c.password === pass;
-  });
-
-  // Fallback: match just by email+pass if no id param
-  if (!client) {
-    client = ALL_DATA.clients.find(c => c.email === email && c.password === pass);
-  }
-
-  if (client) {
-    currentClient = client;
-    myJobs = ALL_DATA.jobs.filter(j => j.clientId === client.id);
-    myCandidates = ALL_DATA.candidates.filter(c => c.clientId === client.id);
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('dashboard').classList.add('active');
-    document.getElementById('sidebar-company').textContent = client.company;
-    document.getElementById('sidebar-plan').textContent = planLabel(client.plan);
-    renderOverview();
-  } else {
-    document.getElementById('login-error').style.display = 'block';
-  }
-}
-
-function logout() {
-  currentClient = null;
-  document.getElementById('dashboard').classList.remove('active');
-  document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('login-error').style.display = 'none';
-  document.getElementById('client-email').value = '';
-  document.getElementById('client-pass').value = '';
-}
-
-function planLabel(plan) {
-  return plan === '15000' ? 'Enterprise Plan' : plan === '10000' ? 'Growth Plan' : 'Starter Plan';
-}
-
-document.getElementById('client-pass').addEventListener('keydown', e => { if (e.key === 'Enter') clientLogin(); });
-
-// ── NAV ──
-function showPage(id, el) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  if (el) el.classList.add('active');
-  if (id === 'candidates') { candCardFilter = 'all'; renderCandidates(); }
-  if (id === 'jobs') renderJobs();
-}
-
-// ── HELPERS ──
-const AVATAR_COLORS = ['#14532d','#1e3a8a','#4c1d95','#881337','#134e4a','#7c2d12','#064e3b'];
-function avatarColor(name) { let h=0; for(let ch of name) h=(h*31+ch.charCodeAt(0))%AVATAR_COLORS.length; return AVATAR_COLORS[h]; }
-function initials(name) { return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-function stars(score) { const r=score/20; let h=''; for(let i=1;i<=5;i++){if(r>=i)h+='<span class="cc-star s-full">★</span>';else if(r>=i-0.5)h+='<span class="cc-star s-half">★</span>';else h+='<span class="cc-star s-empty">★</span>';} return h; }
-function snClass(s) { return s>=80?'sn-high':s>=60?'sn-mid':'sn-low'; }
-function aiRating(s) { return s>=80?'Strong':s>=65?'Good':'Weak'; }
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2600); }
-
-// ── OVERVIEW ──
-function renderOverview() {
-  const hour = new Date().getHours();
-  const greet = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
-  document.getElementById('overview-greeting').textContent = `${greet}, ${currentClient.contact.split(' ')[0]} 👋`;
-  const sl = myCandidates.filter(c => c.status === 'shortlisted').length;
-  const sc = myCandidates.filter(c => c.status === 'scheduled').length;
-  document.getElementById('ov-jobs').textContent = myJobs.length;
-  document.getElementById('ov-applied').textContent = myCandidates.length;
-  document.getElementById('ov-shortlisted').textContent = sl;
-  document.getElementById('ov-scheduled').textContent = sc;
-  const avg = myCandidates.length ? Math.round(myCandidates.reduce((s,c)=>s+c.score,0)/myCandidates.length) : 0;
-  const top = myCandidates.length ? Math.max(...myCandidates.map(c=>c.score)) : 0;
-  document.getElementById('ov-ai-text').innerHTML = `<strong>Sampark AI has screened ${myCandidates.length} candidates</strong> for you across ${myJobs.length} job${myJobs.length!==1?'s':''}. Average AI score is <strong>${avg}/100</strong>. Top candidate scored <strong>${top}/100</strong>. <strong>${sl} are shortlisted</strong> and ready for your interview.`;
-  document.getElementById('ov-jobs-grid').innerHTML = myJobs.map(j => jobCardHtml(j)).join('');
-}
-
-// ── JOB CARD ──
-function jobCardHtml(j) {
-  const cands = myCandidates.filter(c => c.jobId === j.id);
-  const sl = cands.filter(c => c.status === 'shortlisted').length;
-  const sc = cands.filter(c => c.status === 'scheduled').length;
-  return `<div class="job-card" onclick="openJobDetail('${j.id}')">
-    <div class="job-card-title">${j.title}</div>
-    <div class="job-card-meta"><span>⏱ ${j.exp}</span><span>📅 ${new Date(j.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short'})}</span></div>
-    <div class="job-funnel">
-      <div class="jf-step"><div class="jf-val">${cands.length}</div><div class="jf-lbl">Applied</div></div>
-      <div class="jf-step"><div class="jf-val" style="color:var(--green)">${sl}</div><div class="jf-lbl">Shortlisted</div></div>
-      <div class="jf-step"><div class="jf-val" style="color:var(--purple)">${sc}</div><div class="jf-lbl">Scheduled</div></div>
-    </div>
-    <div class="job-card-footer">
-      <span class="badge active">Active</span>
-      <span style="font-size:0.8rem;color:var(--accent);font-weight:600">View candidates →</span>
-    </div>
-  </div>`;
-}
-
-// ── JOBS PAGE ──
-function renderJobs() {
-  document.getElementById('jobs-grid').innerHTML = myJobs.length
-    ? myJobs.map(j => jobCardHtml(j)).join('')
-    : '<div class="empty-state"><div class="es-icon">💼</div><h3>No active jobs</h3><p>Contact your Sampark AI account manager to create a job</p></div>';
-}
-
-// ── JOB DETAIL ──
-function openJobDetail(jobId) {
-  currentJobId = jobId;
-  jobCandFilter = 'all';
-  const job = ALL_DATA.jobs.find(j => j.id === jobId);
-  const cands = myCandidates.filter(c => c.jobId === jobId);
-  const sl = cands.filter(c => c.status === 'shortlisted').length;
-  const sc = cands.filter(c => c.status === 'scheduled').length;
-  const screened = Math.round(cands.length * 0.95);
-  const avg = cands.length ? Math.round(cands.reduce((s,c)=>s+c.score,0)/cands.length) : 0;
-  const top = cands.length ? Math.max(...cands.map(c=>c.score)) : 0;
-
-  document.getElementById('jd-title').textContent = job.title;
-  document.getElementById('jd-exp').textContent = job.exp;
-  document.getElementById('jd-date').textContent = new Date(job.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-  document.getElementById('jdf-applied').textContent = cands.length;
-  document.getElementById('jdf-screened').textContent = screened;
-  document.getElementById('jdf-shortlisted').textContent = sl;
-  document.getElementById('jdf-scheduled').textContent = sc;
-  document.getElementById('jdff-screened').style.width = cands.length ? (screened/cands.length*100)+'%' : '0%';
-  document.getElementById('jdff-shortlisted').style.width = cands.length ? (sl/cands.length*100)+'%' : '0%';
-  document.getElementById('jdff-scheduled').style.width = cands.length ? (sc/cands.length*100)+'%' : '0%';
-  document.getElementById('jd-ai-text').innerHTML = `AI screened <strong>${cands.length} candidates</strong> for this role. Top score: <strong>${top}/100</strong>. Average: <strong>${avg}/100</strong>. <strong>${sl} meet your shortlist criteria</strong> and are ready to interview.`;
-
-  showPage('jobdetail', document.getElementById('nav-jobs'));
-  document.querySelectorAll('#page-jobdetail .card-filter-pill').forEach(p=>p.classList.remove('cfp-active'));
-  document.querySelector('#page-jobdetail .card-filter-pill').classList.add('cfp-active');
-  renderJobCands(jobId);
-}
-
-function renderJobCands(jobId) {
-  let list = myCandidates.filter(c => c.jobId === jobId);
-  if (jobCandFilter === 'shortlisted') list = list.filter(c => c.status === 'shortlisted');
-  else if (jobCandFilter === 'scheduled') list = list.filter(c => c.status === 'scheduled');
-  else if (jobCandFilter === 'pending') list = list.filter(c => !['shortlisted','scheduled'].includes(c.status));
-  list.sort((a,b) => b.score - a.score);
-  document.getElementById('jd-candidates-grid').innerHTML = list.length ? list.map((c,i) => candCardHtml(c,i,list.length)).join('') : '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--muted)">No candidates in this filter</div>';
-}
-
-function setJobCandFilter(f, el) {
-  jobCandFilter = f;
-  document.querySelectorAll('#page-jobdetail .card-filter-pill').forEach(p=>p.classList.remove('cfp-active'));
-  el.classList.add('cfp-active');
-  renderJobCands(currentJobId);
-}
-
-// ── CANDIDATES PAGE ──
-function renderCandidates() {
-  let list = [...myCandidates];
-  if (candCardFilter === 'shortlisted') list = list.filter(c => c.status === 'shortlisted');
-  else if (candCardFilter === 'scheduled') list = list.filter(c => c.status === 'scheduled');
-  else if (candCardFilter === 'pending') list = list.filter(c => !['shortlisted','scheduled'].includes(c.status));
-  list.sort((a,b) => b.score - a.score);
-  document.getElementById('candidates-grid').innerHTML = list.length ? list.map((c,i) => candCardHtml(c,i,list.length)).join('') : '<div style="grid-column:1/-1;text-align:center;padding:4rem;color:var(--muted)"><div style="font-size:2.5rem;margin-bottom:0.5rem">🔍</div><p>No candidates in this filter</p></div>';
-}
-
-function showAllCandidates() {
-  candCardFilter = 'all';
-  document.querySelectorAll('#cands-filter-bar .card-filter-pill').forEach(p=>p.classList.remove('cfp-active'));
-  document.querySelector('#cands-filter-bar .card-filter-pill').classList.add('cfp-active');
-  renderCandidates();
-}
-
-function setCandFilter(f, el) {
-  candCardFilter = f;
-  document.querySelectorAll('#cands-filter-bar .card-filter-pill').forEach(p=>p.classList.remove('cfp-active'));
-  el.classList.add('cfp-active');
-  renderCandidates();
-}
-
-// ── CANDIDATE CARD HTML ──
-function candCardHtml(c, idx, total) {
-  const job = ALL_DATA.jobs.find(j => j.id === c.jobId);
-  const isTop = idx === 0 && candCardFilter !== 'pending';
-  const cardCls = c.status==='scheduled'?'cc-scheduled':c.status==='shortlisted'?'cc-shortlisted':'';
-  const topCls = isTop ? 'cc-top' : '';
-  const statusLabel = {shortlisted:'✓ Shortlisted',scheduled:'📞 Call Scheduled'}[c.status]||'⏳ Pending';
-  const badgeCls = {shortlisted:'b-shortlisted',scheduled:'b-scheduled'}[c.status]||'b-pending';
-  const skills = (c.skills||[]).slice(0,3);
-  return `<div class="cand-card ${cardCls} ${topCls}" onclick="openProfile('${c.id}')">
-    <div class="cc-top-row">
-      <div class="cc-avatar" style="background:${avatarColor(c.name)}">${initials(c.name)}</div>
-      <div class="cc-nameblock">
-        <div class="cc-name">${c.name}</div>
-        <div class="cc-role">${job?job.title:'N/A'}</div>
-        <div class="cc-stars">${stars(c.score)}</div>
-      </div>
-      <div class="cc-right">
-        ${isTop?'<span class="cc-sbadge b-top">🏆 Top Pick</span>':''}
-        <span class="cc-sbadge ${badgeCls}">${statusLabel}</span>
-        <div style="text-align:right;margin-top:0.2rem">
-          <div class="cc-scorenum ${snClass(c.score)}">${c.score}</div>
-          <div class="cc-scorelbl">/ 100</div>
-        </div>
-      </div>
-    </div>
-    <div class="cc-facts">
-      <div class="cc-fact"><div class="cc-fval">${c.experience||'—'}</div><div class="cc-flbl">Experience</div></div>
-      <div class="cc-fact"><div class="cc-fval">${c.salary||'—'}</div><div class="cc-flbl">Exp. CTC</div></div>
-      <div class="cc-fact"><div class="cc-fval">${aiRating(c.score)}</div><div class="cc-flbl">AI Rating</div></div>
-    </div>
-    ${skills.length?`<div class="cc-bars">${skills.map(s=>`<div class="cc-bar-row"><div class="cc-bar-name">${s.name}</div><div class="cc-bar-track"><div class="cc-bar-fill ${s.score>=80?'bf-green':''}" style="width:${s.score}%"></div></div><div class="cc-bar-pct">${s.score}</div></div>`).join('')}</div>`:''}
-    ${c.summary?`<div class="cc-summary">${c.summary}</div>`:''}
-    ${(c.strengths||[]).length?`<div class="cc-tags">${c.strengths.slice(0,2).map(s=>`<span class="cc-tag t-green">✓ ${s}</span>`).join('')}${(c.watchpoints||[]).slice(0,1).map(w=>`<span class="cc-tag t-red">⚠ ${w}</span>`).join('')}</div>`:''}
-    ${c.callScheduled?`<div class="cc-sched-strip">📞 ${c.callScheduled.type} · ${c.callScheduled.date} at ${c.callScheduled.time}</div>`:''}
-    <div class="cc-footer">
-      <div class="cc-contact">${c.phone?`<span>📱 ${c.phone}</span>`:''} ${c.email?`<span>✉ ${c.email}</span>`:''}</div>
-      <button class="btn btn-dark btn-sm" onclick="event.stopPropagation();openProfile('${c.id}')">Full Profile →</button>
-    </div>
-  </div>`;
-}
-
-// ── PROFILE MODAL ──
-function openProfile(id) {
-  const c = myCandidates.find(x => x.id === id);
-  if (!c) return;
-  const job = ALL_DATA.jobs.find(j => j.id === c.jobId);
-  const statusLabel = {shortlisted:'✓ Shortlisted',scheduled:'📞 Call Scheduled'}[c.status]||'⏳ Pending';
-  const badgeCls = {shortlisted:'b-shortlisted',scheduled:'b-scheduled'}[c.status]||'b-pending';
-  document.getElementById('cand-profile-inner').innerHTML = `
-    <div style="background:var(--ink);padding:1.75rem 2rem;border-radius:20px 20px 0 0;position:relative">
-      <button onclick="document.getElementById('cand-profile-modal').classList.remove('open')" style="position:absolute;top:1rem;right:1rem;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,0.1);color:#fff;border:none;cursor:pointer;font-size:0.9rem">✕</button>
-      <div style="width:52px;height:52px;border-radius:12px;background:${avatarColor(c.name)};color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:1rem">${initials(c.name)}</div>
-      <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:1.4rem;color:#fff">${c.name}</div>
-      <div style="font-size:0.83rem;color:rgba(255,255,255,0.5);margin-top:0.25rem">${job?job.title:''} · ${c.experience||''}</div>
-      <div style="display:flex;align-items:center;gap:1.25rem;margin-top:1rem;flex-wrap:wrap">
-        <div>
-          <div style="font-family:'Syne',sans-serif;font-weight:800;font-size:2.8rem;color:#fff;line-height:1">${c.score}</div>
-          <div style="font-size:0.7rem;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:.05em">AI Score / 100</div>
-        </div>
-        <div>
-          <div class="cc-stars" style="font-size:1.3rem">${stars(c.score)}</div>
-          <div style="font-size:0.75rem;color:rgba(255,255,255,0.4);margin-top:0.3rem">Expected: ${c.salary||'—'} · ${c.experience||'—'}</div>
-        </div>
-        <span class="cc-sbadge ${badgeCls}" style="margin-left:auto">${statusLabel}</span>
-      </div>
-    </div>
-    <div style="padding:1.75rem 2rem;max-height:52vh;overflow-y:auto">
-      <div style="margin-bottom:1.25rem"><div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:0.5rem">AI Summary</div><p style="font-size:0.88rem;line-height:1.65">${c.summary||'—'}</p></div>
-      <div style="margin-bottom:1.25rem"><div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:0.5rem">Strengths</div><div style="display:flex;flex-wrap:wrap;gap:0.4rem">${(c.strengths||[]).map(s=>`<span class="cc-tag t-green">✓ ${s}</span>`).join('')}</div></div>
-      <div style="margin-bottom:1.25rem"><div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:0.5rem">Watch Points</div><div style="display:flex;flex-wrap:wrap;gap:0.4rem">${(c.watchpoints||[]).map(w=>`<span class="cc-tag t-red">⚠ ${w}</span>`).join('')}</div></div>
-      ${(c.answers||[]).length?`<div style="margin-bottom:1.25rem"><div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:0.5rem">Screening Answers</div>${c.answers.map(a=>`<div style="margin-bottom:0.85rem;padding:0.85rem 1rem;background:#fafaf8;border-radius:10px;border-left:3px solid var(--accent)"><div style="font-size:0.73rem;font-weight:600;color:var(--muted);margin-bottom:0.3rem">Q: ${a.q}</div><div style="font-size:0.85rem;line-height:1.6">${a.a}</div></div>`).join('')}</div>`:''}
-      ${(c.skills||[]).length?`<div><div style="font-size:0.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:0.6rem">Skill Breakdown</div>${c.skills.map(s=>`<div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.6rem"><div style="font-size:0.82rem;width:110px;flex-shrink:0">${s.name}</div><div style="flex:1;height:7px;background:var(--border);border-radius:4px;overflow:hidden"><div style="height:100%;border-radius:4px;background:${s.score>=80?'#16a34a':'var(--accent)'};width:${s.score}%"></div></div><div style="font-family:'Syne',sans-serif;font-weight:700;font-size:0.8rem;width:28px;text-align:right">${s.score}</div></div>`).join('')}</div>`:''}
-    </div>
-    <div style="padding:1rem 2rem 1.5rem;border-top:1px solid var(--border);display:flex;gap:0.75rem">
-      <a href="tel:${c.phone}" class="btn btn-dark" style="flex:1;justify-content:center;text-decoration:none">📱 Call</a>
-      <a href="mailto:${c.email}" class="btn btn-accent" style="flex:1;justify-content:center;text-decoration:none">✉ Email</a>
-    </div>`;
-  document.getElementById('cand-profile-modal').classList.add('open');
-}
-
-document.addEventListener('keydown', e => { if (e.key === 'Escape') document.getElementById('cand-profile-modal').classList.remove('open'); });
-
-init();
+document.addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 </script>
 </body>
 </html>
