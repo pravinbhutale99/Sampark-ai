@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SamparkAI - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.logo-text{font-size:26px;font-weight:800;color:#0d1b2a;text-align:center;margin-bottom:6px}
+.logo-text span{color:#db4437}
+.subtitle{text-align:center;font-size:13px;color:#6b7280;margin-bottom:20px}
+.role-badge{display:block;text-align:center;background:#f3f4f6;border-radius:8px;padding:8px;font-size:13px;font-weight:600;color:#374151;margin-bottom:24px}
+label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px}
+input{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:16px;outline:none;transition:border-color 0.2s}
+input:focus{border-color:#0d1b2a}
+.btn{width:100%;background:#0d1b2a;color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s}
+.btn:hover{opacity:0.88}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+.error{color:#dc2626;font-size:13px;margin-top:12px;text-align:center;display:none}
+.powered{text-align:center;font-size:12px;color:#9ca3af;margin-top:20px}
+.powered span{color:#db4437;font-weight:600}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo-text">Sampark<span>AI</span></div>
+  <div class="subtitle">Client Portal</div>
+  <div class="role-badge">Sampark AI Client</div>
+  <label>Your email address</label>
+  <input type="email" id="email" placeholder="Your email address"/>
+  <label>Your password</label>
+  <input type="password" id="password" placeholder="Your password"/>
+  <button class="btn" id="loginBtn" onclick="doLogin()">Access My Portal &rarr;</button>
+  <div class="error" id="errorMsg"></div>
+  <div class="powered">Powered by <span>Sampark AI</span></div>
+</div>
+<script>
+const SURL = "https://sebghpbyykplkoootzdg.supabase.co";
+const AKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
+async function doLogin(){
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  const btn=document.getElementById('loginBtn');
+  const err=document.getElementById('errorMsg');
+  if(!email||!password){err.style.display='block';err.textContent='Please enter email and password.';return;}
+  btn.disabled=true;btn.textContent='Signing in...';err.style.display='none';
+  try{
+    const res=await fetch(SURL+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email,password})
+    });
+    const data=await res.json();
+    if(data.access_token){
+      localStorage.setItem('sb_token',data.access_token);
+      localStorage.setItem('sb_email',email);
+      if(email==='admin@samparkai.tech'){
+        window.location.href='admin.html';
+      } else {
+        window.location.href='client.html';
+      }
+    } else {
+      err.style.display='block';
+      err.textContent='Wrong email or password. Please try again.';
+      btn.disabled=false;btn.textContent='Access My Portal →';
+    }
+  } catch(e){
+    err.style.display='block';err.textContent='Connection error. Please try again.';
+    btn.disabled=false;btn.textContent='Access My Portal →';
+  }
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+</script>
+</body>
+</html>
