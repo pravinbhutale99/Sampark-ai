@@ -1,667 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sampark AI — Client Portal</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --orange: #f4501e; --orange-hover: #d93d0d;
-      --navy: #0d1b2a; --text: #1a1a2e; --muted: #6b7280;
-      --border: #e5e7eb; --bg: #f9fafb; --card: #ffffff;
-      --green: #22c55e; --red: #ef4444; --yellow: #f59e0b;
-    }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-
-    /* LOGIN */
-    #login-screen { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg,#fff9f7,#f9fafb); }
-    .login-box { width:100%; max-width:400px; background:var(--card); border:1.5px solid var(--border); border-radius:20px; padding:2.5rem; box-shadow:0 20px 60px rgba(0,0,0,.06); }
-    .login-logo { display:flex; align-items:center; gap:.625rem; margin-bottom:.5rem; }
-    .logo-sq { width:32px; height:32px; background:var(--orange); border-radius:7px; flex-shrink:0; }
-    .logo-name { font-size:1.1rem; font-weight:800; color:var(--navy); }
-    .login-sub { font-size:.83rem; color:var(--muted); margin-bottom:2rem; }
-    .field { margin-bottom:1rem; }
-    .field label { display:block; font-size:.73rem; font-weight:700; color:var(--muted); margin-bottom:.4rem; letter-spacing:.05em; text-transform:uppercase; }
-    .field input { width:100%; padding:.7rem 1rem; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; color:var(--text); font-size:.9rem; font-family:inherit; transition:border-color .2s; }
-    .field input:focus { outline:none; border-color:var(--orange); }
-    .btn-login { width:100%; padding:.8rem; background:var(--orange); color:#fff; border:none; border-radius:9px; font-size:.95rem; font-weight:700; cursor:pointer; margin-top:.5rem; font-family:inherit; transition:background .2s; }
-    .btn-login:hover { background:var(--orange-hover); }
-    .login-err { color:var(--red); font-size:.8rem; margin-top:.75rem; display:none; }
-    .demo-creds { margin-top:1.5rem; padding:1rem; background:var(--bg); border-radius:9px; border:1px solid var(--border); font-size:.76rem; color:var(--muted); line-height:2; }
-    .demo-creds b { color:var(--navy); }
-
-    /* DASHBOARD */
-    #dashboard { display:none; }
-    header { position:sticky; top:0; z-index:50; background:var(--navy); border-bottom:1px solid rgba(255,255,255,.08); display:flex; align-items:center; justify-content:space-between; padding:0 2rem; height:62px; }
-    .h-logo { display:flex; align-items:center; gap:.6rem; }
-    .h-logo .logo-sq { width:28px; height:28px; border-radius:6px; }
-    .h-logo span { font-weight:800; color:#fff; font-size:1rem; }
-    .h-right { display:flex; align-items:center; gap:.75rem; }
-    .h-name { font-size:.82rem; color:rgba(255,255,255,.55); }
-    .btn-sm { padding:.4rem .9rem; border-radius:7px; font-size:.78rem; font-weight:600; cursor:pointer; border:1px solid rgba(255,255,255,.15); background:transparent; color:rgba(255,255,255,.7); font-family:inherit; transition:all .2s; }
-    .btn-sm:hover { background:rgba(255,255,255,.1); color:#fff; }
-    .btn-sm.primary { background:var(--orange); color:#fff; border-color:var(--orange); }
-    .btn-sm.primary:hover { background:var(--orange-hover); }
-
-    main { padding:2rem; max-width:1400px; margin:0 auto; }
-
-    /* TABS NAV */
-    .main-tabs { display:flex; gap:.25rem; background:var(--card); border:1.5px solid var(--border); border-radius:10px; padding:.25rem; margin-bottom:2rem; width:fit-content; }
-    .main-tab { padding:.5rem 1.25rem; border-radius:8px; font-size:.85rem; font-weight:600; cursor:pointer; border:none; background:transparent; color:var(--muted); font-family:inherit; transition:all .2s; }
-    .main-tab.active { background:var(--orange); color:#fff; }
-
-    /* STATS */
-    .stats-row { display:grid; grid-template-columns:repeat(5,1fr); gap:1rem; margin-bottom:2rem; }
-    .stat-card { background:var(--card); border:1.5px solid var(--border); border-radius:14px; padding:1.25rem 1.5rem; }
-    .stat-card .lbl { font-size:.7rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem; }
-    .stat-card .val { font-size:2rem; font-weight:900; color:var(--navy); line-height:1; }
-
-    /* CANDIDATE PANEL */
-    #panel-candidates { display:block; }
-    #panel-jobs { display:none; }
-
-    .page-head { margin-bottom:1.5rem; }
-    .page-head h1 { font-size:1.5rem; font-weight:900; color:var(--navy); letter-spacing:-.02em; }
-    .page-head p { font-size:.85rem; color:var(--muted); margin-top:.25rem; }
-
-    .toolbar { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; margin-bottom:1.5rem; }
-    .tabs { display:flex; gap:.2rem; background:var(--card); border:1.5px solid var(--border); border-radius:9px; padding:.2rem; }
-    .tab { padding:.38rem .9rem; border-radius:7px; font-size:.8rem; font-weight:600; cursor:pointer; border:none; background:transparent; color:var(--muted); font-family:inherit; transition:all .2s; }
-    .tab.active { background:var(--orange); color:#fff; }
-    .search-in { flex:1; min-width:200px; padding:.5rem 1rem; background:var(--card); border:1.5px solid var(--border); border-radius:9px; color:var(--text); font-size:.85rem; font-family:inherit; }
-    .search-in:focus { outline:none; border-color:var(--orange); }
-
-    .layout { display:grid; grid-template-columns:270px 1fr; gap:1.5rem; }
-    @media(max-width:900px){ .layout{grid-template-columns:1fr;} .stats-row{grid-template-columns:repeat(3,1fr);} }
-
-    /* JOBS SIDEBAR */
-    .jobs-panel { background:var(--card); border:1.5px solid var(--border); border-radius:16px; padding:1.25rem; }
-    .jobs-panel-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
-    .jobs-panel-hd h3 { font-size:.88rem; font-weight:800; color:var(--navy); }
-    .job-item { padding:.75rem .875rem; border-radius:10px; cursor:pointer; margin-bottom:.4rem; border:1.5px solid transparent; transition:all .2s; }
-    .job-item:hover { background:#fdf8f6; }
-    .job-item.active { background:rgba(244,80,30,.05); border-color:rgba(244,80,30,.25); }
-    .job-item-top { display:flex; justify-content:space-between; align-items:flex-start; gap:.5rem; }
-    .job-title-txt { font-size:.85rem; font-weight:700; color:var(--navy); line-height:1.3; }
-    .job-cnt { font-size:.68rem; padding:.15rem .5rem; border-radius:999px; background:rgba(244,80,30,.1); color:var(--orange); font-weight:700; white-space:nowrap; }
-    .job-meta-txt { font-size:.73rem; color:var(--muted); margin-top:.25rem; }
-    .jobs-empty { font-size:.82rem; color:var(--muted); text-align:center; padding:2rem .5rem; }
-
-    /* CANDIDATES */
-    .cand-panel-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; }
-    .cand-panel-hd h2 { font-size:1.05rem; font-weight:800; color:var(--navy); }
-    .cand-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:1rem; }
-    .cand-card { background:var(--card); border:1.5px solid var(--border); border-radius:14px; padding:1.25rem; cursor:pointer; transition:border-color .2s,transform .2s,box-shadow .2s; box-shadow:0 1px 4px rgba(0,0,0,.04); }
-    .cand-card:hover { border-color:var(--orange); transform:translateY(-3px); box-shadow:0 8px 32px rgba(244,80,30,.08); }
-    .cand-top { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:.875rem; }
-    .cand-name { font-weight:800; font-size:.95rem; color:var(--navy); }
-    .cand-role { font-size:.76rem; color:var(--muted); margin-top:.15rem; }
-    .score { min-width:42px; text-align:center; padding:.35rem .6rem; border-radius:9px; font-weight:900; font-size:1rem; }
-    .score-hi { background:rgba(34,197,94,.1); color:#16a34a; }
-    .score-mid { background:rgba(245,158,11,.1); color:#d97706; }
-    .score-lo { background:rgba(239,68,68,.1); color:var(--red); }
-    .cand-pills { display:flex; flex-wrap:wrap; gap:.4rem; margin-bottom:.75rem; }
-    .pill { font-size:.72rem; padding:.2rem .6rem; border-radius:999px; background:var(--bg); color:var(--muted); border:1px solid var(--border); }
-    .status-chip { font-size:.7rem; font-weight:700; padding:.2rem .65rem; border-radius:999px; }
-    .s-pending    { background:rgba(245,158,11,.1);  color:#d97706; }
-    .s-shortlisted{ background:rgba(34,197,94,.1);   color:#16a34a; }
-    .s-scheduled  { background:rgba(244,80,30,.1);   color:var(--orange); }
-    .s-rejected   { background:rgba(239,68,68,.08);  color:var(--red); }
-    .cand-acts { display:flex; gap:.4rem; margin-top:.875rem; }
-    .act-btn { flex:1; padding:.38rem .4rem; border-radius:7px; font-size:.72rem; font-weight:600; cursor:pointer; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-family:inherit; transition:all .2s; }
-    .act-btn.g:hover { border-color:var(--green); color:var(--green); background:rgba(34,197,94,.05); }
-    .act-btn.o:hover { border-color:var(--orange); color:var(--orange); background:rgba(244,80,30,.05); }
-    .act-btn.r:hover { border-color:var(--red); color:var(--red); background:rgba(239,68,68,.05); }
-    .act-btn.b:hover { border-color:#3b82f6; color:#3b82f6; background:rgba(59,130,246,.05); }
-
-    .empty { text-align:center; padding:4rem 1rem; color:var(--muted); font-size:.9rem; }
-    .loading-txt { text-align:center; padding:3rem; color:var(--muted); font-size:.88rem; }
-
-    /* JOBS DASHBOARD PANEL */
-    .jobs-dashboard { display:flex; flex-direction:column; gap:1rem; }
-    .job-row {
-      background:var(--card); border:1.5px solid var(--border); border-radius:14px;
-      padding:1.25rem 1.5rem; display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:center;
-    }
-    .job-row-title { font-size:1rem; font-weight:800; color:var(--navy); margin-bottom:.25rem; }
-    .job-row-meta { font-size:.78rem; color:var(--muted); }
-    .job-row-meta span { margin-right:1rem; }
-    .job-link-row { display:flex; gap:.5rem; margin-top:.75rem; align-items:center; }
-    .job-link-input { flex:1; padding:.45rem .875rem; background:var(--bg); border:1.5px solid var(--border); border-radius:8px; color:var(--navy); font-size:.75rem; font-family:monospace; }
-    .btn-copy-sm { padding:.45rem 1rem; background:var(--orange); color:#fff; border:none; border-radius:8px; font-size:.75rem; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; transition:background .2s; }
-    .btn-copy-sm:hover { background:var(--orange-hover); }
-    .job-cand-count { text-align:center; }
-    .job-cand-num { font-size:2rem; font-weight:900; color:var(--orange); line-height:1; }
-    .job-cand-lbl { font-size:.72rem; color:var(--muted); margin-top:.2rem; }
-
-    /* MODAL */
-    .overlay { position:fixed; inset:0; background:rgba(13,27,42,.5); z-index:200; display:flex; align-items:center; justify-content:center; padding:1rem; backdrop-filter:blur(4px); }
-    .modal { background:var(--card); border:1.5px solid var(--border); border-radius:20px; width:100%; max-width:520px; max-height:90vh; overflow-y:auto; padding:2rem; position:relative; box-shadow:0 24px 80px rgba(0,0,0,.12); }
-    .modal-close { position:absolute; top:1rem; right:1rem; background:none; border:none; color:var(--muted); font-size:1.25rem; cursor:pointer; width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; transition:background .2s; }
-    .modal-close:hover { background:var(--bg); color:var(--text); }
-    .modal h2 { font-size:1.2rem; font-weight:800; color:var(--navy); margin-bottom:1.5rem; }
-    .modal .field label { font-size:.73rem; font-weight:700; color:var(--muted); letter-spacing:.05em; text-transform:uppercase; display:block; margin-bottom:.4rem; }
-    .modal .field { margin-bottom:1rem; }
-    .modal .field input, .modal .field textarea { width:100%; padding:.65rem 1rem; background:var(--bg); border:1.5px solid var(--border); border-radius:9px; color:var(--text); font-size:.875rem; font-family:inherit; }
-    .modal .field input:focus, .modal .field textarea:focus { outline:none; border-color:var(--orange); }
-    .modal .field textarea { resize:vertical; min-height:80px; }
-    .modal-acts { display:flex; gap:.75rem; justify-content:flex-end; margin-top:1.25rem; }
-    .btn-cancel { padding:.65rem 1.25rem; border:1.5px solid var(--border); border-radius:9px; background:none; color:var(--muted); cursor:pointer; font-size:.875rem; font-family:inherit; }
-    .btn-cancel:hover { border-color:var(--red); color:var(--red); }
-    .btn-create { padding:.65rem 1.5rem; border:none; border-radius:9px; background:var(--orange); color:#fff; font-size:.9rem; font-weight:700; cursor:pointer; font-family:inherit; transition:background .2s; }
-    .btn-create:hover { background:var(--orange-hover); }
-    .btn-create:disabled { opacity:.5; cursor:not-allowed; }
-
-    .link-box { margin-top:1.5rem; padding:1.25rem 1.5rem; background:rgba(34,197,94,.04); border:1.5px solid rgba(34,197,94,.2); border-radius:12px; }
-    .link-box h4 { font-size:.875rem; font-weight:800; color:#16a34a; margin-bottom:.4rem; }
-    .link-box p { font-size:.8rem; color:var(--muted); margin-bottom:.875rem; line-height:1.6; }
-    .link-row { display:flex; gap:.5rem; }
-    .link-input { flex:1; padding:.5rem .875rem; background:var(--bg); border:1.5px solid var(--border); border-radius:8px; color:var(--navy); font-size:.75rem; font-family:monospace; }
-    .btn-copy { padding:.5rem 1rem; background:var(--green); color:#fff; border:none; border-radius:8px; font-size:.78rem; font-weight:700; cursor:pointer; font-family:inherit; }
-    .btn-copy:hover { opacity:.85; }
-
-    /* DETAIL MODAL */
-    .detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.25rem; }
-    .d-item .d-key { font-size:.68rem; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:.3rem; }
-    .d-item .d-val { font-size:.9rem; font-weight:600; color:var(--navy); }
-    .ai-box { padding:1rem; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; font-size:.85rem; color:var(--muted); line-height:1.65; margin-bottom:1.25rem; }
-    .detail-acts { display:flex; gap:.75rem; flex-wrap:wrap; }
-    .detail-acts button { flex:1; min-width:110px; padding:.65rem; border-radius:9px; font-size:.82rem; font-weight:700; cursor:pointer; border:1.5px solid var(--border); background:transparent; color:var(--muted); font-family:inherit; transition:all .2s; }
-
-    /* SCHEDULE CALL MODAL */
-    .call-info { background:rgba(244,80,30,.04); border:1.5px solid rgba(244,80,30,.15); border-radius:10px; padding:1rem; margin-bottom:1.25rem; }
-    .call-info .ci-name { font-size:1rem; font-weight:800; color:var(--navy); }
-    .call-info .ci-meta { font-size:.8rem; color:var(--muted); margin-top:.25rem; }
-
-    .toast { position:fixed; bottom:1.75rem; right:1.75rem; z-index:9999; padding:.8rem 1.4rem; border-radius:12px; font-size:.85rem; font-weight:600; background:var(--navy); color:#fff; box-shadow:0 8px 32px rgba(0,0,0,.2); transform:translateY(80px); opacity:0; transition:all .3s cubic-bezier(.34,1.56,.64,1); }
-    .toast.show { transform:translateY(0); opacity:1; }
-    .toast.ok { background:#16a34a; }
-    .toast.err { background:var(--red); }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SamparkAI - Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.card{background:#fff;border-radius:20px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 4px 24px rgba(0,0,0,0.08)}
+.logo-text{font-size:26px;font-weight:800;color:#0d1b2a;text-align:center;margin-bottom:6px}
+.logo-text span{color:#db4437}
+.subtitle{text-align:center;font-size:13px;color:#6b7280;margin-bottom:20px}
+.role-badge{display:block;text-align:center;background:#f3f4f6;border-radius:8px;padding:8px;font-size:13px;font-weight:600;color:#374151;margin-bottom:24px}
+label{display:block;font-size:12px;font-weight:600;color:#374151;margin-bottom:6px}
+input{width:100%;padding:12px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;margin-bottom:16px;outline:none;transition:border-color 0.2s}
+input:focus{border-color:#0d1b2a}
+.btn{width:100%;background:#0d1b2a;color:#fff;border:none;padding:14px;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity 0.2s}
+.btn:hover{opacity:0.88}
+.btn:disabled{opacity:0.6;cursor:not-allowed}
+.error{color:#dc2626;font-size:13px;margin-top:12px;text-align:center;display:none}
+.powered{text-align:center;font-size:12px;color:#9ca3af;margin-top:20px}
+.powered span{color:#db4437;font-weight:600}
+</style>
 </head>
 <body>
-
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo"><div class="logo-sq"></div><span class="logo-name">Sampark AI</span></div>
-    <div class="login-sub">Client Portal — Access your candidate pipeline</div>
-    <div class="field"><label>Email</label><input type="email" id="inp-email" placeholder="your@email.com" /></div>
-    <div class="field"><label>Password</label><input type="password" id="inp-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
-    <button class="btn-login" onclick="doLogin()">Access My Dashboard →</button>
-    <div class="login-err" id="login-err">Invalid email or password.</div>
-    <div class="demo-creds">
-      <b>Demo accounts:</b><br>
-      hr@techcorp.in / tech2026<br>
-      rajiv@nexusbpo.com / nexus2026<br>
-      ananya@finserve.co / fin2026
-    </div>
-  </div>
+<div class="card">
+  <div class="logo-text">Sampark<span>AI</span></div>
+  <div class="subtitle">Client Portal</div>
+  <div class="role-badge">Sampark AI Client</div>
+  <label>Your email address</label>
+  <input type="email" id="email" placeholder="Your email address"/>
+  <label>Your password</label>
+  <input type="password" id="password" placeholder="Your password"/>
+  <button class="btn" id="loginBtn" onclick="doLogin()">Access My Portal &rarr;</button>
+  <div class="error" id="errorMsg"></div>
+  <div class="powered">Powered by <span>Sampark AI</span></div>
 </div>
-
-<!-- DASHBOARD -->
-<div id="dashboard">
-  <header>
-    <div class="h-logo"><div class="logo-sq"></div><span>Sampark AI</span></div>
-    <div class="h-right">
-      <span class="h-name" id="h-name"></span>
-      <button class="btn-sm primary" onclick="openJobModal()">+ New Job</button>
-      <button class="btn-sm" id="export-btn">⬇ Export PDF</button>
-      <button class="btn-sm" onclick="doLogout()">Sign Out</button>
-    </div>
-  </header>
-  <main>
-    <div class="stats-row">
-      <div class="stat-card"><div class="lbl">Jobs Created</div><div class="val" id="st-jobs">—</div></div>
-      <div class="stat-card"><div class="lbl">Total Screened</div><div class="val" id="st-total">—</div></div>
-      <div class="stat-card"><div class="lbl">Shortlisted</div><div class="val" id="st-short">—</div></div>
-      <div class="stat-card"><div class="lbl">Calls Scheduled</div><div class="val" id="st-sched">—</div></div>
-      <div class="stat-card"><div class="lbl">Pending Review</div><div class="val" id="st-pend">—</div></div>
-    </div>
-
-    <!-- MAIN TABS -->
-    <div class="main-tabs">
-      <button class="main-tab active" onclick="showPanel('candidates',this)">👥 Candidates</button>
-      <button class="main-tab" onclick="showPanel('jobs',this)">💼 My Jobs & Links</button>
-    </div>
-
-    <!-- CANDIDATES PANEL -->
-    <div id="panel-candidates">
-      <div class="page-head">
-        <h1>Candidate Pipeline</h1>
-        <p>AI-screened candidates, ready to review</p>
-      </div>
-      <div class="toolbar">
-        <div class="tabs">
-          <button class="tab active" onclick="setTab('all',this)">All</button>
-          <button class="tab" onclick="setTab('pending',this)">Pending</button>
-          <button class="tab" onclick="setTab('shortlisted',this)">Shortlisted</button>
-          <button class="tab" onclick="setTab('scheduled',this)">Scheduled</button>
-        </div>
-        <input class="search-in" type="text" id="search" placeholder="🔍  Search candidates..." oninput="renderCands()" />
-      </div>
-      <div class="layout">
-        <div class="jobs-panel">
-          <div class="jobs-panel-hd">
-            <h3>Filter by Job</h3>
-            <button class="btn-sm primary" style="font-size:.7rem;padding:.3rem .7rem;" onclick="openJobModal()">+ New</button>
-          </div>
-          <div id="jobs-list"><div class="loading-txt">Loading...</div></div>
-        </div>
-        <div>
-          <div class="cand-panel-hd"><h2 id="panel-title">All Candidates</h2></div>
-          <div id="cand-container"><div class="loading-txt">Loading...</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- JOBS PANEL -->
-    <div id="panel-jobs" style="display:none;">
-      <div class="page-head">
-        <h1>My Jobs & Chatbot Links</h1>
-        <p>All your jobs with their unique AI screening links — share directly with candidates</p>
-      </div>
-      <div id="jobs-dashboard-list"><div class="loading-txt">Loading...</div></div>
-    </div>
-  </main>
-</div>
-
-<!-- CREATE JOB MODAL -->
-<div class="overlay" id="job-modal" style="display:none;">
-  <div class="modal">
-    <button class="modal-close" onclick="closeJobModal()">✕</button>
-    <h2>Create New Job Listing</h2>
-    <div class="field"><label>Job Title *</label><input type="text" id="f-title" placeholder="e.g. Senior React Developer" /></div>
-    <div class="field"><label>Location</label><input type="text" id="f-loc" placeholder="e.g. Bangalore / Remote" /></div>
-    <div class="field"><label>Experience Required</label><input type="text" id="f-exp" placeholder="e.g. 3-5 years" /></div>
-    <div class="field"><label>Required Skills</label><input type="text" id="f-skills" placeholder="e.g. React, Node.js, AWS" /></div>
-    <div class="field"><label>Job Description</label><textarea id="f-desc" placeholder="Brief description of the role..."></textarea></div>
-    <div class="modal-acts">
-      <button class="btn-cancel" onclick="closeJobModal()">Cancel</button>
-      <button class="btn-create" id="create-btn" onclick="createJob()">Create Job & Get Chatbot Link</button>
-    </div>
-    <div class="link-box" id="link-box" style="display:none;">
-      <h4>✅ Job Created! Share this link with candidates:</h4>
-      <p>Candidates click this to start the AI screening for this role. Share via WhatsApp, email, or job boards.</p>
-      <div class="link-row">
-        <input class="link-input" type="text" id="link-url" readonly />
-        <button class="btn-copy" onclick="copyLink()">Copy</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- CANDIDATE DETAIL MODAL -->
-<div class="overlay" id="detail-modal" style="display:none;">
-  <div class="modal" style="max-width:580px;">
-    <button class="modal-close" onclick="closeDetail()">✕</button>
-    <div id="detail-body"></div>
-  </div>
-</div>
-
-<!-- SCHEDULE CALL MODAL -->
-<div class="overlay" id="call-modal" style="display:none;">
-  <div class="modal" style="max-width:460px;">
-    <button class="modal-close" onclick="closeCallModal()">✕</button>
-    <h2>📞 Schedule a Call</h2>
-    <div class="call-info">
-      <div class="ci-name" id="call-cand-name"></div>
-      <div class="ci-meta" id="call-cand-meta"></div>
-    </div>
-    <div class="field"><label>Date</label><input type="date" id="call-date" /></div>
-    <div class="field"><label>Time</label><input type="time" id="call-time" /></div>
-    <div class="field"><label>Call Type</label>
-      <select id="call-type" style="width:100%;padding:.65rem 1rem;background:var(--bg);border:1.5px solid var(--border);border-radius:9px;color:var(--text);font-size:.875rem;font-family:inherit;">
-        <option value="screening">📞 Phone Screening</option>
-        <option value="video">🎥 Video Interview</option>
-        <option value="technical">💻 Technical Round</option>
-        <option value="hr">👤 HR Interview</option>
-        <option value="final">🏆 Final Interview</option>
-      </select>
-    </div>
-    <div class="field"><label>Notes (optional)</label><textarea id="call-notes" placeholder="Any specific topics to cover..."></textarea></div>
-    <div class="modal-acts">
-      <button class="btn-cancel" onclick="closeCallModal()">Cancel</button>
-      <button class="btn-create" onclick="confirmCall()">Confirm Schedule</button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
 <script>
-const SB_URL = 'https://sebghpbyykplkoootzdg.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDM0MTg5MDMsImV4cCI6MjA1ODk5NDkwM30.F1P7BkKGSNFCt7vmS9fANVAHW8p5z5q-DYlLk_3qzSA';
-
-async function sbFetch(path, opts={}) {
-  const r = await fetch(`${SB_URL}/rest/v1/${path}`, {
-    ...opts,
-    headers: { 'apikey':SB_KEY, 'Authorization':`Bearer ${SB_KEY}`, 'Content-Type':'application/json', 'Prefer':opts.prefer||'return=representation', ...(opts.headers||{}) }
-  });
-  const t = await r.text();
-  if (!r.ok) throw new Error(t);
-  return t ? JSON.parse(t) : [];
+const SURL = "https://sebghpbyykplkoootzdg.supabase.co";
+const AKEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
+async function doLogin(){
+  const email=document.getElementById('email').value.trim();
+  const password=document.getElementById('password').value;
+  const btn=document.getElementById('loginBtn');
+  const err=document.getElementById('errorMsg');
+  if(!email||!password){err.style.display='block';err.textContent='Please enter email and password.';return;}
+  btn.disabled=true;btn.textContent='Signing in...';err.style.display='none';
+  try{
+    const res=await fetch(SURL+'/auth/v1/token?grant_type=password',{
+      method:'POST',
+      headers:{'apikey':AKEY,'Content-Type':'application/json'},
+      body:JSON.stringify({email,password})
+    });
+    const data=await res.json();
+    if(data.access_token){
+      localStorage.setItem('sb_token',data.access_token);
+      localStorage.setItem('sb_email',email);
+      if(email==='admin@samparkai.tech'){
+        window.location.href='admin.html';
+      } else {
+        window.location.href='client.html';
+      }
+    } else {
+      err.style.display='block';
+      err.textContent='Wrong email or password. Please try again.';
+      btn.disabled=false;btn.textContent='Access My Portal →';
+    }
+  } catch(e){
+    err.style.display='block';err.textContent='Connection error. Please try again.';
+    btn.disabled=false;btn.textContent='Access My Portal →';
+  }
 }
-
-const ACCOUNTS = {
-  'hr@techcorp.in':     { pass:'tech2026',  name:'TechCorp HR',    client_id:1 },
-  'rajiv@nexusbpo.com': { pass:'nexus2026', name:'Nexus BPO',      client_id:2 },
-  'ananya@finserve.co': { pass:'fin2026',   name:'FinServe India', client_id:3 },
-};
-
-let user=null, jobs=[], candidates=[], selJob=null, tabFilter='all', schedCandId=null;
-
-function doLogin() {
-  const email = document.getElementById('inp-email').value.trim().toLowerCase();
-  const pass  = document.getElementById('inp-pass').value;
-  const acct  = ACCOUNTS[email];
-  if (acct && acct.pass===pass) {
-    user = { email, ...acct };
-    document.getElementById('login-screen').style.display='none';
-    document.getElementById('dashboard').style.display='block';
-    document.getElementById('h-name').textContent=acct.name;
-    init();
-  } else { document.getElementById('login-err').style.display='block'; }
-}
-function doLogout() {
-  user=null;
-  document.getElementById('dashboard').style.display='none';
-  document.getElementById('login-screen').style.display='flex';
-}
-
-async function init() {
-  await Promise.all([loadJobs(), loadCands()]);
-  updateStats();
-}
-
-async function loadJobs() {
-  try { jobs = await sbFetch(`jobs?client_id=eq.${user.client_id}&order=created_at.desc`); }
-  catch(e) { console.warn('Jobs fallback:', e.message); jobs = fbJobs(); }
-  renderJobs(); renderJobsDashboard();
-}
-async function loadCands() {
-  try { candidates = await sbFetch(`candidates?client_id=eq.${user.client_id}&order=ai_score.desc`); }
-  catch(e) { console.warn('Cands fallback:', e.message); candidates = fbCands(); }
-  renderCands();
-}
-
-function fbJobs() {
-  return ({
-    1:[{id:101,title:'Senior React Developer',location:'Bangalore',experience:'3-5 yrs',job_key:'demo_101'},{id:102,title:'DevOps Engineer',location:'Remote',experience:'4+ yrs',job_key:'demo_102'}],
-    2:[{id:201,title:'BPO Team Leader',location:'Pune',experience:'2-4 yrs',job_key:'demo_201'}],
-    3:[{id:301,title:'Financial Analyst',location:'Mumbai',experience:'2-3 yrs',job_key:'demo_301'}],
-  })[user.client_id]||[];
-}
-function fbCands() {
-  return ({
-    1:[
-      {id:1,name:'Rohit Sharma',job_title:'Senior React Developer',ai_score:8.7,phone:'+91 98765 43210',email:'rohit.s@gmail.com',experience:'5 years',notice_period:'30 days',current_ctc:'18 LPA',expected_ctc:'24 LPA',skills:'React, TypeScript, Node.js',status:'shortlisted',ai_summary:'Strong React fundamentals with 5 years experience. CTC expectations within range. Recommended for interview.',job_id:101,client_id:1},
-      {id:2,name:'Priya Patel',job_title:'Senior React Developer',ai_score:7.4,phone:'+91 87654 32109',email:'priya.p@outlook.com',experience:'4 years',notice_period:'15 days',current_ctc:'15 LPA',expected_ctc:'20 LPA',skills:'React, Redux, CSS',status:'pending',ai_summary:'Good frontend skills. Quick availability is a plus.',job_id:101,client_id:1},
-      {id:3,name:'Arjun Kumar',job_title:'DevOps Engineer',ai_score:9.1,phone:'+91 76543 21098',email:'arjun.k@gmail.com',experience:'6 years',notice_period:'Immediate',current_ctc:'22 LPA',expected_ctc:'28 LPA',skills:'Kubernetes, Docker, AWS, Terraform',status:'scheduled',ai_summary:'Exceptional candidate. Immediate joiner. Top pick.',job_id:102,client_id:1},
-      {id:4,name:'Neha Singh',job_title:'Senior React Developer',ai_score:5.2,phone:'+91 65432 10987',email:'neha.s@yahoo.com',experience:'2 years',notice_period:'60 days',current_ctc:'8 LPA',expected_ctc:'16 LPA',skills:'React, JavaScript',status:'rejected',ai_summary:'Limited experience for senior role.',job_id:101,client_id:1},
-    ],
-    2:[
-      {id:5,name:'Sandeep Rao',job_title:'BPO Team Leader',ai_score:8.2,phone:'+91 54321 09876',email:'sandeep.r@gmail.com',experience:'4 years',notice_period:'30 days',current_ctc:'6 LPA',expected_ctc:'8.5 LPA',skills:'Team management, CRM',status:'shortlisted',ai_summary:'Strong BPO background.',job_id:201,client_id:2},
-      {id:6,name:'Kavitha Menon',job_title:'BPO Team Leader',ai_score:7.8,phone:'+91 43210 98765',email:'kavitha.m@gmail.com',experience:'3 years',notice_period:'15 days',current_ctc:'5 LPA',expected_ctc:'7 LPA',skills:'Customer support',status:'pending',ai_summary:'Good candidate with quick availability.',job_id:201,client_id:2},
-    ],
-    3:[
-      {id:7,name:'Aditya Verma',job_title:'Financial Analyst',ai_score:8.9,phone:'+91 32109 87654',email:'aditya.v@gmail.com',experience:'3 years',notice_period:'30 days',current_ctc:'9 LPA',expected_ctc:'12 LPA',skills:'Excel, Python, Power BI',status:'shortlisted',ai_summary:'Excellent analytical skills. Top recommendation.',job_id:301,client_id:3},
-      {id:8,name:'Riya Desai',job_title:'Financial Analyst',ai_score:7.1,phone:'+91 21098 76543',email:'riya.d@outlook.com',experience:'2 years',notice_period:'45 days',current_ctc:'7 LPA',expected_ctc:'10 LPA',skills:'Excel, Tally',status:'pending',ai_summary:'Solid fundamentals. Long notice period may be a concern.',job_id:301,client_id:3},
-    ],
-  })[user.client_id]||[];
-}
-
-/* PANEL SWITCH */
-function showPanel(which, btn) {
-  document.getElementById('panel-candidates').style.display = which==='candidates'?'block':'none';
-  document.getElementById('panel-jobs').style.display = which==='jobs'?'block':'none';
-  document.querySelectorAll('.main-tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-/* JOBS SIDEBAR */
-function renderJobs() {
-  const el=document.getElementById('jobs-list');
-  if (!jobs.length) { el.innerHTML='<div class="jobs-empty">No jobs yet.</div>'; return; }
-  el.innerHTML = jobs.map(j=>{
-    const cnt=candidates.filter(c=>c.job_id===j.id).length;
-    return `<div class="job-item ${selJob===j.id?'active':''}" onclick="selJobFn(${j.id})">
-      <div class="job-item-top"><span class="job-title-txt">${j.title}</span><span class="job-cnt">${cnt}</span></div>
-      <div class="job-meta-txt">${j.location||''}${j.experience?' · '+j.experience:''}</div>
-    </div>`;
-  }).join('');
-}
-
-/* JOBS DASHBOARD — with chatbot links */
-function renderJobsDashboard() {
-  const el=document.getElementById('jobs-dashboard-list');
-  if (!jobs.length) { el.innerHTML='<div class="empty">No jobs yet. Create your first job!</div>'; return; }
-  const base = window.location.origin + window.location.pathname.replace('client.html','');
-  el.innerHTML = `<div class="jobs-dashboard">${jobs.map(j=>{
-    const cnt=candidates.filter(c=>c.job_id===j.id).length;
-    const key=j.job_key||('demo_'+j.id);
-    const link=`${base}chatbot.html?job=${key}&title=${encodeURIComponent(j.title)}&client=${user.client_id}`;
-    return `<div class="job-row">
-      <div>
-        <div class="job-row-title">${j.title}</div>
-        <div class="job-row-meta">
-          <span>📍 ${j.location||'—'}</span>
-          <span>💼 ${j.experience||'—'}</span>
-        </div>
-        <div class="job-link-row">
-          <input class="job-link-input" type="text" value="${link}" readonly id="jlink-${j.id}" />
-          <button class="btn-copy-sm" onclick="copyJobLink('jlink-${j.id}')">📋 Copy Link</button>
-          <a href="${link}" target="_blank" style="padding:.45rem .875rem;border:1.5px solid var(--border);border-radius:8px;font-size:.75rem;color:var(--muted);text-decoration:none;font-weight:600;white-space:nowrap;">▶ Preview</a>
-        </div>
-      </div>
-      <div class="job-cand-count">
-        <div class="job-cand-num">${cnt}</div>
-        <div class="job-cand-lbl">candidates</div>
-      </div>
-    </div>`;
-  }).join('')}</div>`;
-}
-
-function copyJobLink(inputId) {
-  const val=document.getElementById(inputId).value;
-  navigator.clipboard.writeText(val).then(()=>toast('Link copied!','ok'));
-}
-
-function selJobFn(id) { selJob=selJob===id?null:id; renderJobs(); renderCands(); }
-
-function setTab(s,btn) {
-  tabFilter=s;
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  btn.classList.add('active'); renderCands();
-}
-
-function renderCands() {
-  const q=(document.getElementById('search')?.value||'').toLowerCase();
-  const list=candidates.filter(c=>{
-    if (tabFilter!=='all' && c.status!==tabFilter) return false;
-    if (selJob && c.job_id!==selJob) return false;
-    if (q && !c.name.toLowerCase().includes(q) && !(c.skills||'').toLowerCase().includes(q) && !(c.job_title||'').toLowerCase().includes(q)) return false;
-    return true;
-  });
-  const jobName=selJob?(jobs.find(j=>j.id===selJob)?.title||'Job'):'All Candidates';
-  document.getElementById('panel-title').textContent=`${jobName} (${list.length})`;
-  const el=document.getElementById('cand-container');
-  if (!list.length) { el.innerHTML='<div class="empty">No candidates match your filters.</div>'; return; }
-  el.innerHTML=`<div class="cand-grid">${list.map(candCard).join('')}</div>`;
-}
-
-function sc(s){return s>=8?'score-hi':s>=6?'score-mid':'score-lo';}
-function stc(s){return 's-'+s;}
-
-function candCard(c) {
-  return `<div class="cand-card" onclick="openDetail(${c.id})">
-    <div class="cand-top">
-      <div><div class="cand-name">${c.name}</div><div class="cand-role">${c.job_title||''}</div></div>
-      <div class="score ${sc(c.ai_score)}">${c.ai_score}</div>
-    </div>
-    <div class="cand-pills">
-      <span class="pill">📅 ${c.notice_period||'—'}</span>
-      <span class="pill">💼 ${c.experience||'—'}</span>
-      <span class="pill">💰 ${c.expected_ctc||'—'}</span>
-    </div>
-    <span class="status-chip ${stc(c.status)}">${c.status}</span>
-    <div class="cand-acts" onclick="event.stopPropagation()">
-      <button class="act-btn g" onclick="updStatus(${c.id},'shortlisted')">✓ Shortlist</button>
-      <button class="act-btn b" onclick="openCallModal(${c.id})">📞 Schedule</button>
-      <button class="act-btn r" onclick="updStatus(${c.id},'rejected')">✕ Reject</button>
-    </div>
-  </div>`;
-}
-
-function openDetail(id) {
-  const c=candidates.find(x=>x.id===id); if(!c) return;
-  document.getElementById('detail-body').innerHTML=`
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem;">
-      <div>
-        <h2 style="font-size:1.3rem;font-weight:900;color:var(--navy);">${c.name}</h2>
-        <div style="color:var(--muted);font-size:.82rem;margin-top:.25rem;">${c.job_title||''}</div>
-        <span class="status-chip ${stc(c.status)}" style="margin-top:.5rem;display:inline-block;">${c.status}</span>
-      </div>
-      <div class="score ${sc(c.ai_score)}" style="font-size:1.5rem;padding:.4rem .75rem;">${c.ai_score}</div>
-    </div>
-    <div class="detail-grid">
-      <div class="d-item"><div class="d-key">Phone</div><div class="d-val">${c.phone||'—'}</div></div>
-      <div class="d-item"><div class="d-key">Email</div><div class="d-val">${c.email||'—'}</div></div>
-      <div class="d-item"><div class="d-key">Experience</div><div class="d-val">${c.experience||'—'}</div></div>
-      <div class="d-item"><div class="d-key">Notice Period</div><div class="d-val">${c.notice_period||'—'}</div></div>
-      <div class="d-item"><div class="d-key">Current CTC</div><div class="d-val">${c.current_ctc||'—'}</div></div>
-      <div class="d-item"><div class="d-key">Expected CTC</div><div class="d-val">${c.expected_ctc||'—'}</div></div>
-    </div>
-    <div style="margin-bottom:1rem;"><div class="d-key" style="font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">Skills</div><div style="font-size:.875rem;color:var(--navy);font-weight:500;">${c.skills||'—'}</div></div>
-    <div style="margin-bottom:1.25rem;"><div class="d-key" style="font-size:.68rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;">AI Summary</div><div class="ai-box">${c.ai_summary||'No summary.'}</div></div>
-    <div class="detail-acts">
-      <button onclick="updStatus(${c.id},'shortlisted');closeDetail();" style="border-color:rgba(34,197,94,.3);color:#16a34a;">✓ Shortlist</button>
-      <button onclick="closeDetail();openCallModal(${c.id});" style="border-color:rgba(59,130,246,.3);color:#3b82f6;">📞 Schedule Call</button>
-      <button onclick="updStatus(${c.id},'rejected');closeDetail();" style="border-color:rgba(239,68,68,.2);color:var(--red);">✕ Reject</button>
-    </div>`;
-  document.getElementById('detail-modal').style.display='flex';
-}
-function closeDetail(){document.getElementById('detail-modal').style.display='none';}
-
-/* SCHEDULE CALL */
-function openCallModal(id) {
-  const c=candidates.find(x=>x.id===id); if(!c) return;
-  schedCandId=id;
-  document.getElementById('call-cand-name').textContent=c.name;
-  document.getElementById('call-cand-meta').textContent=`${c.job_title||''} · ${c.phone||''} · ${c.email||''}`;
-  // Default to tomorrow
-  const d=new Date(); d.setDate(d.getDate()+1);
-  document.getElementById('call-date').value=d.toISOString().split('T')[0];
-  document.getElementById('call-time').value='10:00';
-  document.getElementById('call-notes').value='';
-  document.getElementById('call-modal').style.display='flex';
-}
-function closeCallModal(){document.getElementById('call-modal').style.display='none'; schedCandId=null;}
-
-async function confirmCall() {
-  if (!schedCandId) return;
-  const date=document.getElementById('call-date').value;
-  const time=document.getElementById('call-time').value;
-  const type=document.getElementById('call-type').value;
-  if (!date||!time) { toast('Please set date and time','err'); return; }
-  await updStatus(schedCandId,'scheduled');
-  closeCallModal();
-  toast(`Call scheduled for ${date} at ${time}!`,'ok');
-}
-
-async function updStatus(id, status) {
-  const c=candidates.find(x=>x.id===id); if(!c) return;
-  c.status=status; renderCands(); renderJobs(); updateStats();
-  try { await sbFetch(`candidates?id=eq.${id}`,{method:'PATCH',body:JSON.stringify({status})}); }
-  catch(e){ console.warn('Patch failed:',e.message); }
-  toast(`Marked as ${status}`,'ok');
-}
-
-function updateStats() {
-  document.getElementById('st-jobs').textContent  = jobs.length;
-  document.getElementById('st-total').textContent = candidates.length;
-  document.getElementById('st-short').textContent = candidates.filter(c=>c.status==='shortlisted').length;
-  document.getElementById('st-sched').textContent = candidates.filter(c=>c.status==='scheduled').length;
-  document.getElementById('st-pend').textContent  = candidates.filter(c=>c.status==='pending').length;
-}
-
-/* CREATE JOB */
-function openJobModal() {
-  document.getElementById('link-box').style.display='none';
-  document.getElementById('create-btn').disabled=false;
-  document.getElementById('create-btn').textContent='Create Job & Get Chatbot Link';
-  ['f-title','f-loc','f-exp','f-skills','f-desc'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('job-modal').style.display='flex';
-}
-function closeJobModal(){document.getElementById('job-modal').style.display='none';}
-
-async function createJob() {
-  const title=document.getElementById('f-title').value.trim();
-  if (!title) { toast('Job title is required','err'); return; }
-  const btn=document.getElementById('create-btn');
-  btn.disabled=true; btn.textContent='Creating...';
-
-  const jobKey='j'+Date.now();
-  const payload={
-    title, client_id:user.client_id, status:'active', job_key:jobKey,
-    location:document.getElementById('f-loc').value.trim(),
-    experience:document.getElementById('f-exp').value.trim(),
-    skills:document.getElementById('f-skills').value.trim(),
-    description:document.getElementById('f-desc').value.trim(),
-  };
-
-  let newId=Date.now();
-  try {
-    const saved=await sbFetch('jobs',{method:'POST',body:JSON.stringify(payload)});
-    if (saved&&saved[0]) newId=saved[0].id;
-  } catch(e){ console.warn('Job save failed:', e.message); }
-
-  jobs.unshift({id:newId,job_key:jobKey,candidate_count:0,...payload});
-  renderJobs(); renderJobsDashboard(); updateStats();
-
-  const base=window.location.origin+window.location.pathname.replace('client.html','');
-  const link=`${base}chatbot.html?job=${jobKey}&title=${encodeURIComponent(title)}&client=${user.client_id}`;
-  document.getElementById('link-url').value=link;
-  document.getElementById('link-box').style.display='block';
-  btn.textContent='✅ Job Created!';
-  toast('Job created! Chatbot link ready.','ok');
-}
-
-function copyLink() {
-  navigator.clipboard.writeText(document.getElementById('link-url').value).then(()=>toast('Link copied!','ok'));
-}
-
-/* PDF EXPORT */
-document.getElementById('export-btn').addEventListener('click',()=>{
-  const {jsPDF}=window.jspdf;
-  const doc=new jsPDF();
-  doc.setFont('helvetica','bold'); doc.setFontSize(16);
-  doc.text('Sampark AI — Candidate Report',14,20);
-  doc.setFont('helvetica','normal'); doc.setFontSize(10);
-  doc.text(`Client: ${user.name}   |   ${new Date().toLocaleDateString('en-IN')}`,14,28);
-  let y=40;
-  candidates.forEach((c,i)=>{
-    if(y>270){doc.addPage();y=20;}
-    doc.setFont('helvetica','bold'); doc.setFontSize(11);
-    doc.text(`${i+1}. ${c.name} — Score: ${c.ai_score}/10  [${(c.status||'').toUpperCase()}]`,14,y); y+=7;
-    doc.setFont('helvetica','normal'); doc.setFontSize(9);
-    doc.text(`   ${c.job_title||''} | Exp: ${c.experience||'—'} | Notice: ${c.notice_period||'—'} | Expected: ${c.expected_ctc||'—'}`,14,y); y+=5;
-    const lines=doc.splitTextToSize(`   ${c.ai_summary||''}`,180);
-    doc.text(lines,14,y); y+=lines.length*4.5+6;
-  });
-  doc.save(`sampark-${user.name.replace(/\s+/g,'-').toLowerCase()}.pdf`);
-  toast('PDF exported!','ok');
-});
-
-function toast(msg,type=''){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.className=`toast ${type}`;
-  requestAnimationFrame(()=>requestAnimationFrame(()=>t.classList.add('show')));
-  setTimeout(()=>t.classList.remove('show'),3000);
-}
+document.addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 </script>
 </body>
 </html>
