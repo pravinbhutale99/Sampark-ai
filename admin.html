@@ -1,181 +1,185 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>SamparkAI — Agency Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;color:#0d1b2a;min-height:100vh}
-/* NAV */
-nav{background:#0d1b2a;padding:0 32px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.nav-logo{display:flex;align-items:center;gap:10px}
-.nav-logo svg{width:28px;height:28px}
-.nav-logo-text{font-size:16px;font-weight:800;color:#fff}
-.nav-logo-text span{color:#db4437}
-.nav-right{display:flex;align-items:center;gap:12px}
-.btn-add{background:#db4437;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-.btn-signout{background:transparent;color:#94a3b8;border:1px solid #334155;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit}
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:24px 32px 0}
-.stat{background:#fff;border-radius:12px;padding:20px 24px;border:1px solid #e5e7eb}
-.stat-label{font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
-.stat-num{font-size:28px;font-weight:800;color:#0d1b2a}
-/* TABS */
-.tabs{display:flex;gap:4px;padding:20px 32px 0}
-.tab{padding:9px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:#6b7280;font-family:inherit;transition:all 0.2s}
-.tab.active{background:#0d1b2a;color:#fff}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f3f4f6;color:#0d1b2a;display:flex;min-height:100vh}
+/* SIDEBAR */
+.sidebar{width:220px;background:#0d1b2a;display:flex;flex-direction:column;flex-shrink:0;min-height:100vh}
+.sidebar-logo{padding:20px 20px 16px;border-bottom:1px solid #1e3a5f}
+.sidebar-logo svg{width:28px;height:28px;margin-bottom:8px;display:block}
+.logo-text{font-size:15px;font-weight:800;color:#fff}.logo-text span{color:#db4437}
+.logo-sub{font-size:10px;color:#64748b;margin-top:2px}
+.sidebar-nav{padding:16px 12px;flex:1}
+.nav-section{font-size:9px;font-weight:700;color:#475569;letter-spacing:1.5px;text-transform:uppercase;padding:0 8px;margin:16px 0 6px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;font-size:13px;font-weight:600;color:#94a3b8;cursor:pointer;margin-bottom:2px;transition:all .15s;border:none;background:none;width:100%;text-align:left;font-family:inherit}
+.nav-item:hover{background:#1e3a5f;color:#e2e8f0}
+.nav-item.active{background:#1e3a5f;color:#fff}
+.nav-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sidebar-bottom{padding:16px;border-top:1px solid #1e3a5f}
+.user-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.user-avatar{width:32px;height:32px;background:#db4437;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;flex-shrink:0}
+.user-name{font-size:12px;font-weight:600;color:#e2e8f0}
+.user-role{font-size:10px;color:#64748b}
+.btn-out{width:100%;background:transparent;color:#64748b;border:1px solid #1e3a5f;padding:7px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
 /* MAIN */
-.main{padding:24px 32px}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-.section-title{font-size:20px;font-weight:800;color:#0d1b2a}
-.section-sub{font-size:13px;color:#9ca3af;margin-top:2px}
-/* CLIENT GRID */
-.clients-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.client-card{background:#fff;border-radius:16px;padding:24px;border:1px solid #e5e7eb;transition:box-shadow 0.2s,transform 0.2s}
-.client-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.08);transform:translateY(-2px)}
-.client-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
-.client-avatar{width:44px;height:44px;border-radius:12px;background:#db4437;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff;flex-shrink:0}
+.main-wrap{flex:1;display:flex;flex-direction:column;min-width:0}
+.topbar{background:#fff;border-bottom:1px solid #e5e7eb;padding:0 28px;height:56px;display:flex;align-items:center;justify-content:space-between}
+.page-title{font-size:16px;font-weight:800;color:#0d1b2a}
+.btn-add{background:#db4437;color:#fff;border:none;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
+.content{padding:24px 28px;flex:1}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:24px}
+.stat{background:#fff;border-radius:12px;padding:18px 20px;border:1px solid #e5e7eb}
+.stat-label{font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.stat-num{font-size:26px;font-weight:800;color:#0d1b2a}
+/* CLIENTS GRID */
+.clients-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.client-card{background:#fff;border-radius:16px;padding:22px;border:1px solid #e5e7eb;transition:all .2s}
+.client-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);transform:translateY(-2px)}
+.cc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px}
+.cc-avatar{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0}
 .plan-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px}
 .plan-growth{background:#fef3c7;color:#92400e}
 .plan-starter{background:#e0f2fe;color:#075985}
 .plan-pro{background:#f0fdf4;color:#166534}
-.client-name{font-size:15px;font-weight:700;color:#0d1b2a;margin-bottom:2px}
-.client-email{font-size:12px;color:#6b7280;margin-bottom:2px}
-.client-phone{font-size:12px;color:#9ca3af}
-.client-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0;padding:14px 0;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6}
-.cs-item{text-align:center}
-.cs-num{font-size:20px;font-weight:800;color:#0d1b2a}
-.cs-label{font-size:10px;color:#9ca3af;margin-top:2px;font-weight:500}
-.client-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.btn-view{background:#f3f4f6;color:#0d1b2a;border:none;padding:9px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:background 0.2s}
+.cc-name{font-size:14px;font-weight:700;color:#0d1b2a;margin-bottom:2px}
+.cc-email{font-size:12px;color:#6b7280}
+.cc-phone{font-size:11px;color:#9ca3af;margin-top:1px}
+.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;padding:12px 0;margin:12px 0;border-top:1px solid #f3f4f6;border-bottom:1px solid #f3f4f6;gap:4px}
+.cs-num{font-size:18px;font-weight:800;color:#0d1b2a}
+.cs-label{font-size:10px;color:#9ca3af;margin-top:1px}
+.cc-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.btn-view{background:#f3f4f6;color:#0d1b2a;border:none;padding:9px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
 .btn-view:hover{background:#e5e7eb}
 .btn-remove{background:#fff5f5;color:#dc2626;border:1px solid #fecaca;padding:9px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
-/* CANDIDATES TABLE */
-.cand-section{display:none}
-.search-row{display:flex;gap:12px;margin-bottom:20px}
-.search-input{flex:1;padding:10px 16px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;outline:none}
-.search-input:focus{border-color:#0d1b2a}
+/* TABLE */
 .table-wrap{background:#fff;border-radius:16px;border:1px solid #e5e7eb;overflow:hidden}
 table{width:100%;border-collapse:collapse}
-th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:#9ca3af;letter-spacing:0.8px;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid #e5e7eb}
-td{padding:14px 16px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6;vertical-align:middle}
+th{padding:11px 16px;text-align:left;font-size:10px;font-weight:700;color:#9ca3af;letter-spacing:.8px;text-transform:uppercase;background:#f9fafb;border-bottom:1px solid #e5e7eb}
+td{padding:13px 16px;font-size:13px;color:#374151;border-bottom:1px solid #f3f4f6;vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:#f9fafb}
 .score-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:700}
-.score-high{background:#dcfce7;color:#166534}
-.score-med{background:#fef9c3;color:#854d0e}
-.score-low{background:#fee2e2;color:#991b1b}
+.sh{background:#dcfce7;color:#166534}.sm{background:#fef9c3;color:#854d0e}.sl{background:#fee2e2;color:#991b1b}
 .status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.s-new{background:#e0f2fe;color:#0369a1}
-.s-shortlisted{background:#dcfce7;color:#166534}
-.s-scheduled{background:#fef9c3;color:#854d0e}
-.s-rejected{background:#fee2e2;color:#991b1b}
+.sn{background:#e0f2fe;color:#0369a1}.ss{background:#dcfce7;color:#166534}.sc{background:#fef9c3;color:#854d0e}.sr{background:#fee2e2;color:#991b1b}
 .wa-btn{display:inline-flex;align-items:center;gap:5px;background:#25D366;color:#fff;border:none;padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none}
-/* ADD CLIENT MODAL */
-.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center}
-.modal-overlay.show{display:flex}
-.modal{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:480px}
-.modal h3{font-size:18px;font-weight:800;margin-bottom:20px}
-.modal label{display:block;font-size:12px;font-weight:700;color:#374151;margin-bottom:5px;margin-top:14px}
+.search-input{padding:10px 16px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:13px;font-family:inherit;outline:none;width:300px;margin-bottom:16px}
+.search-input:focus{border-color:#0d1b2a}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.sh-title{font-size:18px;font-weight:800}
+.sh-sub{font-size:12px;color:#9ca3af;margin-top:2px}
+.empty{text-align:center;padding:48px;color:#9ca3af;font-size:14px}
+/* TAB content */
+.tab-content{display:none}.tab-content.active{display:block}
+/* MODAL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center}
+.overlay.show{display:flex}
+.modal{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:460px}
+.modal h3{font-size:18px;font-weight:800;margin-bottom:18px}
+.modal label{display:block;font-size:11px;font-weight:700;color:#374151;margin-bottom:5px;margin-top:12px}
 .modal input,.modal select{width:100%;padding:11px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:14px;font-family:inherit;outline:none}
-.modal input:focus,.modal select:focus{border-color:#0d1b2a}
-.modal-actions{display:flex;gap:10px;margin-top:24px}
+.modal-actions{display:flex;gap:10px;margin-top:22px}
 .modal-save{flex:1;background:#0d1b2a;color:#fff;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
 .modal-cancel{flex:1;background:#f3f4f6;color:#374151;border:none;padding:12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
-.empty{text-align:center;padding:48px;color:#9ca3af;font-size:14px}
-</style>
-</head>
-<body>
-<nav>
-  <div class="nav-logo">
+</style></head><body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+  <div class="sidebar-logo">
     <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
       <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#1a73e8"/>
       <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#db4437"/>
       <polygon points="4,18 12,18 12,26 20,26 20,36 4,36" fill="#f4b400"/>
       <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#0f9d58"/>
     </svg>
-    <span class="nav-logo-text">Sampark<span>AI</span> &mdash; Agency Dashboard</span>
+    <div class="logo-text">Sampark<span>AI</span></div>
+    <div class="logo-sub">Agency Dashboard</div>
   </div>
-  <div class="nav-right">
+  <div class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" onclick="switchTab('clients',this)"><div class="dot" style="background:#1a73e8"></div>Dashboard</button>
+    <button class="nav-item" onclick="switchTab('candidates',this)"><div class="dot" style="background:#db4437"></div>All Candidates</button>
+    <button class="nav-item" onclick="switchTab('jobs',this)"><div class="dot" style="background:#0f9d58"></div>Jobs &amp; Links</button>
+    <div class="nav-section">Manage</div>
+    <button class="nav-item" onclick="showModal()"><div class="dot" style="background:#f4b400"></div>+ Add Client</button>
+  </div>
+  <div class="sidebar-bottom">
+    <div class="user-row">
+      <div class="user-avatar">A</div>
+      <div><div class="user-name">Admin</div><div class="user-role">admin@samparkai.tech</div></div>
+    </div>
+    <button class="btn-out" onclick="signOut()">Sign Out</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main-wrap">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">Client Accounts</div>
     <button class="btn-add" onclick="showModal()">+ Add Client</button>
-    <button class="btn-signout" onclick="signOut()">Sign Out</button>
   </div>
-</nav>
-
-<div class="stats" id="statsRow">
-  <div class="stat"><div class="stat-label">Total Clients</div><div class="stat-num" id="s-clients">—</div></div>
-  <div class="stat"><div class="stat-label">Total Candidates</div><div class="stat-num" id="s-cands">—</div></div>
-  <div class="stat"><div class="stat-label">Shortlisted</div><div class="stat-num" id="s-short">—</div></div>
-  <div class="stat"><div class="stat-label">Scheduled</div><div class="stat-num" id="s-sched">—</div></div>
-  <div class="stat"><div class="stat-label">Active Jobs</div><div class="stat-num" id="s-jobs">—</div></div>
-</div>
-
-<div class="tabs">
-  <button class="tab active" onclick="showTab('clients',this)">&#128101; Clients</button>
-  <button class="tab" onclick="showTab('candidates',this)">&#128100; All Candidates</button>
-  <button class="tab" onclick="showTab('jobs',this)">&#128188; Jobs &amp; Links</button>
-</div>
-
-<div class="main">
-  <!-- CLIENTS TAB -->
-  <div id="tab-clients">
-    <div class="section-head">
-      <div><div class="section-title">Client Accounts</div><div class="section-sub">All clients using Sampark AI through your agency</div></div>
-      <button class="btn-add" onclick="showModal()">+ Add Client</button>
+  <div class="content">
+    <div class="stats">
+      <div class="stat"><div class="stat-label">Clients</div><div class="stat-num" id="s-cl">—</div></div>
+      <div class="stat"><div class="stat-label">Candidates</div><div class="stat-num" id="s-ca">—</div></div>
+      <div class="stat"><div class="stat-label">Shortlisted</div><div class="stat-num" id="s-sh">—</div></div>
+      <div class="stat"><div class="stat-label">Scheduled</div><div class="stat-num" id="s-sc">—</div></div>
+      <div class="stat"><div class="stat-label">Active Jobs</div><div class="stat-num" id="s-jo">—</div></div>
     </div>
-    <div class="clients-grid" id="clientsGrid"><div class="empty">Loading clients...</div></div>
-  </div>
 
-  <!-- CANDIDATES TAB -->
-  <div id="tab-candidates" class="cand-section">
-    <div class="section-head">
-      <div><div class="section-title">All Candidates</div><div class="section-sub">Across all your clients</div></div>
+    <!-- CLIENTS TAB -->
+    <div id="tab-clients" class="tab-content active">
+      <div class="section-head">
+        <div><div class="sh-title">Client Accounts</div><div class="sh-sub">All clients using Sampark AI through your agency</div></div>
+        <button class="btn-add" onclick="showModal()">+ Add Client</button>
+      </div>
+      <div class="clients-grid" id="clientsGrid"><div class="empty">Loading...</div></div>
     </div>
-    <div class="search-row">
-      <input class="search-input" id="searchInput" placeholder="Search by name, job, or client..." oninput="filterCands()"/>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Candidate</th><th>Job Role</th><th>Client</th><th>Score</th><th>Status</th><th>Contact</th></tr></thead>
-        <tbody id="candsBody"><tr><td colspan="6" style="text-align:center;padding:32px;color:#9ca3af">Loading...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
 
-  <!-- JOBS TAB -->
-  <div id="tab-jobs" class="cand-section">
-    <div class="section-head">
-      <div><div class="section-title">Jobs &amp; Screening Links</div><div class="section-sub">Share these links with candidates</div></div>
+    <!-- CANDIDATES TAB -->
+    <div id="tab-candidates" class="tab-content">
+      <div class="section-head">
+        <div><div class="sh-title" id="candTitle">All Candidates</div><div class="sh-sub">Across all your clients</div></div>
+      </div>
+      <input class="search-input" id="searchQ" placeholder="Search candidate, job, client..." oninput="filterCands()"/>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Candidate</th><th>Job</th><th>Client</th><th>Score</th><th>Status</th><th>WhatsApp</th></tr></thead>
+          <tbody id="candsBody"></tbody>
+        </table>
+      </div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr><th>Job Title</th><th>Client</th><th>Candidates</th><th>Screening Link</th></tr></thead>
-        <tbody id="jobsBody"><tr><td colspan="4" style="text-align:center;padding:32px;color:#9ca3af">Loading...</td></tr></tbody>
-      </table>
+
+    <!-- JOBS TAB -->
+    <div id="tab-jobs" class="tab-content">
+      <div class="section-head">
+        <div><div class="sh-title">Jobs &amp; Screening Links</div><div class="sh-sub">Share these links with candidates to start screening</div></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Job Title</th><th>Client</th><th>Candidates</th><th>Screening Link</th></tr></thead>
+          <tbody id="jobsBody"></tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ADD CLIENT MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="hideModal(event)">
+<!-- MODAL -->
+<div class="overlay" id="overlay" onclick="hideModal(event)">
   <div class="modal" onclick="event.stopPropagation()">
     <h3>Add New Client</h3>
-    <label>Company Name</label>
-    <input id="m-name" placeholder="e.g. TechCorp HR"/>
-    <label>Email</label>
-    <input id="m-email" type="email" placeholder="hr@company.com"/>
-    <label>Phone</label>
-    <input id="m-phone" placeholder="+91 98000 00000"/>
+    <label>Company Name</label><input id="m-name" placeholder="TechCorp HR"/>
+    <label>Email</label><input id="m-email" type="email" placeholder="hr@company.com"/>
+    <label>Phone</label><input id="m-phone" placeholder="+91 98000 00000"/>
     <label>Plan</label>
-    <select id="m-plan">
-      <option value="Starter">Starter</option>
-      <option value="Growth">Growth</option>
-      <option value="Pro">Pro</option>
-    </select>
+    <select id="m-plan"><option>Starter</option><option>Growth</option><option>Pro</option></select>
     <div class="modal-actions">
-      <button class="modal-cancel" onclick="document.getElementById('modalOverlay').classList.remove('show')">Cancel</button>
+      <button class="modal-cancel" onclick="document.getElementById('overlay').classList.remove('show')">Cancel</button>
       <button class="modal-save" onclick="addClient()">Save Client</button>
     </div>
   </div>
@@ -186,132 +190,104 @@ const S="https://sebghpbyykplkoootzdg.supabase.co";
 const K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNlYmdocGJ5eWtwbGtvb290emRnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk5OTE1NjksImV4cCI6MjA5NTU2NzU2OX0.dzPJWMdxL5HhmTKcPYV2669hJTZcwDkNDFfCetQjWmQ";
 const token=localStorage.getItem('sb_token');
 if(!token){window.location.href='client-portal.html';}
+let clients=[],cands=[],jobs=[];
 
-let allClients=[],allCands=[],allJobs=[];
+function api(p){return fetch(S+'/rest/v1/'+p,{headers:{'apikey':K,'Authorization':'Bearer '+token,'Content-Type':'application/json'}}).then(r=>r.json());}
 
-function api(path){
-  return fetch(S+'/rest/v1/'+path,{headers:{'apikey':K,'Authorization':'Bearer '+token,'Content-Type':'application/json'}}).then(r=>r.json());
-}
-
-async function loadAll(){
+async function load(){
   try{
-    const [clients,cands,jobs]=await Promise.all([
+    [clients,cands,jobs]=await Promise.all([
       api('clients?select=*&order=created_at.desc'),
-      api('candidates?select=*&order=created_at.desc'),
+      api('candidates?select=*&order=score.desc'),
       api('jobs?select=*&order=created_at.desc')
     ]);
-    allClients=Array.isArray(clients)?clients:[];
-    allCands=Array.isArray(cands)?cands:[];
-    allJobs=Array.isArray(jobs)?jobs:[];
-    renderStats();
-    renderClients();
-    renderCands(allCands);
-    renderJobs();
+    clients=Array.isArray(clients)?clients:[];
+    cands=Array.isArray(cands)?cands:[];
+    jobs=Array.isArray(jobs)?jobs:[];
+    renderStats();renderClients();renderCands(cands);renderJobs();
   }catch(e){console.error(e);}
 }
 
 function renderStats(){
-  document.getElementById('s-clients').textContent=allClients.length;
-  document.getElementById('s-cands').textContent=allCands.length;
-  document.getElementById('s-short').textContent=allCands.filter(c=>c.status==='shortlisted').length;
-  document.getElementById('s-sched').textContent=allCands.filter(c=>c.status==='scheduled').length;
-  document.getElementById('s-jobs').textContent=allJobs.length;
+  document.getElementById('s-cl').textContent=clients.length;
+  document.getElementById('s-ca').textContent=cands.length;
+  document.getElementById('s-sh').textContent=cands.filter(c=>c.status==='shortlisted').length;
+  document.getElementById('s-sc').textContent=cands.filter(c=>c.status==='scheduled').length;
+  document.getElementById('s-jo').textContent=jobs.length;
 }
 
-function getInitials(name){return name?name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?'}
-
-function planClass(p){return p==='Growth'?'plan-growth':p==='Pro'?'plan-pro':'plan-starter'}
+const colors=['#db4437','#1a73e8','#0f9d58','#f4b400','#9c27b0'];
+function getInitials(n){return n?n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2):'?';}
+function planClass(p){return p==='Growth'?'plan-growth':p==='Pro'?'plan-pro':'plan-starter';}
 
 function renderClients(){
-  const grid=document.getElementById('clientsGrid');
-  if(!allClients.length){grid.innerHTML='<div class="empty">No clients yet. Add your first client!</div>';return;}
-  grid.innerHTML=allClients.map(c=>{
-    const cands=allCands.filter(x=>x.client_id===c.id);
-    const short=cands.filter(x=>x.status==='shortlisted').length;
-    const sched=cands.filter(x=>x.status==='scheduled').length;
-    return `<div class="client-card">
-      <div class="client-top">
+  const g=document.getElementById('clientsGrid');
+  if(!clients.length){g.innerHTML='<div class="empty">No clients yet. Click + Add Client.</div>';return;}
+  g.innerHTML=clients.map((c,i)=>{
+    const cc=cands.filter(x=>x.client_id===c.id);
+    return`<div class="client-card">
+      <div class="cc-top">
         <div style="display:flex;gap:12px;align-items:flex-start">
-          <div class="client-avatar">${getInitials(c.name)}</div>
-          <div>
-            <div class="client-name">${c.name||'—'}</div>
-            <div class="client-email">${c.email||'—'}</div>
-            <div class="client-phone">${c.phone||''}</div>
-          </div>
+          <div class="cc-avatar" style="background:${colors[i%colors.length]}">${getInitials(c.name)}</div>
+          <div><div class="cc-name">${c.name||'—'}</div><div class="cc-email">${c.email||'—'}</div><div class="cc-phone">${c.phone||''}</div></div>
         </div>
         <span class="plan-badge ${planClass(c.plan)}">${c.plan||'Starter'}</span>
       </div>
-      <div class="client-stats">
-        <div class="cs-item"><div class="cs-num">${cands.length}</div><div class="cs-label">Candidates</div></div>
-        <div class="cs-item"><div class="cs-num">${short}</div><div class="cs-label">Shortlisted</div></div>
-        <div class="cs-item"><div class="cs-num">${sched}</div><div class="cs-label">Scheduled</div></div>
+      <div class="cc-stats">
+        <div><div class="cs-num">${cc.length}</div><div class="cs-label">Candidates</div></div>
+        <div><div class="cs-num">${cc.filter(x=>x.status==='shortlisted').length}</div><div class="cs-label">Shortlisted</div></div>
+        <div><div class="cs-num">${cc.filter(x=>x.status==='scheduled').length}</div><div class="cs-label">Scheduled</div></div>
       </div>
-      <div class="client-actions">
-        <button class="btn-view" onclick="viewClientCands('${c.id}','${c.name}')">&#128101; View Candidates</button>
+      <div class="cc-actions">
+        <button class="btn-view" onclick="viewClient('${c.id}','${c.name}')">&#128101; View Candidates</button>
         <button class="btn-remove" onclick="removeClient('${c.id}')">&#128465; Remove</button>
       </div>
     </div>`}).join('');
 }
 
-function viewClientCands(clientId,clientName){
-  const filtered=allCands.filter(c=>c.client_id===clientId);
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab')[1].classList.add('active');
-  showTab('candidates',document.querySelectorAll('.tab')[1]);
+function viewClient(id,name){
+  const filtered=cands.filter(c=>c.client_id===id);
+  switchTab('candidates',document.querySelectorAll('.nav-item')[1]);
+  document.getElementById('candTitle').textContent='Candidates — '+name;
   renderCands(filtered);
-  document.querySelector('.section-title').textContent='Candidates — '+clientName;
 }
 
-function scoreClass(s){
-  if(!s)return '';
-  if(s>=80)return 'score-high';
-  if(s>=60)return 'score-med';
-  return 'score-low';
+function scC(s){if(!s&&s!==0)return '';return s>=80?'sh':s>=60?'sm':'sl';}
+function stC(s){return s==='shortlisted'?'ss':s==='scheduled'?'sc':s==='rejected'?'sr':'sn';}
+function waLink(ph,name,job){
+  const p=(ph||'').replace(/[^0-9]/g,'');
+  const m=encodeURIComponent('Hi '+name+', you have been shortlisted for '+job+'. Please share your availability for a call. - SamparkAI');
+  return 'https://wa.me/'+p+'?text='+m;
 }
-function statusClass(s){
-  if(s==='shortlisted')return 's-shortlisted';
-  if(s==='scheduled')return 's-scheduled';
-  if(s==='rejected')return 's-rejected';
-  return 's-new';
-}
+const waIcon=`<svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 
-function waLink(phone,name,job){
-  const msg=encodeURIComponent(`Hi ${name||''}, you have been shortlisted for the ${job||'role'} position. Please let us know your availability for a call.`);
-  return `https://wa.me/${(phone||'').replace(/[^0-9]/g,'')}?text=${msg}`;
-}
-
-function renderCands(cands){
-  const tbody=document.getElementById('candsBody');
-  if(!cands.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:#9ca3af">No candidates found.</td></tr>';return;}
-  tbody.innerHTML=cands.map(c=>`<tr>
-    <td><div style="font-weight:600;color:#0d1b2a">${c.name||'—'}</div><div style="font-size:11px;color:#9ca3af">${c.email||''}</div></td>
-    <td>${c.job_title||'—'}</td>
-    <td>${allClients.find(x=>x.id===c.client_id)?.name||'—'}</td>
-    <td><span class="score-badge ${scoreClass(c.score)}">${c.score?c.score+'%':'—'}</span></td>
-    <td><span class="status-pill ${statusClass(c.status)}">${c.status||'new'}</span></td>
-    <td>${c.phone?`<a class="wa-btn" href="${waLink(c.phone,c.name,c.job_title)}" target="_blank">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      WhatsApp</a>`:'<span style="color:#d1d5db;font-size:12px">No phone</span>'}</td>
+function renderCands(data){
+  const b=document.getElementById('candsBody');
+  if(!data||!data.length){b.innerHTML='<tr><td colspan="6" style="text-align:center;padding:32px;color:#9ca3af">No candidates found.</td></tr>';return;}
+  b.innerHTML=data.map(c=>`<tr>
+    <td><div style="font-weight:700">${c.name||'—'}</div><div style="font-size:11px;color:#9ca3af">${c.email||''}</div></td>
+    <td style="font-size:12px">${c.job_title||'—'}</td>
+    <td style="font-size:12px">${clients.find(x=>x.id===c.client_id)?.name||'—'}</td>
+    <td><span class="score-badge ${scC(c.score)}">${c.score!=null?c.score+'%':'—'}</span></td>
+    <td><span class="status-pill ${stC(c.status)}">${c.status||'new'}</span></td>
+    <td>${c.phone?`<a class="wa-btn" href="${waLink(c.phone,c.name,c.job_title)}" target="_blank">${waIcon} WhatsApp</a>`:'<span style="color:#d1d5db;font-size:11px">No phone</span>'}</td>
   </tr>`).join('');
 }
 
 function filterCands(){
-  const q=document.getElementById('searchInput').value.toLowerCase();
-  renderCands(allCands.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.job_title||'').toLowerCase().includes(q)));
+  const q=document.getElementById('searchQ').value.toLowerCase();
+  renderCands(cands.filter(c=>(c.name||'').toLowerCase().includes(q)||(c.job_title||'').toLowerCase().includes(q)||(clients.find(x=>x.id===c.client_id)?.name||'').toLowerCase().includes(q)));
 }
 
 function renderJobs(){
-  const tbody=document.getElementById('jobsBody');
-  if(!allJobs.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:32px;color:#9ca3af">No jobs yet.</td></tr>';return;}
-  tbody.innerHTML=allJobs.map(j=>{
-    const cnt=allCands.filter(c=>c.job_id===j.id).length;
-    const link=`https://sampark-ai-theta.vercel.app/chatbot.html?job=${j.id}`;
-    return`<tr>
-      <td><div style="font-weight:600">${j.title||'—'}</div></td>
-      <td>${allClients.find(x=>x.id===j.client_id)?.name||'—'}</td>
-      <td>${cnt}</td>
-      <td><a href="${link}" target="_blank" style="color:#1a73e8;font-size:12px;font-weight:600">${link}</a></td>
-    </tr>`}).join('');
+  const b=document.getElementById('jobsBody');
+  if(!jobs.length){b.innerHTML='<tr><td colspan="4" style="text-align:center;padding:32px;color:#9ca3af">No jobs yet.</td></tr>';return;}
+  b.innerHTML=jobs.map(j=>`<tr>
+    <td><div style="font-weight:700">${j.title||'—'}</div></td>
+    <td style="font-size:12px">${clients.find(x=>x.id===j.client_id)?.name||'—'}</td>
+    <td>${cands.filter(c=>c.job_id===j.id).length}</td>
+    <td><a href="https://sampark-ai-theta.vercel.app/chatbot.html?job=${j.id}" target="_blank" style="color:#1a73e8;font-size:12px;font-weight:600">Copy Link</a></td>
+  </tr>`).join('');
 }
 
 async function addClient(){
@@ -319,35 +295,31 @@ async function addClient(){
   const email=document.getElementById('m-email').value.trim();
   const phone=document.getElementById('m-phone').value.trim();
   const plan=document.getElementById('m-plan').value;
-  if(!name||!email){alert('Please enter name and email.');return;}
-  const r=await fetch(S+'/rest/v1/clients',{
-    method:'POST',
+  if(!name||!email){alert('Name and email required.');return;}
+  const r=await fetch(S+'/rest/v1/clients',{method:'POST',
     headers:{'apikey':K,'Authorization':'Bearer '+token,'Content-Type':'application/json','Prefer':'return=representation'},
-    body:JSON.stringify({name,email,phone,plan})
-  });
-  if(r.ok){document.getElementById('modalOverlay').classList.remove('show');loadAll();}
-  else{alert('Error saving client. Please try again.');}
+    body:JSON.stringify({name,email,phone,plan})});
+  if(r.ok){document.getElementById('overlay').classList.remove('show');load();}
+  else alert('Error. Try again.');
 }
 
 async function removeClient(id){
-  if(!confirm('Remove this client? This cannot be undone.'))return;
+  if(!confirm('Remove this client?'))return;
   await fetch(S+'/rest/v1/clients?id=eq.'+id,{method:'DELETE',headers:{'apikey':K,'Authorization':'Bearer '+token}});
-  loadAll();
+  load();
 }
 
-function showTab(name,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+function switchTab(name,el){
+  document.querySelectorAll('.nav-item').forEach(i=>i.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('tab-clients').style.display=name==='clients'?'block':'none';
-  document.getElementById('tab-candidates').style.display=name==='candidates'?'block':'none';
-  document.getElementById('tab-jobs').style.display=name==='jobs'?'block':'none';
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const titles={clients:'Client Accounts',candidates:'All Candidates',jobs:'Jobs & Links'};
+  document.getElementById('pageTitle').textContent=titles[name]||'';
 }
 
-function showModal(){document.getElementById('modalOverlay').classList.add('show');}
-function hideModal(e){if(e.target===document.getElementById('modalOverlay'))document.getElementById('modalOverlay').classList.remove('show');}
+function showModal(){document.getElementById('overlay').classList.add('show');}
+function hideModal(e){if(e.target===document.getElementById('overlay'))document.getElementById('overlay').classList.remove('show');}
 function signOut(){localStorage.clear();window.location.href='client-portal.html';}
-
-loadAll();
-</script>
-</body>
-</html>
+load();
+</script></body></html>
