@@ -132,6 +132,8 @@ window.addEventListener('DOMContentLoaded', () => {
   updateProg();
 });
 
+function uuid(){return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g,function(c){var r=Math.random()*16|0,v=c=='x'?r:(r&0x3|0x8);return v.toString(16);});}
+
 async function sbSave(data) {
   const r = await fetch(`${SB_URL}/rest/v1/candidates`, {
     method: 'POST',
@@ -205,10 +207,18 @@ async function finish() {
   area.appendChild(card); area.scrollTop=area.scrollHeight;
 
   const record = {
-    name: answers.name||'', phone: answers.phone||'', email: answers.email||'',
-    experience: answers.experience||'', skills: answers.skills||'',
-    score: score, summary: summary, status: 'pending',
-    job_id: JOB_KEY, client_id: CLIENT_ID,
+    id: uuid(),
+    name: answers.name||'',
+    job_id: JOB_KEY,
+    client_id: String(CLIENT_ID),
+    phone: answers.phone||'',
+    email: answers.email||'',
+    experience: answers.experience||'',
+    salary: answers.expected_ctc||'',
+    score: Math.round(score),
+    status: 'pending',
+    summary: summary,
+    skills: answers.skills||'',
     created_at: new Date().toISOString(),
   };
 
