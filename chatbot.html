@@ -107,7 +107,7 @@ const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 const params    = new URLSearchParams(window.location.search);
 const JOB_KEY   = params.get('job')    || 'demo';
 const JOB_TITLE = decodeURIComponent(params.get('title') || 'Open Position');
-const CLIENT_ID = parseInt(params.get('client') || '1');
+const CLIENT_ID = params.get('client') || '';
 
 document.getElementById('h-title').textContent = JOB_TITLE;
 document.title = `Sampark AI — ${JOB_TITLE}`;
