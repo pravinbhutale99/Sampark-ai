@@ -210,8 +210,8 @@ async function finish() {
     current_ctc: answers.current_ctc||'', expected_ctc: answers.expected_ctc||'',
     notice_period: answers.notice_period||'', location: answers.location||'',
     why_apply: answers.why_apply||'',
-    ai_score: score, ai_summary: summary, status: 'pending',
-    job_key: JOB_KEY, job_title: JOB_TITLE, client_id: CLIENT_ID,
+    score: score, ai_summary: summary, status: 'pending',
+    job_id: JOB_KEY, job_title: JOB_TITLE, client_id: CLIENT_ID,
     created_at: new Date().toISOString(),
   };
 
