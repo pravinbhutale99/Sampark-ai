@@ -6,15 +6,13 @@
 <title>SamparkAI — AI Candidate Screening for Recruitment Agencies</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --blue:#1a73e8;
-  --red:#db4437;
-  --yellow:#f4b400;
-  --green:#0f9d58;
   --navy:#0d1b2a;
   --navy2:#111f30;
+  --orange:#f4501e;
+  --orange-soft:#fff0eb;
   --white:#ffffff;
   --gray50:#f9fafb;
   --gray100:#f3f4f6;
@@ -22,101 +20,169 @@
   --gray400:#9ca3af;
   --gray600:#6b7280;
   --gray800:#374151;
+  --green:#22c55e;
+  --blue:#3b82f6;
+  --purple:#8b5cf6;
   --font-head:'Plus Jakarta Sans',sans-serif;
   --font-body:'DM Sans',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--font-body);background:#fff;color:var(--navy);overflow-x:hidden}
-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray200);padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between}
+
+/* ── NAV ── */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(229,231,235,0.6);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-placeholder{width:36px;height:36px;background:var(--navy);border-radius:8px;display:flex;align-items:center;justify-content:center}
-.logo-placeholder svg{width:22px;height:22px}
-.logo-text{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.5px}
-.logo-text span{color:var(--red)}
-.nav-links{display:flex;gap:32px;align-items:center}
-.nav-links a{font-size:14px;color:var(--gray600);text-decoration:none;font-weight:500;transition:color 0.2s}
+.logo-box{width:36px;height:36px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.logo-box svg{width:22px;height:22px}
+.logo-text{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.4px}
+.logo-text span{color:var(--orange)}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:14px;color:var(--gray600);text-decoration:none;font-weight:500;transition:color .2s}
 .nav-links a:hover{color:var(--navy)}
-.nav-right{display:flex;gap:12px;align-items:center}
-.btn-login{font-size:14px;color:var(--gray600);background:none;border:none;cursor:pointer;font-weight:500;padding:8px 16px;border-radius:8px;transition:background 0.2s}
-.btn-login:hover{background:var(--gray100)}
-.btn-demo-nav{background:var(--navy);color:#fff;border:none;padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:opacity 0.2s}
-.btn-demo-nav:hover{opacity:0.85}
-.hero{padding:72px 40px 60px;display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;max-width:1200px;margin:0 auto}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;background:#fff7ed;color:#c2410c;border:1px solid #fed7aa;border-radius:100px;padding:5px 14px;font-size:12px;font-weight:600;letter-spacing:0.3px;margin-bottom:24px}
-.hero-badge::before{content:'';width:6px;height:6px;background:#f4b400;border-radius:50%}
-.hero h1{font-family:var(--font-head);font-size:46px;font-weight:800;line-height:1.1;color:var(--navy);margin-bottom:12px;letter-spacing:-1px}
-.hero h1 em{font-style:normal;color:var(--red)}
-.hero-sub{font-size:16px;color:var(--gray600);line-height:1.65;margin-bottom:28px;max-width:460px}
-.bullets{list-style:none;margin-bottom:32px;display:flex;flex-direction:column;gap:10px}
+.nav-right{display:flex;gap:10px;align-items:center}
+.btn-login{font-size:14px;color:var(--gray600);background:none;border:none;cursor:pointer;font-weight:500;padding:8px 16px;border-radius:8px;font-family:var(--font-body);transition:background .2s,color .2s}
+.btn-login:hover{background:var(--gray100);color:var(--navy)}
+.btn-demo-nav{background:var(--navy);color:#fff;border:none;padding:10px 22px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:transform .15s,box-shadow .15s;box-shadow:0 2px 8px rgba(13,27,42,.18)}
+.btn-demo-nav:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,27,42,.22)}
+
+/* ── HERO ── */
+.hero-wrap{position:relative;overflow:hidden;background:#fff}
+.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.13;animation:blobDrift 12s ease-in-out infinite alternate}
+.blob-1{width:600px;height:600px;background:var(--blue);top:-200px;left:-100px;animation-duration:14s}
+.blob-2{width:500px;height:500px;background:var(--purple);top:0;right:-80px;animation-duration:18s;animation-delay:-4s}
+.blob-3{width:400px;height:400px;background:var(--orange);bottom:-100px;left:35%;animation-duration:16s;animation-delay:-8s}
+@keyframes blobDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.05)}100%{transform:translate(-20px,30px) scale(.95)}}
+.hero{position:relative;z-index:1;padding:80px 48px 72px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1200px;margin:0 auto}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--orange-soft);color:#c03a10;border:1px solid #fcd4c4;border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:24px}
+.hero-badge-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.hero h1{font-family:var(--font-head);font-size:50px;font-weight:800;line-height:1.08;color:var(--navy);margin-bottom:16px;letter-spacing:-1.5px}
+.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--orange) 0%,#e03010 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:16px;color:var(--gray600);line-height:1.7;margin-bottom:32px;max-width:460px}
+.bullets{list-style:none;margin-bottom:36px;display:flex;flex-direction:column;gap:11px}
 .bullets li{font-size:14px;color:var(--gray800);display:flex;align-items:center;gap:10px;font-weight:500}
-.bullet-dot{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:700;color:#fff}
-.hero-ctas{display:flex;gap:12px;align-items:center}
-.cta-primary{background:var(--navy);color:#fff;padding:14px 28px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;transition:transform 0.15s,opacity 0.15s}
-.cta-primary:hover{opacity:0.88;transform:translateY(-1px)}
-.cta-secondary{background:#fff;color:var(--navy);padding:13px 22px;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid var(--gray200);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;transition:border-color 0.2s,transform 0.15s}
-.cta-secondary:hover{border-color:var(--gray400);transform:translateY(-1px)}
-.dashboard-wrap{background:var(--navy);border-radius:16px;padding:12px;border:1px solid #1e3a5f;animation:floatUp 0.8s ease both}
-@keyframes floatUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.bullet-check{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:#fff}
+.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.cta-primary{background:var(--navy);color:#fff;padding:15px 30px;border-radius:11px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(13,27,42,.2)}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,27,42,.25)}
+.cta-secondary{background:rgba(255,255,255,.8);color:var(--navy);padding:14px 24px;border-radius:11px;font-size:14px;font-weight:600;border:1.5px solid var(--gray200);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px);transition:border-color .2s,transform .15s,box-shadow .15s}
+.cta-secondary:hover{border-color:var(--gray400);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07)}
+
+/* ── DASHBOARD ── */
+.hero-right{position:relative}
+.dash-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:70%;background:radial-gradient(ellipse,rgba(59,130,246,.15) 0%,transparent 70%);pointer-events:none;border-radius:50%}
+.dashboard-wrap{background:var(--navy);border-radius:20px;padding:14px;border:1px solid #1e3a5f;box-shadow:0 32px 80px rgba(13,27,42,.45),0 8px 24px rgba(13,27,42,.2);animation:floatDash 6s ease-in-out infinite;position:relative;z-index:1}
+@keyframes floatDash{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
 .dash-topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 10px}
 .dash-brand{display:flex;align-items:center;gap:6px}
-.dash-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--red)}
+.dash-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
 .dash-brand-name{color:#fff;font-size:12px;font-weight:700}
 .dash-user{color:#94a3b8;font-size:10px}
-.dash-layout{display:flex;gap:8px;height:340px}
-.dash-sidebar{width:96px;background:#0a1520;border-radius:10px;padding:10px 0;flex-shrink:0}
+.dash-layout{display:flex;gap:8px;height:310px}
+.dash-sidebar{width:90px;background:#0a1520;border-radius:10px;padding:10px 0;flex-shrink:0}
 .si{padding:7px 10px;font-size:10px;color:#64748b;cursor:pointer;border-radius:6px;margin:1px 6px;font-weight:500;display:flex;align-items:center;gap:5px}
 .si.active{background:#1e3a5f;color:#fff}
 .si-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .dash-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
 .sc{background:#0a1520;border-radius:8px;padding:8px 10px}
-.sc-label{font-size:8px;color:#64748b;margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px}
+.sc-label{font-size:8px;color:#64748b;margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .sc-num{font-size:18px;font-weight:800;color:#fff;line-height:1}
 .sc-change{font-size:8px;color:#22c55e;margin-top:2px}
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1}
 .chart-box{background:#0a1520;border-radius:8px;padding:8px 10px;overflow:hidden}
-.chart-title{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px}
+.chart-title{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .funnel-item{margin-bottom:5px}
 .funnel-meta{display:flex;justify-content:space-between;margin-bottom:2px}
 .funnel-name{font-size:8px;color:#94a3b8}
 .funnel-val{font-size:8px;color:#e2e8f0;font-weight:600}
 .funnel-bar{height:5px;border-radius:3px}
-.job-item{padding:4px 0;border-bottom:0.5px solid #1e3a5f;display:flex;justify-content:space-between;align-items:center}
+.job-item{padding:4px 0;border-bottom:.5px solid #1e3a5f;display:flex;justify-content:space-between;align-items:center}
 .job-name{font-size:9px;color:#e2e8f0;font-weight:500}
 .job-badge{font-size:8px;color:#64748b}
 .job-progress{height:3px;border-radius:2px;margin-top:3px}
-.how-section{background:var(--gray50);padding:80px 40px;border-top:1px solid var(--gray200)}
-.section-header{text-align:center;margin-bottom:60px}
-.section-label{font-size:12px;font-weight:700;color:var(--blue);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
-.section-title{font-family:var(--font-head);font-size:34px;font-weight:800;color:var(--navy);margin-bottom:12px;letter-spacing:-0.5px}
-.section-sub{font-size:15px;color:var(--gray600);max-width:520px;margin:0 auto;line-height:1.6}
+
+/* Floating chips around dashboard */
+.float-chips{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2}
+.chip{position:absolute;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--navy);box-shadow:0 8px 24px rgba(0,0,0,.1);white-space:nowrap}
+.chip-icon{font-size:16px}
+.chip-1{top:8%;left:-16%;animation:floatChip1 5s ease-in-out infinite}
+.chip-2{top:30%;right:-14%;animation:floatChip2 6s ease-in-out infinite;animation-delay:-1.5s}
+.chip-3{bottom:28%;left:-18%;animation:floatChip1 7s ease-in-out infinite;animation-delay:-3s}
+.chip-4{bottom:8%;right:-12%;animation:floatChip2 5.5s ease-in-out infinite;animation-delay:-2s}
+@keyframes floatChip1{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
+@keyframes floatChip2{0%,100%{transform:translateY(0) rotate(1deg)}50%{transform:translateY(-8px) rotate(-1deg)}}
+
+/* ── WORKFLOW ── */
+.workflow-wrap{background:linear-gradient(180deg,#fff 0%,#f8f9ff 100%);padding:80px 48px;position:relative;overflow:hidden}
+.workflow-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gray200),transparent)}
+.section-label{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;text-align:center}
+.section-title{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--navy);margin-bottom:14px;letter-spacing:-1px;text-align:center}
+.section-sub{font-size:15px;color:var(--gray600);max-width:520px;margin:0 auto 56px;line-height:1.7;text-align:center}
+.workflow-row{display:flex;align-items:center;justify-content:center;gap:0;max-width:1100px;margin:0 auto;flex-wrap:nowrap}
+.wf-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
+.wf-icon-wrap{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;box-shadow:0 4px 16px rgba(0,0,0,.08);transition:transform .2s,box-shadow .2s;border:1.5px solid rgba(255,255,255,.8)}
+.wf-step:hover .wf-icon-wrap{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.12)}
+.wf-num{font-size:10px;font-weight:700;color:var(--gray400);letter-spacing:1px;margin-bottom:6px}
+.wf-name{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3}
+.wf-desc{font-size:11px;color:var(--gray600);line-height:1.5;max-width:130px;margin:0 auto}
+.wf-arrow{font-size:20px;color:var(--gray400);margin:0 4px;flex-shrink:0;margin-bottom:42px}
+
+/* ── HOW IT WORKS ── */
+.how-section{background:linear-gradient(180deg,#f8f9ff 0%,#fff 100%);padding:80px 48px;border-top:1px solid rgba(229,231,235,.5)}
 .steps-row{display:flex;align-items:flex-start;gap:0;max-width:1100px;margin:0 auto;position:relative}
-.steps-row::before{content:'';position:absolute;top:28px;left:10%;right:10%;height:1px;background:var(--gray200);z-index:0}
+.steps-row::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gray200) 20%,var(--gray200) 80%,transparent);z-index:0}
 .step{flex:1;text-align:center;padding:0 12px;position:relative;z-index:1}
-.step-icon-wrap{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #fff}
-.step-num{font-size:11px;font-weight:700;color:var(--gray400);margin-bottom:6px;letter-spacing:0.5px}
-.step-name{font-family:var(--font-head);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:6px}
-.step-desc{font-size:12px;color:var(--gray600);line-height:1.5}
-.features-section{padding:80px 40px;max-width:1200px;margin:0 auto}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:48px}
-.feature-card{background:#fff;border:1px solid var(--gray200);border-radius:16px;padding:28px;transition:border-color 0.2s,transform 0.2s}
-.feature-card:hover{border-color:var(--gray400);transform:translateY(-3px)}
-.feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:22px}
+.step-icon-wrap{width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s}
+.step:hover .step-icon-wrap{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
+.step-num{font-size:11px;font-weight:700;color:var(--gray400);margin-bottom:6px;letter-spacing:.5px}
+.step-name{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.step-desc{font-size:12px;color:var(--gray600);line-height:1.55}
+
+/* ── FEATURES ── */
+.features-section{padding:80px 48px;background:#fff;position:relative}
+.features-section::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,var(--gray200),transparent)}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.feature-card{background:#fff;border:1px solid var(--gray200);border-radius:20px;padding:28px;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;opacity:0;transition:opacity .2s}
+.feature-card:hover{border-color:transparent;transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.09)}
+.feature-card:hover::before{opacity:1}
+.fc-1::before{background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
+.fc-2::before{background:linear-gradient(90deg,var(--orange),#f97316)}
+.fc-3::before{background:linear-gradient(90deg,#25D366,#16a34a)}
+.fc-4::before{background:linear-gradient(90deg,#f4b400,#f59e0b)}
+.fc-5::before{background:linear-gradient(90deg,#8b5cf6,#a855f7)}
+.fc-6::before{background:linear-gradient(90deg,#0f9d58,#059669)}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:24px}
 .feature-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.feature-desc{font-size:13px;color:var(--gray600);line-height:1.6}
-.feature-tag{display:inline-block;margin-top:12px;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px}
-.wa-section{background:var(--navy);padding:60px 40px}
-.wa-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
-.wa-left h2{font-family:var(--font-head);font-size:32px;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.2}
-.wa-left p{font-size:14px;color:#94a3b8;line-height:1.7;margin-bottom:24px}
-.wa-badge{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;margin-bottom:16px}
-.wa-steps{display:flex;flex-direction:column;gap:12px}
+.feature-desc{font-size:13px;color:var(--gray600);line-height:1.65}
+.feature-tag{display:inline-block;margin-top:14px;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px}
+
+/* ── TRUST ── */
+.trust-section{padding:72px 48px;background:linear-gradient(180deg,#f8f9ff 0%,#fff 100%);position:relative}
+.trust-section::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,var(--gray200),transparent)}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1100px;margin:0 auto}
+.trust-card{background:#fff;border:1px solid var(--gray200);border-radius:20px;padding:28px;text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
+.trust-card:hover{border-color:transparent;transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
+.trust-icon{font-size:30px;margin-bottom:14px}
+.trust-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.trust-desc{font-size:13px;color:var(--gray600);line-height:1.6}
+
+/* ── WHATSAPP ── */
+.wa-section{background:var(--navy);padding:72px 48px;position:relative;overflow:hidden}
+.wa-section::before{content:'';position:absolute;top:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);pointer-events:none}
+.wa-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
+.wa-left h2{font-family:var(--font-head);font-size:34px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;letter-spacing:-.5px}
+.wa-left p{font-size:14px;color:#94a3b8;line-height:1.75;margin-bottom:28px}
+.wa-badge{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;margin-bottom:18px}
+.wa-steps{display:flex;flex-direction:column;gap:14px}
 .wa-step{display:flex;align-items:flex-start;gap:12px}
-.wa-step-num{width:24px;height:24px;background:#1e3a5f;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#94a3b8;flex-shrink:0;margin-top:1px}
-.wa-step-text{font-size:13px;color:#cbd5e1;line-height:1.5}
+.wa-step-num{width:26px;height:26px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#94a3b8;flex-shrink:0;margin-top:1px}
+.wa-step-text{font-size:13px;color:#cbd5e1;line-height:1.55}
 .wa-step-text strong{color:#fff}
-.wa-phone{background:#0a1520;border-radius:24px;padding:16px;border:1px solid #1e3a5f;max-width:260px;margin:0 auto}
+.wa-phone{background:#0a1520;border-radius:24px;padding:16px;border:1px solid #1e3a5f;max-width:260px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.4)}
 .wa-phone-header{background:#075E54;border-radius:12px 12px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;margin:-16px -16px 0}
 .wa-avatar{width:32px;height:32px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
 .wa-contact-name{font-size:12px;font-weight:700;color:#fff}
@@ -125,51 +191,81 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
 .wa-msg{border-radius:12px;padding:8px 12px;max-width:90%;font-size:11px;line-height:1.5}
 .wa-msg.received{background:#1e3a5f;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:2px}
 .wa-msg.sent{background:#25D366;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
-.wa-msg strong{display:block;font-size:10px;margin-bottom:3px;opacity:0.8}
-.wa-cta-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px}
-.trust-section{padding:80px 40px;background:var(--gray50);border-top:1px solid var(--gray200)}
-.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
-.trust-card{background:#fff;border:1px solid var(--gray200);border-radius:16px;padding:28px;text-align:center;transition:border-color 0.2s,transform 0.2s}
-.trust-card:hover{border-color:var(--gray400);transform:translateY(-3px)}
-.trust-icon{font-size:28px;margin-bottom:14px}
-.trust-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.trust-desc{font-size:13px;color:var(--gray600);line-height:1.6}
-@media(max-width:900px){.trust-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.trust-grid{grid-template-columns:1fr}}
-.bottom-cta{background:#0d1b2a;padding:72px 40px;text-align:center}
-.bottom-cta h2{font-family:var(--font-head);font-size:38px;font-weight:800;color:#fff;margin-bottom:12px;letter-spacing:-0.5px}
-.bottom-cta p{font-size:15px;color:#94a3b8;margin-bottom:32px}
-.bottom-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-.bcta1{background:var(--red);color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);transition:opacity 0.2s}
-.bcta1:hover{opacity:0.88}
-.bcta2{background:transparent;color:#fff;padding:13px 28px;border-radius:10px;font-size:14px;font-weight:600;border:1.5px solid #334155;cursor:pointer;font-family:var(--font-body)}
-.bottom-perks{display:flex;gap:24px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.wa-msg strong{display:block;font-size:10px;margin-bottom:3px;opacity:.8}
+.wa-cta-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px;transition:opacity .2s}
+.wa-cta-btn:hover{opacity:.85}
+
+/* ── BOTTOM CTA ── */
+.bottom-cta{background:var(--navy);padding:80px 48px;text-align:center;position:relative;overflow:hidden}
+.bottom-cta::before{content:'';position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(244,80,30,.12) 0%,transparent 70%);pointer-events:none}
+.bottom-cta h2{font-family:var(--font-head);font-size:40px;font-weight:800;color:#fff;margin-bottom:14px;letter-spacing:-.8px;position:relative}
+.bottom-cta p{font-size:15px;color:#94a3b8;margin-bottom:36px;position:relative}
+.bottom-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
+.bcta1{background:var(--orange);color:#fff;padding:15px 36px;border-radius:11px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);transition:transform .15s,box-shadow .15s,opacity .15s;box-shadow:0 4px 20px rgba(244,80,30,.35)}
+.bcta1:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(244,80,30,.45);opacity:.92}
+.bcta2{background:rgba(255,255,255,.07);color:#fff;padding:14px 32px;border-radius:11px;font-size:14px;font-weight:600;border:1.5px solid rgba(255,255,255,.15);cursor:pointer;font-family:var(--font-body);backdrop-filter:blur(8px);transition:background .2s,border-color .2s,transform .15s}
+.bcta2:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);transform:translateY(-2px)}
+.bottom-perks{display:flex;gap:28px;justify-content:center;margin-top:24px;flex-wrap:wrap;position:relative}
 .perk{font-size:12px;color:#64748b;display:flex;align-items:center;gap:5px}
-.perk::before{content:'✓';color:#22c55e;font-weight:700}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-.hero-left{animation:fadeInUp 0.6s ease both}
-.hero-right{animation:fadeInUp 0.7s ease 0.15s both}
-@media(max-width:900px){
-  .hero{grid-template-columns:1fr;padding:48px 24px}
+.perk::before{content:'✓';color:var(--green);font-weight:700}
+
+/* ── SCROLL REVEALS ── */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.stagger-1{transition-delay:.05s}
+.stagger-2{transition-delay:.12s}
+.stagger-3{transition-delay:.19s}
+.stagger-4{transition-delay:.26s}
+.stagger-5{transition-delay:.33s}
+.stagger-6{transition-delay:.40s}
+
+/* ── COPY LINK ── */
+.copy-link-row{display:flex;align-items:center;gap:6px;background:#f1f5f9;border-radius:8px;padding:6px 10px;margin-top:6px;min-width:0;overflow:hidden}
+.copy-link-url{font-size:9px;color:#6b7280;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default;display:block}
+.copy-link-url:hover{color:#374151}
+.copy-btn{background:var(--orange);color:#fff;border:none;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;transition:background .15s}
+.copy-btn:hover{background:#d43d15}
+
+/* ── RESPONSIVE ── */
+@media(max-width:960px){
+  .hero{grid-template-columns:1fr;padding:56px 24px}
   .hero-right{display:none}
-  .features-grid{grid-template-columns:1fr}
-  .steps-row{flex-direction:column;align-items:center}
+  .workflow-row{flex-direction:column;gap:8px;align-items:center}
+  .wf-arrow{transform:rotate(90deg);margin:4px 0}
+  .steps-row{flex-direction:column;align-items:center;gap:24px}
   .steps-row::before{display:none}
+  .features-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr 1fr}
   .wa-inner{grid-template-columns:1fr}
   nav{padding:0 20px}
   .nav-links{display:none}
+  .workflow-wrap,.how-section,.features-section,.trust-section,.wa-section,.bottom-cta{padding-left:24px;padding-right:24px}
+}
+@media(max-width:560px){
+  .trust-grid{grid-template-columns:1fr}
+  .hero h1{font-size:36px}
+  .section-title{font-size:28px}
+}
+@media(prefers-reduced-motion:reduce){
+  .blob,.dashboard-wrap,.chip,.reveal,.reveal-left,.reveal-right{animation:none;transition:none;opacity:1;transform:none}
 }
 </style>
 </head>
 <body>
+
+<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="logo-placeholder">
+    <div class="logo-box">
       <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#1a73e8"/>
-        <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#db4437"/>
+        <polygon points="4,4 18,4 18,10 12,10 12,18 4,18" fill="#3b82f6"/>
+        <polygon points="18,4 36,4 36,18 28,18 28,10 18,10" fill="#f4501e"/>
         <polygon points="4,18 12,18 12,26 20,26 20,36 4,36" fill="#f4b400"/>
-        <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#0f9d58"/>
+        <polygon points="20,14 36,14 36,36 20,36 20,26 28,26 28,18 20,18" fill="#22c55e"/>
       </svg>
     </div>
     <span class="logo-text">Sampark<span>AI</span></span>
@@ -185,120 +281,227 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
     <button class="btn-demo-nav" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book Demo</button>
   </div>
 </nav>
-<section class="hero">
-  <div class="hero-left">
-    <div class="hero-badge">AI Candidate Screening Assistant for Recruitment Agencies</div>
-    <h1>Interview Every Applicant.<br>Receive <em>AI-Ranked Candidates</em><br>In Minutes.</h1>
-    <p class="hero-sub">Create a job, share one screening link, and let SamparkAI interview every applicant automatically.<br><br>No phone screening. No scheduling. Just recruiter-ready shortlisted candidates inside your dashboard.</p>
-    <ul class="bullets">
-      <li><span class="bullet-dot" style="background:#1a73e8">✓</span> Interview every applicant automatically</li>
-      <li><span class="bullet-dot" style="background:#db4437">✓</span> AI ranks candidates based on role fit</li>
-      <li><span class="bullet-dot" style="background:#0f9d58">✓</span> Contact shortlisted candidates instantly via WhatsApp</li>
-      <li><span class="bullet-dot" style="background:#f4b400;color:#0d1b2a">✓</span> Reduce manual screening by up to 80%</li>
-    </ul>
-    <div class="hero-ctas">
-      <button class="cta-primary" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book a Live Demo &rarr;</button>
-      <button class="cta-secondary">&#9654; Watch 90-Second Demo</button>
-    </div>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <div class="hero-bg">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
   </div>
-  <div class="hero-right">
-    <div class="dashboard-wrap">
-      <div class="dash-topbar">
-        <div class="dash-brand"><div class="dash-brand-dot"></div><span class="dash-brand-name">SamparkAI Dashboard</span></div>
-        <span class="dash-user">Ahmed Khan · Agency Owner</span>
+  <section class="hero">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="hero-badge-dot"></span>AI Candidate Screening Assistant for Recruitment Agencies</div>
+      <h1>Interview Every Applicant.<br>Receive <em>AI-Ranked Candidates</em><br>In Minutes.</h1>
+      <p class="hero-sub">Create a job, share one screening link, and let SamparkAI interview every applicant automatically.<br><br>No phone screening. No scheduling. Just recruiter-ready shortlisted candidates inside your dashboard.</p>
+      <ul class="bullets">
+        <li><span class="bullet-check" style="background:#3b82f6">✓</span>Interview every applicant automatically</li>
+        <li><span class="bullet-check" style="background:var(--orange)">✓</span>AI ranks candidates based on role fit</li>
+        <li><span class="bullet-check" style="background:#22c55e">✓</span>Contact shortlisted candidates instantly via WhatsApp</li>
+        <li><span class="bullet-check" style="background:#f4b400;color:#0d1b2a">✓</span>Reduce manual screening by up to 80%</li>
+      </ul>
+      <div class="hero-ctas">
+        <button class="cta-primary" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book a Live Demo →</button>
+        <button class="cta-secondary">▶ Watch 90-Second Demo</button>
       </div>
-      <div class="dash-layout">
-        <div class="dash-sidebar">
-          <div class="si active"><div class="si-dot" style="background:#1a73e8"></div>Dashboard</div>
-          <div class="si"><div class="si-dot" style="background:#db4437"></div>Jobs</div>
-          <div class="si"><div class="si-dot" style="background:#0f9d58"></div>Candidates</div>
-          <div class="si"><div class="si-dot" style="background:#f4b400"></div>Clients</div>
-          <div class="si">Interviews</div>
-          <div class="si">Talent Pool</div>
-          <div class="si">Analytics</div>
-          <div class="si">Settings</div>
+    </div>
+    <div class="hero-right">
+      <div class="dash-glow"></div>
+      <div class="float-chips">
+        <div class="chip chip-1"><span class="chip-icon">🤖</span>AI Screening</div>
+        <div class="chip chip-2"><span class="chip-icon">⭐</span>Ranked Candidates</div>
+        <div class="chip chip-3"><span class="chip-icon">📱</span>WhatsApp</div>
+        <div class="chip chip-4"><span class="chip-icon">⚡</span>80% Faster</div>
+      </div>
+      <div class="dashboard-wrap">
+        <div class="dash-topbar">
+          <div class="dash-brand"><div class="dash-brand-dot"></div><span class="dash-brand-name">SamparkAI Dashboard</span></div>
+          <span class="dash-user">Ahmed Khan · Agency Owner</span>
         </div>
-        <div class="dash-content">
-          <div class="stats-row">
-            <div class="sc"><div class="sc-label">Active Jobs</div><div class="sc-num">28</div><div class="sc-change">+12% ↑</div></div>
-            <div class="sc"><div class="sc-label">Screened</div><div class="sc-num">421</div><div class="sc-change">+18% ↑</div></div>
-            <div class="sc"><div class="sc-label">Qualified</div><div class="sc-num">73</div><div class="sc-change">+20% ↑</div></div>
-            <div class="sc"><div class="sc-label">Placed</div><div class="sc-num">8</div><div class="sc-change">+14% ↑</div></div>
+        <div class="dash-layout">
+          <div class="dash-sidebar">
+            <div class="si active"><div class="si-dot" style="background:#3b82f6"></div>Dashboard</div>
+            <div class="si"><div class="si-dot" style="background:var(--orange)"></div>Jobs</div>
+            <div class="si"><div class="si-dot" style="background:#22c55e"></div>Candidates</div>
+            <div class="si"><div class="si-dot" style="background:#f4b400"></div>Clients</div>
+            <div class="si">Interviews</div>
+            <div class="si">Analytics</div>
+            <div class="si">Settings</div>
           </div>
-          <div class="charts-row">
-            <div class="chart-box">
-              <div class="chart-title">Candidate Funnel</div>
-              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Applications</span><span class="funnel-val">2,057</span></div><div class="funnel-bar" style="background:#1a73e8;width:100%"></div></div>
-              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">AI Screened</span><span class="funnel-val">1,842</span></div><div class="funnel-bar" style="background:#0f9d58;width:89%"></div></div>
-              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Qualified</span><span class="funnel-val">173</span></div><div class="funnel-bar" style="background:#f4b400;width:42%"></div></div>
-              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Shortlisted</span><span class="funnel-val">58</span></div><div class="funnel-bar" style="background:#db4437;width:20%"></div></div>
-              <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Placed</span><span class="funnel-val">8</span></div><div class="funnel-bar" style="background:#9c27b0;width:8%"></div></div>
+          <div class="dash-content">
+            <div class="stats-row">
+              <div class="sc"><div class="sc-label">Active Jobs</div><div class="sc-num">28</div><div class="sc-change">+12% ↑</div></div>
+              <div class="sc"><div class="sc-label">Screened</div><div class="sc-num">421</div><div class="sc-change">+18% ↑</div></div>
+              <div class="sc"><div class="sc-label">Qualified</div><div class="sc-num">73</div><div class="sc-change">+20% ↑</div></div>
+              <div class="sc"><div class="sc-label">Placed</div><div class="sc-num">8</div><div class="sc-change">+14% ↑</div></div>
             </div>
-            <div class="chart-box">
-              <div class="chart-title">Top Performing Jobs</div>
-              <div class="job-item"><div><div class="job-name">Sales Manager</div><div class="job-progress" style="background:#1a73e8;width:80%"></div></div><span class="job-badge">12 shortlisted</span></div>
-              <div class="job-item"><div><div class="job-name">HR Executive</div><div class="job-progress" style="background:#0f9d58;width:65%"></div></div><span class="job-badge">9</span></div>
-              <div class="job-item"><div><div class="job-name">Accountant</div><div class="job-progress" style="background:#f4b400;width:50%"></div></div><span class="job-badge">7</span></div>
-              <div class="job-item"><div><div class="job-name">Logistics Coord.</div><div class="job-progress" style="background:#db4437;width:35%"></div></div><span class="job-badge">5</span></div>
+            <div class="charts-row">
+              <div class="chart-box">
+                <div class="chart-title">Candidate Funnel</div>
+                <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Applications</span><span class="funnel-val">2,057</span></div><div class="funnel-bar" style="background:#3b82f6;width:100%"></div></div>
+                <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">AI Screened</span><span class="funnel-val">1,842</span></div><div class="funnel-bar" style="background:#22c55e;width:89%"></div></div>
+                <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Qualified</span><span class="funnel-val">173</span></div><div class="funnel-bar" style="background:#f4b400;width:42%"></div></div>
+                <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Shortlisted</span><span class="funnel-val">58</span></div><div class="funnel-bar" style="background:var(--orange);width:20%"></div></div>
+                <div class="funnel-item"><div class="funnel-meta"><span class="funnel-name">Placed</span><span class="funnel-val">8</span></div><div class="funnel-bar" style="background:#8b5cf6;width:8%"></div></div>
+              </div>
+              <div class="chart-box">
+                <div class="chart-title">Top Performing Jobs</div>
+                <div class="job-item"><div><div class="job-name">Sales Manager</div><div class="job-progress" style="background:#3b82f6;width:80%"></div></div><span class="job-badge">12 shortlisted</span></div>
+                <div class="job-item"><div><div class="job-name">HR Executive</div><div class="job-progress" style="background:#22c55e;width:65%"></div></div><span class="job-badge">9</span></div>
+                <div class="job-item"><div><div class="job-name">Accountant</div><div class="job-progress" style="background:#f4b400;width:50%"></div></div><span class="job-badge">7</span></div>
+                <div class="job-item"><div><div class="job-name">Logistics Coord.</div><div class="job-progress" style="background:var(--orange);width:35%"></div></div><span class="job-badge">5</span></div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </section>
+</div>
+
+<!-- WORKFLOW -->
+<section class="workflow-wrap" id="workflow">
+  <div class="section-label reveal">How It Works</div>
+  <h2 class="section-title reveal stagger-1">How SamparkAI Works</h2>
+  <p class="section-sub reveal stagger-2">Five simple steps from job opening to shortlisted candidates — no phone calls, no scheduling, no manual screening.</p>
+  <div class="workflow-row">
+    <div class="wf-step reveal stagger-1">
+      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#e8f0fe,#c7d9fd)">📋</div>
+      <div class="wf-num">01</div>
+      <div class="wf-name">Create Job</div>
+      <div class="wf-desc">Upload the job description or enter hiring requirements</div>
+    </div>
+    <div class="wf-arrow reveal stagger-1">→</div>
+    <div class="wf-step reveal stagger-2">
+      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#fce8e6,#fbc9c4)">⚡</div>
+      <div class="wf-num">02</div>
+      <div class="wf-name">AI Builds Screening Interview</div>
+      <div class="wf-desc">Role-specific interview questions created automatically</div>
+    </div>
+    <div class="wf-arrow reveal stagger-2">→</div>
+    <div class="wf-step reveal stagger-3">
+      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#e6f4ea,#bbf7d0)">🔗</div>
+      <div class="wf-num">03</div>
+      <div class="wf-name">Share One Link</div>
+      <div class="wf-desc">Share through WhatsApp, email or job portals</div>
+    </div>
+    <div class="wf-arrow reveal stagger-3">→</div>
+    <div class="wf-step reveal stagger-4">
+      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#fef9e7,#fef3c7)">💬</div>
+      <div class="wf-num">04</div>
+      <div class="wf-name">Candidates Complete AI Interview</div>
+      <div class="wf-desc">Applicants complete the interview anytime from any device</div>
+    </div>
+    <div class="wf-arrow reveal stagger-4">→</div>
+    <div class="wf-step reveal stagger-5">
+      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#e8f0fe,#c7d9fd)">🏆</div>
+      <div class="wf-num">05</div>
+      <div class="wf-name">Recruiter Contacts Top Candidates</div>
+      <div class="wf-desc">Review AI-ranked candidates and contact the best ones instantly</div>
     </div>
   </div>
 </section>
+
+<!-- HOW IT WORKS (detailed steps) -->
 <section class="how-section" id="how">
-  <div class="section-header">
-    <div class="section-label">How It Works</div>
-    <h2 class="section-title">How SamparkAI Works</h2>
-    <p class="section-sub">Five simple steps from job opening to shortlisted candidates — no phone calls, no scheduling, no manual screening.</p>
-  </div>
-  <div class="steps-row">
-    <div class="step">
-      <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
-      <div class="step-num">01</div><div class="step-name">Create Job</div>
-      <div class="step-desc">Upload job description or enter requirements for your client</div>
-    </div>
-    <div class="step">
-      <div class="step-icon-wrap" style="background:#fce8e6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#db4437" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <div class="step-num">02</div><div class="step-name">AI Builds Screening Interview</div>
-      <div class="step-desc">SamparkAI automatically creates role-specific interview questions</div>
-    </div>
-    <div class="step">
-      <div class="step-icon-wrap" style="background:#e6f4ea"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f9d58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
-      <div class="step-num">03</div><div class="step-name">Share One Link</div>
-      <div class="step-desc">Share through WhatsApp, email or job portals</div>
-    </div>
-    <div class="step">
-      <div class="step-icon-wrap" style="background:#fef9e7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4b400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-      <div class="step-num">04</div><div class="step-name">Candidates Complete AI Interview</div>
-      <div class="step-desc">Applicants complete the interview anytime from any device</div>
-    </div>
-    <div class="step">
-      <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-      <div class="step-num">05</div><div class="step-name">Receive Ranked Candidates</div>
-      <div class="step-desc">Review AI-ranked candidates inside your dashboard and contact the best ones instantly</div>
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">Process</div>
+    <h2 class="section-title reveal stagger-1">Hire Faster In Five Simple Steps</h2>
+    <p class="section-sub reveal stagger-2">No phone calls. No scheduling. No manual screening. Just AI-powered results your clients will love.</p>
+    <div class="steps-row">
+      <div class="step reveal stagger-1">
+        <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+        <div class="step-num">01</div><div class="step-name">Create Job</div>
+        <div class="step-desc">Upload job description or enter requirements for your client</div>
+      </div>
+      <div class="step reveal stagger-2">
+        <div class="step-icon-wrap" style="background:#fce8e6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4501e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="step-num">02</div><div class="step-name">AI Builds Screening Interview</div>
+        <div class="step-desc">SamparkAI automatically creates role-specific interview questions</div>
+      </div>
+      <div class="step reveal stagger-3">
+        <div class="step-icon-wrap" style="background:#e6f4ea"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+        <div class="step-num">03</div><div class="step-name">Share One Link</div>
+        <div class="step-desc">Share through WhatsApp, email or job portals</div>
+      </div>
+      <div class="step reveal stagger-4">
+        <div class="step-icon-wrap" style="background:#fef9e7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4b400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <div class="step-num">04</div><div class="step-name">Candidates Complete AI Interview</div>
+        <div class="step-desc">Applicants complete the interview anytime from any device</div>
+      </div>
+      <div class="step reveal stagger-5">
+        <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="step-num">05</div><div class="step-name">Receive Ranked Candidates</div>
+        <div class="step-desc">Review AI-ranked candidates inside your dashboard and contact the best ones instantly</div>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- FEATURES -->
 <section class="features-section" id="features">
-  <div class="section-header">
-    <div class="section-label">Features</div>
-    <h2 class="section-title">Everything You Need To Screen Candidates Faster</h2>
-    <p class="section-sub">Built specifically for recruitment agencies who want to scale without hiring more screeners.</p>
-  </div>
-  <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon" style="background:#e8f0fe">🤖</div><div class="feature-title">AI Candidate Screening</div><div class="feature-desc">AI interviews every applicant using role-specific questions and automatically ranks the best candidates.</div><span class="feature-tag" style="background:#e8f0fe;color:#1a5276">Saves 80% screening time</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#fce8e6">👥</div><div class="feature-title">Multi-Client Management</div><div class="feature-desc">Manage multiple hiring clients from one dashboard with separate jobs, candidates and shortlists.</div><span class="feature-tag" style="background:#fce8e6;color:#922b21">White-label ready</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#e6f4ea">📱</div><div class="feature-title">WhatsApp Screening</div><div class="feature-desc">Candidates complete interviews directly on WhatsApp. No app. No login.</div><span class="feature-tag" style="background:#e6f4ea;color:#0b5345">No app needed</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#fef9e7">📊</div><div class="feature-title">Client Review Portal</div><div class="feature-desc">Share shortlisted candidates professionally with your clients and collect feedback faster.</div><span class="feature-tag" style="background:#fef9e7;color:#7d6608">Impresses your clients</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#f3e5f5">🏊</div><div class="feature-title">Talent Pool Reactivation</div><div class="feature-desc">Search and re-screen previous candidates whenever new positions open.</div><span class="feature-tag" style="background:#f3e5f5;color:#6a1b9a">Unlock hidden value</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#e8f5e9">📈</div><div class="feature-title">Recruiter Analytics</div><div class="feature-desc">Track jobs, shortlisted candidates and recruiter productivity from one dashboard.</div><span class="feature-tag" style="background:#e8f5e9;color:#1b5e20">Data-driven decisions</span></div>
+  <div style="max-width:1100px;margin:0 auto">
+    <div class="section-label reveal">Features</div>
+    <h2 class="section-title reveal stagger-1">Everything You Need To Screen Candidates Faster</h2>
+    <p class="section-sub reveal stagger-2">Built specifically for recruitment agencies who want to scale without hiring more screeners.</p>
+    <div class="features-grid">
+      <div class="feature-card fc-1 reveal stagger-1">
+        <div class="feature-icon" style="background:#e8f0fe">🤖</div>
+        <div class="feature-title">AI Candidate Screening</div>
+        <div class="feature-desc">AI interviews every applicant using role-specific questions and automatically ranks the best candidates.</div>
+        <span class="feature-tag" style="background:#e8f0fe;color:#1e40af">Saves 80% screening time</span>
+      </div>
+      <div class="feature-card fc-2 reveal stagger-2">
+        <div class="feature-icon" style="background:#fff0eb">👥</div>
+        <div class="feature-title">Multi-Client Management</div>
+        <div class="feature-desc">Manage multiple hiring clients from one dashboard with separate jobs, candidates and shortlists.</div>
+        <span class="feature-tag" style="background:#fff0eb;color:#9a3412">White-label ready</span>
+      </div>
+      <div class="feature-card fc-3 reveal stagger-3">
+        <div class="feature-icon" style="background:#e6f4ea">📱</div>
+        <div class="feature-title">WhatsApp Screening</div>
+        <div class="feature-desc">Candidates complete interviews directly on WhatsApp. No app. No login.</div>
+        <span class="feature-tag" style="background:#e6f4ea;color:#166534">No app needed</span>
+      </div>
+      <div class="feature-card fc-4 reveal stagger-4">
+        <div class="feature-icon" style="background:#fef9e7">📊</div>
+        <div class="feature-title">Client Review Portal</div>
+        <div class="feature-desc">Share shortlisted candidates professionally with your clients and collect feedback faster.</div>
+        <span class="feature-tag" style="background:#fef9e7;color:#854d0e">Impresses your clients</span>
+      </div>
+      <div class="feature-card fc-5 reveal stagger-5">
+        <div class="feature-icon" style="background:#f3e8ff">🏊</div>
+        <div class="feature-title">Talent Pool Reactivation</div>
+        <div class="feature-desc">Search and re-screen previous candidates whenever new positions open.</div>
+        <span class="feature-tag" style="background:#f3e8ff;color:#6b21a8">Unlock hidden value</span>
+      </div>
+      <div class="feature-card fc-6 reveal stagger-6">
+        <div class="feature-icon" style="background:#e6f4ea">📈</div>
+        <div class="feature-title">Recruiter Analytics</div>
+        <div class="feature-desc">Track jobs, shortlisted candidates and recruiter productivity from one dashboard.</div>
+        <span class="feature-tag" style="background:#e6f4ea;color:#14532d">Data-driven decisions</span>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- TRUST -->
+<section class="trust-section" id="agencies">
+  <div class="section-label reveal">For Agencies</div>
+  <h2 class="section-title reveal stagger-1">Built For Modern Recruitment Agencies</h2>
+  <p class="section-sub reveal stagger-2" style="margin-bottom:48px"> </p>
+  <div class="trust-grid">
+    <div class="trust-card reveal stagger-1"><div class="trust-icon">📞</div><div class="trust-title">Reduce screening calls</div><div class="trust-desc">Let AI handle first-round interviews so your recruiters spend time on placements, not phone screens.</div></div>
+    <div class="trust-card reveal stagger-2"><div class="trust-icon">📈</div><div class="trust-title">Screen more with the same team</div><div class="trust-desc">Scale your candidate volume without adding headcount. One recruiter can manage what used to take three.</div></div>
+    <div class="trust-card reveal stagger-3"><div class="trust-icon">⚡</div><div class="trust-title">Respond to clients faster</div><div class="trust-desc">Deliver shortlisted candidates to clients in hours, not days. Win more business with faster turnaround.</div></div>
+    <div class="trust-card reveal stagger-4"><div class="trust-icon">🎯</div><div class="trust-title">Never miss strong candidates</div><div class="trust-desc">AI screens every applicant equally. No candidate gets missed because a recruiter ran out of time.</div></div>
+  </div>
+</section>
+
+<!-- WHATSAPP -->
 <section class="wa-section" id="whatsapp">
   <div class="wa-inner">
-    <div class="wa-left">
+    <div class="wa-left reveal-left">
       <div class="wa-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp-Powered Screening</div>
       <h2>Candidates Interview on WhatsApp.<br>You Get a Ranked Shortlist.</h2>
       <p>No apps to download. No scheduling headaches. Candidates simply reply to a WhatsApp message — our AI conducts the full screening interview and sends you a ranked list with scores and summaries.</p>
@@ -308,7 +511,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
         <div class="wa-step"><div class="wa-step-num">3</div><div class="wa-step-text"><strong>You receive ranked shortlist</strong> — tap WhatsApp button to contact top candidates directly</div></div>
       </div>
     </div>
-    <div class="wa-right">
+    <div class="wa-right reveal-right">
       <div class="wa-phone">
         <div class="wa-phone-header">
           <div class="wa-avatar">S</div>
@@ -326,23 +529,13 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
     </div>
   </div>
 </section>
-<section class="trust-section" id="agencies">
-  <div class="section-header">
-    <div class="section-label">For Agencies</div>
-    <h2 class="section-title">Built For Modern Recruitment Agencies</h2>
-  </div>
-  <div class="trust-grid">
-    <div class="trust-card"><div class="trust-icon">📞</div><div class="trust-title">Reduce screening calls</div><div class="trust-desc">Let AI handle first-round interviews so your recruiters spend time on placements, not phone screens.</div></div>
-    <div class="trust-card"><div class="trust-icon">📈</div><div class="trust-title">Screen more with the same team</div><div class="trust-desc">Scale your candidate volume without adding headcount. One recruiter can manage what used to take three.</div></div>
-    <div class="trust-card"><div class="trust-icon">⚡</div><div class="trust-title">Respond to clients faster</div><div class="trust-desc">Deliver shortlisted candidates to clients in hours, not days. Win more business with faster turnaround.</div></div>
-    <div class="trust-card"><div class="trust-icon">🎯</div><div class="trust-title">Never miss strong candidates</div><div class="trust-desc">AI screens every applicant equally. No candidate gets missed because a recruiter ran out of time.</div></div>
-  </div>
-</section>
+
+<!-- BOTTOM CTA -->
 <section class="bottom-cta" id="demo-form">
   <h2>Stop Spending Hours Screening Candidates</h2>
   <p>Let AI handle first-round candidate screening while your recruiters focus on placements.</p>
   <div class="bottom-ctas">
-    <button class="bcta1" onclick="window.location.href='mailto:hello@samparkai.tech?subject=Book a Demo'">Book a Live Demo &rarr;</button>
+    <button class="bcta1" onclick="window.location.href='mailto:hello@samparkai.tech?subject=Book a Demo'">Book a Live Demo →</button>
     <button class="bcta2" onclick="window.location.href='chatbot.html'">Watch Product Demo</button>
   </div>
   <div class="bottom-perks">
@@ -352,5 +545,17 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
     <span class="perk">Cancel anytime</span>
   </div>
 </section>
+
+<script>
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.classList.add('visible');
+    }
+  });
+}, {threshold: 0.12});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
