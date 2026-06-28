@@ -127,6 +127,15 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
 .wa-msg.sent{background:#25D366;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
 .wa-msg strong{display:block;font-size:10px;margin-bottom:3px;opacity:0.8}
 .wa-cta-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px}
+.trust-section{padding:80px 40px;background:var(--gray50);border-top:1px solid var(--gray200)}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;max-width:1100px;margin:0 auto}
+.trust-card{background:#fff;border:1px solid var(--gray200);border-radius:16px;padding:28px;text-align:center;transition:border-color 0.2s,transform 0.2s}
+.trust-card:hover{border-color:var(--gray400);transform:translateY(-3px)}
+.trust-icon{font-size:28px;margin-bottom:14px}
+.trust-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.trust-desc{font-size:13px;color:var(--gray600);line-height:1.6}
+@media(max-width:900px){.trust-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.trust-grid{grid-template-columns:1fr}}
 .bottom-cta{background:#0d1b2a;padding:72px 40px;text-align:center}
 .bottom-cta h2{font-family:var(--font-head);font-size:38px;font-weight:800;color:#fff;margin-bottom:12px;letter-spacing:-0.5px}
 .bottom-cta p{font-size:15px;color:#94a3b8;margin-bottom:32px}
@@ -169,7 +178,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
     <a href="#features">Features</a>
     <a href="#how">How It Works</a>
     <a href="#agencies">For Agencies</a>
-    <a href="#whatsapp">WhatsApp Screening</a>
+    <a href="#demo-form">Book Demo</a>
   </div>
   <div class="nav-right">
     <button class="btn-login" onclick="window.location.href='client-portal.html'">Login</button>
@@ -178,18 +187,18 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
 </nav>
 <section class="hero">
   <div class="hero-left">
-    <div class="hero-badge">AI Candidate Screening Platform for Recruitment Agencies</div>
-    <h1>Stop Wasting Time<br>Screening<br><em>Unqualified Candidates</em></h1>
-    <p class="hero-sub">AI interviews every applicant, ranks the best candidates, and delivers recruiter-ready shortlists — in under 2 hours. No calls. No scheduling. Just results.</p>
+    <div class="hero-badge">AI Candidate Screening Assistant for Recruitment Agencies</div>
+    <h1>Interview Every Applicant.<br>Receive <em>AI-Ranked Candidates</em><br>In Minutes.</h1>
+    <p class="hero-sub">Create a job, share one screening link, and let SamparkAI interview every applicant automatically.<br><br>No phone screening. No scheduling. Just recruiter-ready shortlisted candidates inside your dashboard.</p>
     <ul class="bullets">
-      <li><span class="bullet-dot" style="background:#1a73e8">✓</span> Reduce screening calls by 80%</li>
-      <li><span class="bullet-dot" style="background:#db4437">✓</span> Shortlist better candidates, faster</li>
-      <li><span class="bullet-dot" style="background:#0f9d58">✓</span> Delight clients with faster submissions</li>
-      <li><span class="bullet-dot" style="background:#f4b400;color:#0d1b2a">✓</span> Turn one recruiter into three</li>
+      <li><span class="bullet-dot" style="background:#1a73e8">✓</span> Interview every applicant automatically</li>
+      <li><span class="bullet-dot" style="background:#db4437">✓</span> AI ranks candidates based on role fit</li>
+      <li><span class="bullet-dot" style="background:#0f9d58">✓</span> Contact shortlisted candidates instantly via WhatsApp</li>
+      <li><span class="bullet-dot" style="background:#f4b400;color:#0d1b2a">✓</span> Reduce manual screening by up to 80%</li>
     </ul>
     <div class="hero-ctas">
       <button class="cta-primary" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book a Live Demo &rarr;</button>
-      <button class="cta-secondary">&#9654; Watch 3-Min Demo</button>
+      <button class="cta-secondary">&#9654; Watch 90-Second Demo</button>
     </div>
   </div>
   <div class="hero-right">
@@ -241,8 +250,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
 <section class="how-section" id="how">
   <div class="section-header">
     <div class="section-label">How It Works</div>
-    <h2 class="section-title">From Job Opening To Shortlist In Minutes</h2>
-    <p class="section-sub">No phone calls. No scheduling. No manual screening. Just AI-powered results your clients will love.</p>
+    <h2 class="section-title">How SamparkAI Works</h2>
+    <p class="section-sub">Five simple steps from job opening to shortlisted candidates — no phone calls, no scheduling, no manual screening.</p>
   </div>
   <div class="steps-row">
     <div class="step">
@@ -252,39 +261,39 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
     </div>
     <div class="step">
       <div class="step-icon-wrap" style="background:#fce8e6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#db4437" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-      <div class="step-num">02</div><div class="step-name">AI Creates Questions</div>
-      <div class="step-desc">Smart screening questions generated automatically for the role</div>
+      <div class="step-num">02</div><div class="step-name">AI Builds Screening Interview</div>
+      <div class="step-desc">SamparkAI automatically creates role-specific interview questions</div>
     </div>
     <div class="step">
       <div class="step-icon-wrap" style="background:#e6f4ea"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#0f9d58" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
-      <div class="step-num">03</div><div class="step-name">Share Screening Link</div>
-      <div class="step-desc">Via WhatsApp, email, job boards or QR code</div>
+      <div class="step-num">03</div><div class="step-name">Share One Link</div>
+      <div class="step-desc">Share through WhatsApp, email or job portals</div>
     </div>
     <div class="step">
       <div class="step-icon-wrap" style="background:#fef9e7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4b400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-      <div class="step-num">04</div><div class="step-name">AI Interviews Candidates</div>
-      <div class="step-desc">Candidates complete AI chat interview — no app, no login needed</div>
+      <div class="step-num">04</div><div class="step-name">Candidates Complete AI Interview</div>
+      <div class="step-desc">Applicants complete the interview anytime from any device</div>
     </div>
     <div class="step">
       <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1a73e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <div class="step-num">05</div><div class="step-name">Receive Ranked Candidates</div>
-      <div class="step-desc">Get ranked shortlist with scores and WhatsApp contact buttons</div>
+      <div class="step-desc">Review AI-ranked candidates inside your dashboard and contact the best ones instantly</div>
     </div>
   </div>
 </section>
 <section class="features-section" id="features">
   <div class="section-header">
     <div class="section-label">Features</div>
-    <h2 class="section-title">Everything Your Agency Needs</h2>
+    <h2 class="section-title">Everything You Need To Screen Candidates Faster</h2>
     <p class="section-sub">Built specifically for recruitment agencies who want to scale without hiring more screeners.</p>
   </div>
   <div class="features-grid">
-    <div class="feature-card"><div class="feature-icon" style="background:#e8f0fe">🤖</div><div class="feature-title">AI Candidate Screening</div><div class="feature-desc">AI conducts structured interviews with every applicant, assessing skills, experience and role fit. You get a ranked shortlist — not a pile of CVs.</div><span class="feature-tag" style="background:#e8f0fe;color:#1a5276">Saves 80% screening time</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#fce8e6">👥</div><div class="feature-title">Multi-Client Management</div><div class="feature-desc">Manage all your clients from one dashboard. Each client gets their own portal to view shortlisted candidates — branded with your agency name.</div><span class="feature-tag" style="background:#fce8e6;color:#922b21">White-label ready</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#e6f4ea">📱</div><div class="feature-title">WhatsApp Integration</div><div class="feature-desc">Candidates complete interviews on WhatsApp — no app, no login. Recruiters contact shortlisted candidates directly via WhatsApp with one tap.</div><span class="feature-tag" style="background:#e6f4ea;color:#0b5345">No app needed</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#fef9e7">📊</div><div class="feature-title">Client Review Portal</div><div class="feature-desc">Share shortlisted candidates with your clients through a secure, professional portal. Clients approve, reject or request interviews with one click.</div><span class="feature-tag" style="background:#fef9e7;color:#7d6608">Impresses your clients</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#f3e5f5">🏊</div><div class="feature-title">Talent Pool Reactivation</div><div class="feature-desc">Never lose a great candidate again. AI re-screens your existing talent pool when new jobs open — turning old CVs into new placements.</div><span class="feature-tag" style="background:#f3e5f5;color:#6a1b9a">Unlock hidden value</span></div>
-    <div class="feature-card"><div class="feature-icon" style="background:#e8f5e9">📈</div><div class="feature-title">Analytics Dashboard</div><div class="feature-desc">Track placements, screening velocity, qualified rates and revenue per job. Know exactly where your agency's time is being spent.</div><span class="feature-tag" style="background:#e8f5e9;color:#1b5e20">Data-driven decisions</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#e8f0fe">🤖</div><div class="feature-title">AI Candidate Screening</div><div class="feature-desc">AI interviews every applicant using role-specific questions and automatically ranks the best candidates.</div><span class="feature-tag" style="background:#e8f0fe;color:#1a5276">Saves 80% screening time</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#fce8e6">👥</div><div class="feature-title">Multi-Client Management</div><div class="feature-desc">Manage multiple hiring clients from one dashboard with separate jobs, candidates and shortlists.</div><span class="feature-tag" style="background:#fce8e6;color:#922b21">White-label ready</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#e6f4ea">📱</div><div class="feature-title">WhatsApp Screening</div><div class="feature-desc">Candidates complete interviews directly on WhatsApp. No app. No login.</div><span class="feature-tag" style="background:#e6f4ea;color:#0b5345">No app needed</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#fef9e7">📊</div><div class="feature-title">Client Review Portal</div><div class="feature-desc">Share shortlisted candidates professionally with your clients and collect feedback faster.</div><span class="feature-tag" style="background:#fef9e7;color:#7d6608">Impresses your clients</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#f3e5f5">🏊</div><div class="feature-title">Talent Pool Reactivation</div><div class="feature-desc">Search and re-screen previous candidates whenever new positions open.</div><span class="feature-tag" style="background:#f3e5f5;color:#6a1b9a">Unlock hidden value</span></div>
+    <div class="feature-card"><div class="feature-icon" style="background:#e8f5e9">📈</div><div class="feature-title">Recruiter Analytics</div><div class="feature-desc">Track jobs, shortlisted candidates and recruiter productivity from one dashboard.</div><span class="feature-tag" style="background:#e8f5e9;color:#1b5e20">Data-driven decisions</span></div>
   </div>
 </section>
 <section class="wa-section" id="whatsapp">
@@ -317,12 +326,24 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
     </div>
   </div>
 </section>
+<section class="trust-section" id="agencies">
+  <div class="section-header">
+    <div class="section-label">For Agencies</div>
+    <h2 class="section-title">Built For Modern Recruitment Agencies</h2>
+  </div>
+  <div class="trust-grid">
+    <div class="trust-card"><div class="trust-icon">📞</div><div class="trust-title">Reduce screening calls</div><div class="trust-desc">Let AI handle first-round interviews so your recruiters spend time on placements, not phone screens.</div></div>
+    <div class="trust-card"><div class="trust-icon">📈</div><div class="trust-title">Screen more with the same team</div><div class="trust-desc">Scale your candidate volume without adding headcount. One recruiter can manage what used to take three.</div></div>
+    <div class="trust-card"><div class="trust-icon">⚡</div><div class="trust-title">Respond to clients faster</div><div class="trust-desc">Deliver shortlisted candidates to clients in hours, not days. Win more business with faster turnaround.</div></div>
+    <div class="trust-card"><div class="trust-icon">🎯</div><div class="trust-title">Never miss strong candidates</div><div class="trust-desc">AI screens every applicant equally. No candidate gets missed because a recruiter ran out of time.</div></div>
+  </div>
+</section>
 <section class="bottom-cta" id="demo-form">
-  <h2>Ready to Screen Smarter?</h2>
-  <p>Join recruitment agencies saving 20+ hours per week on candidate screening.</p>
+  <h2>Stop Spending Hours Screening Candidates</h2>
+  <p>Let AI handle first-round candidate screening while your recruiters focus on placements.</p>
   <div class="bottom-ctas">
     <button class="bcta1" onclick="window.location.href='mailto:hello@samparkai.tech?subject=Book a Demo'">Book a Live Demo &rarr;</button>
-    <button class="bcta2" onclick="window.location.href='chatbot.html'">Try Free Screening</button>
+    <button class="bcta2" onclick="window.location.href='chatbot.html'">Watch Product Demo</button>
   </div>
   <div class="bottom-perks">
     <span class="perk">Free 14-day trial</span>
