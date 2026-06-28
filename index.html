@@ -10,89 +10,225 @@
 <style>
 :root{
   --navy:#0d1b2a;
-  --navy2:#111f30;
   --orange:#f4501e;
-  --orange-soft:#fff0eb;
+  --orange-soft:#fff3ef;
   --white:#ffffff;
-  --gray50:#f9fafb;
-  --gray100:#f3f4f6;
-  --gray200:#e5e7eb;
-  --gray400:#9ca3af;
-  --gray600:#6b7280;
-  --gray800:#374151;
+  --g50:#f8faff;
+  --g100:#f1f4ff;
+  --g200:#e4e9f7;
+  --g400:#9ca3af;
+  --g600:#6b7280;
+  --g800:#374151;
   --green:#22c55e;
   --blue:#3b82f6;
   --purple:#8b5cf6;
-  --font-head:'Plus Jakarta Sans',sans-serif;
-  --font-body:'DM Sans',sans-serif;
+  --fh:'Plus Jakarta Sans',sans-serif;
+  --fb:'DM Sans',sans-serif;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-body);background:#fff;color:var(--navy);overflow-x:hidden}
+body{font-family:var(--fb);background:#f8faff;color:var(--navy);overflow-x:hidden}
+
+/* ── GLOBAL BG ── */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(ellipse 80% 50% at 10% 20%,rgba(59,130,246,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 10%,rgba(139,92,246,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 50% at 50% 80%,rgba(244,80,30,.05) 0%,transparent 60%),
+    #f8faff;
+  pointer-events:none;
+}
+
+/* ── DOT GRID ── */
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;
+  background-image:radial-gradient(rgba(13,27,42,.055) 1px,transparent 1px);
+  background-size:28px 28px;
+  pointer-events:none;
+}
 
 /* ── NAV ── */
-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(229,231,235,0.6);padding:0 48px;height:68px;display:flex;align-items:center;justify-content:space-between}
+nav{
+  position:sticky;top:0;z-index:200;
+  background:rgba(248,250,255,.82);
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(228,233,247,.7);
+  padding:0 56px;height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-.logo-box{width:36px;height:36px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center}
+.logo-box{width:36px;height:36px;background:var(--navy);border-radius:9px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(13,27,42,.25)}
 .logo-box svg{width:22px;height:22px}
-.logo-text{font-family:var(--font-head);font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-0.4px}
+.logo-text{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--navy);letter-spacing:-.4px}
 .logo-text span{color:var(--orange)}
-.nav-links{display:flex;gap:36px;align-items:center}
-.nav-links a{font-size:14px;color:var(--gray600);text-decoration:none;font-weight:500;transition:color .2s}
+.nav-links{display:flex;gap:36px}
+.nav-links a{font-size:14px;color:var(--g600);text-decoration:none;font-weight:500;transition:color .18s}
 .nav-links a:hover{color:var(--navy)}
 .nav-right{display:flex;gap:10px;align-items:center}
-.btn-login{font-size:14px;color:var(--gray600);background:none;border:none;cursor:pointer;font-weight:500;padding:8px 16px;border-radius:8px;font-family:var(--font-body);transition:background .2s,color .2s}
-.btn-login:hover{background:var(--gray100);color:var(--navy)}
-.btn-demo-nav{background:var(--navy);color:#fff;border:none;padding:10px 22px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-body);transition:transform .15s,box-shadow .15s;box-shadow:0 2px 8px rgba(13,27,42,.18)}
-.btn-demo-nav:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,27,42,.22)}
+.btn-login{font-size:14px;color:var(--g600);background:none;border:none;cursor:pointer;font-weight:500;padding:8px 16px;border-radius:8px;font-family:var(--fb);transition:background .18s,color .18s}
+.btn-login:hover{background:var(--g100);color:var(--navy)}
+.btn-demo-nav{
+  background:var(--navy);color:#fff;border:none;
+  padding:10px 22px;border-radius:9px;
+  font-size:14px;font-weight:700;cursor:pointer;font-family:var(--fb);
+  box-shadow:0 2px 12px rgba(13,27,42,.22);
+  transition:transform .15s,box-shadow .15s;
+}
+.btn-demo-nav:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(13,27,42,.28)}
 
 /* ── HERO ── */
-.hero-wrap{position:relative;overflow:hidden;background:#fff}
-.hero-bg{position:absolute;inset:0;pointer-events:none;z-index:0}
-.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.13;animation:blobDrift 12s ease-in-out infinite alternate}
-.blob-1{width:600px;height:600px;background:var(--blue);top:-200px;left:-100px;animation-duration:14s}
-.blob-2{width:500px;height:500px;background:var(--purple);top:0;right:-80px;animation-duration:18s;animation-delay:-4s}
-.blob-3{width:400px;height:400px;background:var(--orange);bottom:-100px;left:35%;animation-duration:16s;animation-delay:-8s}
-@keyframes blobDrift{0%{transform:translate(0,0) scale(1)}50%{transform:translate(30px,-20px) scale(1.05)}100%{transform:translate(-20px,30px) scale(.95)}}
-.hero{position:relative;z-index:1;padding:80px 48px 72px;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;max-width:1200px;margin:0 auto}
-.hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--orange-soft);color:#c03a10;border:1px solid #fcd4c4;border-radius:100px;padding:6px 16px;font-size:12px;font-weight:600;letter-spacing:.3px;margin-bottom:24px}
-.hero-badge-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:pulse 2s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
-.hero h1{font-family:var(--font-head);font-size:50px;font-weight:800;line-height:1.08;color:var(--navy);margin-bottom:16px;letter-spacing:-1.5px}
-.hero h1 em{font-style:normal;background:linear-gradient(135deg,var(--orange) 0%,#e03010 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:16px;color:var(--gray600);line-height:1.7;margin-bottom:32px;max-width:460px}
-.bullets{list-style:none;margin-bottom:36px;display:flex;flex-direction:column;gap:11px}
-.bullets li{font-size:14px;color:var(--gray800);display:flex;align-items:center;gap:10px;font-weight:500}
-.bullet-check{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:#fff}
-.hero-ctas{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
-.cta-primary{background:var(--navy);color:#fff;padding:15px 30px;border-radius:11px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 16px rgba(13,27,42,.2)}
-.cta-primary:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(13,27,42,.25)}
-.cta-secondary{background:rgba(255,255,255,.8);color:var(--navy);padding:14px 24px;border-radius:11px;font-size:14px;font-weight:600;border:1.5px solid var(--gray200);cursor:pointer;font-family:var(--font-body);display:flex;align-items:center;gap:8px;backdrop-filter:blur(8px);transition:border-color .2s,transform .15s,box-shadow .15s}
-.cta-secondary:hover{border-color:var(--gray400);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.07)}
+.hero-wrap{
+  position:relative;overflow:hidden;
+  padding:88px 56px 80px;
+}
+/* mesh glow layers */
+.hero-wrap::before{
+  content:'';position:absolute;
+  top:-180px;left:-140px;
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:blobPulse 14s ease-in-out infinite alternate;
+}
+.hero-wrap::after{
+  content:'';position:absolute;
+  top:-100px;right:-200px;
+  width:700px;height:700px;
+  background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 65%);
+  pointer-events:none;z-index:0;
+  animation:blobPulse 18s ease-in-out infinite alternate-reverse;
+}
+@keyframes blobPulse{0%{transform:scale(1) translate(0,0)}50%{transform:scale(1.06) translate(20px,-15px)}100%{transform:scale(.96) translate(-10px,25px)}}
+
+.hero-inner{
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr 1.1fr;
+  gap:48px;align-items:center;
+  max-width:1200px;margin:0 auto;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.9);
+  border:1px solid rgba(244,80,30,.25);
+  border-radius:100px;padding:6px 16px;
+  font-size:12px;font-weight:600;color:#b83a14;
+  backdrop-filter:blur(8px);
+  box-shadow:0 2px 12px rgba(244,80,30,.08);
+  margin-bottom:22px;
+}
+.badge-dot{width:6px;height:6px;background:var(--orange);border-radius:50%;animation:blink 2.2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+.hero h1{
+  font-family:var(--fh);font-size:52px;font-weight:800;
+  line-height:1.06;color:var(--navy);
+  letter-spacing:-1.8px;margin-bottom:18px;
+}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(125deg,var(--orange) 0%,#c9290a 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{font-size:16px;color:var(--g600);line-height:1.72;margin-bottom:28px;max-width:440px}
+.bullets{list-style:none;margin-bottom:34px;display:flex;flex-direction:column;gap:10px}
+.bullets li{font-size:14px;color:var(--g800);display:flex;align-items:center;gap:10px;font-weight:500}
+.bcheck{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:800;color:#fff}
+.hero-ctas{display:flex;gap:12px;flex-wrap:wrap}
+.cta-primary{
+  background:var(--navy);color:#fff;
+  padding:15px 30px;border-radius:12px;
+  font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--fb);
+  display:flex;align-items:center;gap:8px;
+  box-shadow:0 4px 20px rgba(13,27,42,.22),0 1px 3px rgba(13,27,42,.12);
+  transition:transform .15s,box-shadow .15s;
+}
+.cta-primary:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(13,27,42,.28)}
+.cta-secondary{
+  background:rgba(255,255,255,.85);color:var(--navy);
+  padding:14px 26px;border-radius:12px;
+  font-size:14px;font-weight:600;
+  border:1.5px solid rgba(13,27,42,.12);
+  cursor:pointer;font-family:var(--fb);
+  display:flex;align-items:center;gap:8px;
+  backdrop-filter:blur(12px);
+  box-shadow:0 2px 10px rgba(0,0,0,.06);
+  transition:border-color .18s,transform .15s,box-shadow .15s;
+}
+.cta-secondary:hover{border-color:rgba(13,27,42,.28);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.1)}
 
 /* ── DASHBOARD ── */
-.hero-right{position:relative}
-.dash-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:80%;height:70%;background:radial-gradient(ellipse,rgba(59,130,246,.15) 0%,transparent 70%);pointer-events:none;border-radius:50%}
-.dashboard-wrap{background:var(--navy);border-radius:20px;padding:14px;border:1px solid #1e3a5f;box-shadow:0 32px 80px rgba(13,27,42,.45),0 8px 24px rgba(13,27,42,.2);animation:floatDash 6s ease-in-out infinite;position:relative;z-index:1}
-@keyframes floatDash{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.hero-right{position:relative;min-height:380px}
+.dash-glow{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:90%;height:80%;
+  background:radial-gradient(ellipse,rgba(59,130,246,.18) 0%,rgba(139,92,246,.1) 40%,transparent 75%);
+  border-radius:50%;pointer-events:none;filter:blur(24px);
+}
+/* concentric rings */
+.dash-rings{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  width:110%;height:105%;
+  pointer-events:none;
+}
+.ring{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  border-radius:50%;border:1px solid rgba(59,130,246,.08);
+}
+.ring:nth-child(1){width:90%;height:90%}
+.ring:nth-child(2){width:106%;height:106%}
+.ring:nth-child(3){width:122%;height:122%}
+
+.dashboard-wrap{
+  position:relative;z-index:2;
+  background:var(--navy);border-radius:20px;padding:14px;
+  border:1px solid rgba(30,58,95,.8);
+  box-shadow:0 40px 90px rgba(13,27,42,.5),0 10px 30px rgba(13,27,42,.25),0 2px 6px rgba(13,27,42,.15);
+  animation:floatDash 7s ease-in-out infinite;
+}
+@keyframes floatDash{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ── FLOATING CHIPS ── */
+.chip{
+  position:absolute;z-index:3;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:18px;padding:9px 16px;
+  display:flex;align-items:center;gap:9px;
+  font-size:13px;font-weight:600;color:var(--navy);
+  box-shadow:0 8px 28px rgba(0,0,0,.12),0 2px 6px rgba(0,0,0,.06);
+  white-space:nowrap;
+}
+.chip-icon{font-size:18px}
+.chip-1{top:4%;left:-8%;animation:fc1 5.5s ease-in-out infinite}
+.chip-2{top:10%;right:-6%;animation:fc2 6.5s ease-in-out infinite;animation-delay:-2s}
+.chip-3{bottom:22%;left:-10%;animation:fc1 7s ease-in-out infinite;animation-delay:-3.5s}
+.chip-4{bottom:10%;right:-8%;animation:fc2 6s ease-in-out infinite;animation-delay:-1s}
+@keyframes fc1{0%,100%{transform:translateY(0) rotate(-1.5deg)}50%{transform:translateY(-12px) rotate(1deg)}}
+@keyframes fc2{0%,100%{transform:translateY(0) rotate(1.5deg)}50%{transform:translateY(-9px) rotate(-1deg)}}
+
+/* ── DASHBOARD INTERNALS ── */
 .dash-topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 8px 10px}
 .dash-brand{display:flex;align-items:center;gap:6px}
 .dash-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
 .dash-brand-name{color:#fff;font-size:12px;font-weight:700}
 .dash-user{color:#94a3b8;font-size:10px}
-.dash-layout{display:flex;gap:8px;height:310px}
-.dash-sidebar{width:90px;background:#0a1520;border-radius:10px;padding:10px 0;flex-shrink:0}
+.dash-layout{display:flex;gap:8px;height:320px}
+.dash-sidebar{width:90px;background:#080f18;border-radius:10px;padding:10px 0;flex-shrink:0}
 .si{padding:7px 10px;font-size:10px;color:#64748b;cursor:pointer;border-radius:6px;margin:1px 6px;font-weight:500;display:flex;align-items:center;gap:5px}
 .si.active{background:#1e3a5f;color:#fff}
 .si-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
 .dash-content{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;overflow:hidden}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.sc{background:#0a1520;border-radius:8px;padding:8px 10px}
+.sc{background:#080f18;border-radius:8px;padding:8px 10px}
 .sc-label{font-size:8px;color:#64748b;margin-bottom:3px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
 .sc-num{font-size:18px;font-weight:800;color:#fff;line-height:1}
 .sc-change{font-size:8px;color:#22c55e;margin-top:2px}
 .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:5px;flex:1}
-.chart-box{background:#0a1520;border-radius:8px;padding:8px 10px;overflow:hidden}
+.chart-box{background:#080f18;border-radius:8px;padding:8px 10px;overflow:hidden}
 .chart-title{font-size:9px;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
 .funnel-item{margin-bottom:5px}
 .funnel-meta{display:flex;justify-content:space-between;margin-bottom:2px}
@@ -104,77 +240,174 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 .job-badge{font-size:8px;color:#64748b}
 .job-progress{height:3px;border-radius:2px;margin-top:3px}
 
-/* Floating chips around dashboard */
-.float-chips{position:absolute;top:0;left:0;right:0;bottom:0;pointer-events:none;z-index:2}
-.chip{position:absolute;background:rgba(255,255,255,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.6);border-radius:12px;padding:8px 14px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:600;color:var(--navy);box-shadow:0 8px 24px rgba(0,0,0,.1);white-space:nowrap}
-.chip-icon{font-size:16px}
-.chip-1{top:8%;left:-16%;animation:floatChip1 5s ease-in-out infinite}
-.chip-2{top:30%;right:-14%;animation:floatChip2 6s ease-in-out infinite;animation-delay:-1.5s}
-.chip-3{bottom:28%;left:-18%;animation:floatChip1 7s ease-in-out infinite;animation-delay:-3s}
-.chip-4{bottom:8%;right:-12%;animation:floatChip2 5.5s ease-in-out infinite;animation-delay:-2s}
-@keyframes floatChip1{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-10px) rotate(1deg)}}
-@keyframes floatChip2{0%,100%{transform:translateY(0) rotate(1deg)}50%{transform:translateY(-8px) rotate(-1deg)}}
+/* ── SECTION SHARED ── */
+.s-label{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:12px;text-align:center}
+.s-title{font-family:var(--fh);font-size:36px;font-weight:800;color:var(--navy);margin-bottom:12px;letter-spacing:-1px;text-align:center}
+.s-sub{font-size:15px;color:var(--g600);max-width:540px;margin:0 auto;line-height:1.72;text-align:center}
 
 /* ── WORKFLOW ── */
-.workflow-wrap{background:linear-gradient(180deg,#fff 0%,#f8f9ff 100%);padding:80px 48px;position:relative;overflow:hidden}
-.workflow-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gray200),transparent)}
-.section-label{font-size:11px;font-weight:700;color:var(--orange);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:14px;text-align:center}
-.section-title{font-family:var(--font-head);font-size:36px;font-weight:800;color:var(--navy);margin-bottom:14px;letter-spacing:-1px;text-align:center}
-.section-sub{font-size:15px;color:var(--gray600);max-width:520px;margin:0 auto 56px;line-height:1.7;text-align:center}
-.workflow-row{display:flex;align-items:center;justify-content:center;gap:0;max-width:1100px;margin:0 auto;flex-wrap:nowrap}
-.wf-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;position:relative}
-.wf-icon-wrap{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:26px;box-shadow:0 4px 16px rgba(0,0,0,.08);transition:transform .2s,box-shadow .2s;border:1.5px solid rgba(255,255,255,.8)}
-.wf-step:hover .wf-icon-wrap{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.12)}
-.wf-num{font-size:10px;font-weight:700;color:var(--gray400);letter-spacing:1px;margin-bottom:6px}
-.wf-name{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.3}
-.wf-desc{font-size:11px;color:var(--gray600);line-height:1.5;max-width:130px;margin:0 auto}
-.wf-arrow{font-size:20px;color:var(--gray400);margin:0 4px;flex-shrink:0;margin-bottom:42px}
+.workflow-wrap{
+  padding:72px 56px;
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(248,250,255,0) 0%,rgba(241,244,255,.8) 100%);
+}
+.workflow-wrap::before{
+  content:'';position:absolute;bottom:-60px;left:50%;
+  transform:translateX(-50%);
+  width:700px;height:200px;
+  background:radial-gradient(ellipse,rgba(59,130,246,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.wf-card{
+  max-width:1060px;margin:48px auto 0;
+  background:rgba(255,255,255,.85);
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-radius:24px;
+  border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 20px 60px rgba(13,27,42,.09),0 4px 16px rgba(13,27,42,.05);
+  padding:40px 36px;
+  background-image:linear-gradient(135deg,rgba(255,255,255,.9),rgba(248,250,255,.95));
+}
+/* gradient border trick */
+.wf-card-outer{
+  max-width:1060px;margin:48px auto 0;
+  padding:1.5px;border-radius:25px;
+  background:linear-gradient(135deg,rgba(59,130,246,.3),rgba(139,92,246,.2),rgba(244,80,30,.15));
+}
+.wf-card{margin:0;border:none;border-radius:23px}
+.wf-row{display:flex;align-items:center;justify-content:space-between;gap:4px}
+.wf-step{flex:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 8px}
+.wf-icon{
+  width:60px;height:60px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin:0 auto 14px;
+  box-shadow:0 4px 16px rgba(0,0,0,.08);
+  border:1.5px solid rgba(255,255,255,.8);
+  transition:transform .2s,box-shadow .2s;
+}
+.wf-step:hover .wf-icon{transform:translateY(-4px);box-shadow:0 12px 28px rgba(0,0,0,.13)}
+.wf-n{font-size:10px;font-weight:700;color:var(--g400);letter-spacing:1px;margin-bottom:6px}
+.wf-name{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.3}
+.wf-desc{font-size:11px;color:var(--g600);line-height:1.5;max-width:120px;margin:0 auto}
+.wf-arr{font-size:18px;color:var(--g200);flex-shrink:0;margin-bottom:40px;font-weight:300}
 
 /* ── HOW IT WORKS ── */
-.how-section{background:linear-gradient(180deg,#f8f9ff 0%,#fff 100%);padding:80px 48px;border-top:1px solid rgba(229,231,235,.5)}
-.steps-row{display:flex;align-items:flex-start;gap:0;max-width:1100px;margin:0 auto;position:relative}
-.steps-row::before{content:'';position:absolute;top:32px;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gray200) 20%,var(--gray200) 80%,transparent);z-index:0}
-.step{flex:1;text-align:center;padding:0 12px;position:relative;z-index:1}
-.step-icon-wrap{width:64px;height:64px;border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;border:2px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .2s,box-shadow .2s}
-.step:hover .step-icon-wrap{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1)}
-.step-num{font-size:11px;font-weight:700;color:var(--gray400);margin-bottom:6px;letter-spacing:.5px}
-.step-name{font-family:var(--font-head);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px}
-.step-desc{font-size:12px;color:var(--gray600);line-height:1.55}
+.how-section{
+  padding:72px 56px;
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,rgba(241,244,255,.8) 0%,rgba(248,250,255,.5) 100%);
+}
+.how-section::after{
+  content:'';position:absolute;top:0;left:5%;right:5%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(59,130,246,.15),rgba(139,92,246,.15),transparent);
+}
+.steps-inner{max-width:1060px;margin:0 auto}
+.steps-row{display:flex;align-items:flex-start;position:relative}
+.steps-row::before{
+  content:'';position:absolute;top:30px;left:8%;right:8%;height:1px;
+  background:linear-gradient(90deg,rgba(59,130,246,.2),rgba(139,92,246,.15),rgba(244,80,30,.12));z-index:0;
+}
+.step{flex:1;text-align:center;padding:0 10px;position:relative;z-index:1}
+.step-icon-wrap{
+  width:60px;height:60px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 14px;border:2px solid rgba(255,255,255,.9);
+  box-shadow:0 4px 16px rgba(0,0,0,.07);
+  transition:transform .2s,box-shadow .2s;
+}
+.step:hover .step-icon-wrap{transform:translateY(-4px);box-shadow:0 12px 24px rgba(0,0,0,.11)}
+.step-num{font-size:10px;font-weight:700;color:var(--g400);margin-bottom:5px;letter-spacing:.5px}
+.step-name{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.3}
+.step-desc{font-size:12px;color:var(--g600);line-height:1.55}
 
 /* ── FEATURES ── */
-.features-section{padding:80px 48px;background:#fff;position:relative}
-.features-section::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,var(--gray200),transparent)}
-.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1100px;margin:0 auto}
-.feature-card{background:#fff;border:1px solid var(--gray200);border-radius:20px;padding:28px;transition:border-color .2s,transform .2s,box-shadow .2s;position:relative;overflow:hidden}
-.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:20px 20px 0 0;opacity:0;transition:opacity .2s}
-.feature-card:hover{border-color:transparent;transform:translateY(-4px);box-shadow:0 20px 48px rgba(0,0,0,.09)}
-.feature-card:hover::before{opacity:1}
-.fc-1::before{background:linear-gradient(90deg,#3b82f6,#8b5cf6)}
-.fc-2::before{background:linear-gradient(90deg,var(--orange),#f97316)}
-.fc-3::before{background:linear-gradient(90deg,#25D366,#16a34a)}
-.fc-4::before{background:linear-gradient(90deg,#f4b400,#f59e0b)}
-.fc-5::before{background:linear-gradient(90deg,#8b5cf6,#a855f7)}
-.fc-6::before{background:linear-gradient(90deg,#0f9d58,#059669)}
-.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:24px}
-.feature-title{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.feature-desc{font-size:13px;color:var(--gray600);line-height:1.65}
+.features-section{
+  padding:72px 56px;
+  position:relative;overflow:hidden;
+}
+.features-section::before{
+  content:'';position:absolute;
+  top:-100px;right:-200px;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(139,92,246,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.features-section::after{
+  content:'';position:absolute;
+  bottom:-80px;left:-150px;width:450px;height:450px;
+  background:radial-gradient(circle,rgba(59,130,246,.06) 0%,transparent 65%);
+  pointer-events:none;
+}
+.features-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1}
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.feature-card{
+  background:rgba(255,255,255,.88);
+  border:1px solid rgba(228,233,247,.9);
+  border-radius:22px;padding:30px;
+  position:relative;overflow:hidden;
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+  backdrop-filter:blur(8px);
+}
+.feature-card::after{
+  content:'';position:absolute;
+  top:0;left:0;right:0;height:2.5px;
+  border-radius:22px 22px 0 0;
+  opacity:0;transition:opacity .22s;
+}
+.feature-card:hover{transform:translateY(-5px);box-shadow:0 24px 56px rgba(13,27,42,.1);border-color:rgba(200,210,240,.5)}
+.feature-card:hover::after{opacity:1}
+.fc-1::after{background:linear-gradient(90deg,#3b82f6,#6366f1)}
+.fc-2::after{background:linear-gradient(90deg,var(--orange),#f97316)}
+.fc-3::after{background:linear-gradient(90deg,#25D366,#16a34a)}
+.fc-4::after{background:linear-gradient(90deg,#f4b400,#f59e0b)}
+.fc-5::after{background:linear-gradient(90deg,#8b5cf6,#a855f7)}
+.fc-6::after{background:linear-gradient(90deg,#0f9d58,#059669)}
+.feature-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:24px;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+.feature-title{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--navy);margin-bottom:8px}
+.feature-desc{font-size:13px;color:var(--g600);line-height:1.68}
 .feature-tag{display:inline-block;margin-top:14px;font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px}
 
 /* ── TRUST ── */
-.trust-section{padding:72px 48px;background:linear-gradient(180deg,#f8f9ff 0%,#fff 100%);position:relative}
-.trust-section::before{content:'';position:absolute;top:0;left:5%;right:5%;height:1px;background:linear-gradient(90deg,transparent,var(--gray200),transparent)}
-.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:1100px;margin:0 auto}
-.trust-card{background:#fff;border:1px solid var(--gray200);border-radius:20px;padding:28px;text-align:center;transition:border-color .2s,transform .2s,box-shadow .2s}
-.trust-card:hover{border-color:transparent;transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.08)}
-.trust-icon{font-size:30px;margin-bottom:14px}
-.trust-title{font-family:var(--font-head);font-size:15px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.trust-desc{font-size:13px;color:var(--gray600);line-height:1.6}
+.trust-section{
+  padding:64px 56px;
+  background:linear-gradient(180deg,rgba(248,250,255,.5) 0%,rgba(241,244,255,.8) 100%);
+  position:relative;overflow:hidden;
+}
+.trust-section::before{
+  content:'';position:absolute;top:0;left:5%;right:5%;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(59,130,246,.12),rgba(139,92,246,.1),transparent);
+}
+.trust-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1060px;margin:40px auto 0}
+.trust-card{
+  background:rgba(255,255,255,.85);
+  border:1px solid rgba(228,233,247,.8);
+  border-radius:20px;padding:26px;text-align:center;
+  backdrop-filter:blur(8px);
+  transition:transform .22s,box-shadow .22s,border-color .22s;
+}
+.trust-card:hover{transform:translateY(-4px);box-shadow:0 18px 42px rgba(13,27,42,.09);border-color:rgba(200,210,240,.5)}
+.trust-icon{font-size:28px;margin-bottom:12px}
+.trust-title{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--navy);margin-bottom:7px;line-height:1.3}
+.trust-desc{font-size:12.5px;color:var(--g600);line-height:1.62}
 
 /* ── WHATSAPP ── */
-.wa-section{background:var(--navy);padding:72px 48px;position:relative;overflow:hidden}
-.wa-section::before{content:'';position:absolute;top:-200px;right:-200px;width:500px;height:500px;background:radial-gradient(circle,rgba(59,130,246,.12) 0%,transparent 70%);pointer-events:none}
-.wa-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center}
-.wa-left h2{font-family:var(--font-head);font-size:34px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;letter-spacing:-.5px}
+.wa-section{
+  background:var(--navy);padding:72px 56px;
+  position:relative;overflow:hidden;
+}
+.wa-section::before{
+  content:'';position:absolute;
+  top:-200px;right:-150px;width:600px;height:600px;
+  background:radial-gradient(circle,rgba(59,130,246,.14) 0%,transparent 65%);
+  pointer-events:none;
+}
+.wa-section::after{
+  content:'';position:absolute;
+  bottom:-150px;left:-100px;width:500px;height:500px;
+  background:radial-gradient(circle,rgba(139,92,246,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.wa-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1}
+.wa-left h2{font-family:var(--fh);font-size:34px;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.2;letter-spacing:-.5px}
 .wa-left p{font-size:14px;color:#94a3b8;line-height:1.75;margin-bottom:28px}
 .wa-badge{display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 20px;border-radius:10px;font-size:14px;font-weight:700;margin-bottom:18px}
 .wa-steps{display:flex;flex-direction:column;gap:14px}
@@ -182,7 +415,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 .wa-step-num{width:26px;height:26px;background:rgba(255,255,255,.1);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#94a3b8;flex-shrink:0;margin-top:1px}
 .wa-step-text{font-size:13px;color:#cbd5e1;line-height:1.55}
 .wa-step-text strong{color:#fff}
-.wa-phone{background:#0a1520;border-radius:24px;padding:16px;border:1px solid #1e3a5f;max-width:260px;margin:0 auto;box-shadow:0 24px 60px rgba(0,0,0,.4)}
+.wa-phone{background:#0a1520;border-radius:24px;padding:16px;border:1px solid #1e3a5f;max-width:264px;margin:0 auto;box-shadow:0 28px 64px rgba(0,0,0,.45),0 4px 16px rgba(0,0,0,.2)}
 .wa-phone-header{background:#075E54;border-radius:12px 12px 0 0;padding:10px 14px;display:flex;align-items:center;gap:8px;margin:-16px -16px 0}
 .wa-avatar{width:32px;height:32px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:#fff}
 .wa-contact-name{font-size:12px;font-weight:700;color:#fff}
@@ -192,66 +425,92 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 .wa-msg.received{background:#1e3a5f;color:#e2e8f0;align-self:flex-start;border-bottom-left-radius:2px}
 .wa-msg.sent{background:#25D366;color:#fff;align-self:flex-end;border-bottom-right-radius:2px}
 .wa-msg strong{display:block;font-size:10px;margin-bottom:3px;opacity:.8}
-.wa-cta-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px;transition:opacity .2s}
+.wa-cta-btn{display:block;background:#25D366;color:#fff;text-align:center;padding:10px;border-radius:10px;font-size:12px;font-weight:700;text-decoration:none;margin-top:10px;transition:opacity .18s}
 .wa-cta-btn:hover{opacity:.85}
 
 /* ── BOTTOM CTA ── */
-.bottom-cta{background:var(--navy);padding:80px 48px;text-align:center;position:relative;overflow:hidden}
-.bottom-cta::before{content:'';position:absolute;top:-150px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(244,80,30,.12) 0%,transparent 70%);pointer-events:none}
-.bottom-cta h2{font-family:var(--font-head);font-size:40px;font-weight:800;color:#fff;margin-bottom:14px;letter-spacing:-.8px;position:relative}
-.bottom-cta p{font-size:15px;color:#94a3b8;margin-bottom:36px;position:relative}
-.bottom-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative}
-.bcta1{background:var(--orange);color:#fff;padding:15px 36px;border-radius:11px;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-body);transition:transform .15s,box-shadow .15s,opacity .15s;box-shadow:0 4px 20px rgba(244,80,30,.35)}
-.bcta1:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(244,80,30,.45);opacity:.92}
-.bcta2{background:rgba(255,255,255,.07);color:#fff;padding:14px 32px;border-radius:11px;font-size:14px;font-weight:600;border:1.5px solid rgba(255,255,255,.15);cursor:pointer;font-family:var(--font-body);backdrop-filter:blur(8px);transition:background .2s,border-color .2s,transform .15s}
-.bcta2:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);transform:translateY(-2px)}
-.bottom-perks{display:flex;gap:28px;justify-content:center;margin-top:24px;flex-wrap:wrap;position:relative}
+.bottom-cta{
+  background:var(--navy);padding:88px 56px;text-align:center;
+  position:relative;overflow:hidden;
+}
+.bottom-cta::before{
+  content:'';position:absolute;top:-120px;left:50%;transform:translateX(-50%);
+  width:700px;height:400px;
+  background:radial-gradient(ellipse,rgba(244,80,30,.18) 0%,transparent 65%);
+  pointer-events:none;
+}
+.bottom-cta::after{
+  content:'';position:absolute;bottom:-100px;right:-100px;width:450px;height:450px;
+  background:radial-gradient(circle,rgba(59,130,246,.1) 0%,transparent 65%);
+  pointer-events:none;
+}
+.bottom-cta h2{font-family:var(--fh);font-size:42px;font-weight:800;color:#fff;margin-bottom:14px;letter-spacing:-1px;position:relative;z-index:1}
+.bottom-cta p{font-size:15px;color:#94a3b8;margin-bottom:38px;position:relative;z-index:1}
+.bottom-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.bcta1{
+  background:var(--orange);color:#fff;
+  padding:15px 38px;border-radius:12px;
+  font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--fb);
+  box-shadow:0 4px 24px rgba(244,80,30,.4);
+  transition:transform .15s,box-shadow .15s,opacity .15s;
+}
+.bcta1:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(244,80,30,.5);opacity:.93}
+.bcta2{
+  background:rgba(255,255,255,.07);color:#fff;
+  padding:14px 34px;border-radius:12px;
+  font-size:14px;font-weight:600;
+  border:1.5px solid rgba(255,255,255,.18);
+  cursor:pointer;font-family:var(--fb);
+  backdrop-filter:blur(8px);
+  transition:background .18s,border-color .18s,transform .15s;
+}
+.bcta2:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.3);transform:translateY(-2px)}
+.bottom-perks{display:flex;gap:28px;justify-content:center;margin-top:24px;flex-wrap:wrap;position:relative;z-index:1}
 .perk{font-size:12px;color:#64748b;display:flex;align-items:center;gap:5px}
 .perk::before{content:'✓';color:var(--green);font-weight:700}
 
-/* ── SCROLL REVEALS ── */
-.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
-.reveal.visible{opacity:1;transform:translateY(0)}
-.reveal-left{opacity:0;transform:translateX(-28px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
-.reveal-left.visible{opacity:1;transform:translateX(0)}
-.reveal-right{opacity:0;transform:translateX(28px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
-.reveal-right.visible{opacity:1;transform:translateX(0)}
-.stagger-1{transition-delay:.05s}
-.stagger-2{transition-delay:.12s}
-.stagger-3{transition-delay:.19s}
-.stagger-4{transition-delay:.26s}
-.stagger-5{transition-delay:.33s}
-.stagger-6{transition-delay:.40s}
+/* ── REVEAL ── */
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{opacity:1;transform:none}
+.rl{opacity:0;transform:translateX(-26px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.rl.vis{opacity:1;transform:none}
+.rr{opacity:0;transform:translateX(26px);transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+.rr.vis{opacity:1;transform:none}
+.d1{transition-delay:.05s}.d2{transition-delay:.12s}.d3{transition-delay:.19s}
+.d4{transition-delay:.26s}.d5{transition-delay:.33s}.d6{transition-delay:.40s}
 
-/* ── COPY LINK ── */
+/* ── COPY LINK (unchanged) ── */
 .copy-link-row{display:flex;align-items:center;gap:6px;background:#f1f5f9;border-radius:8px;padding:6px 10px;margin-top:6px;min-width:0;overflow:hidden}
 .copy-link-url{font-size:9px;color:#6b7280;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:default;display:block}
-.copy-link-url:hover{color:#374151}
 .copy-btn{background:var(--orange);color:#fff;border:none;padding:3px 10px;border-radius:6px;font-size:10px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;transition:background .15s}
 .copy-btn:hover{background:#d43d15}
 
 /* ── RESPONSIVE ── */
-@media(max-width:960px){
-  .hero{grid-template-columns:1fr;padding:56px 24px}
+@media(max-width:1024px){
+  nav{padding:0 28px}
+  .hero-wrap{padding:68px 28px 64px}
+  .workflow-wrap,.how-section,.features-section,.trust-section,.wa-section,.bottom-cta{padding-left:28px;padding-right:28px}
+  .hero-inner{grid-template-columns:1fr;gap:40px}
   .hero-right{display:none}
-  .workflow-row{flex-direction:column;gap:8px;align-items:center}
-  .wf-arrow{transform:rotate(90deg);margin:4px 0}
-  .steps-row{flex-direction:column;align-items:center;gap:24px}
-  .steps-row::before{display:none}
-  .features-grid{grid-template-columns:1fr}
+  .features-grid{grid-template-columns:1fr 1fr}
   .trust-grid{grid-template-columns:1fr 1fr}
   .wa-inner{grid-template-columns:1fr}
-  nav{padding:0 20px}
   .nav-links{display:none}
-  .workflow-wrap,.how-section,.features-section,.trust-section,.wa-section,.bottom-cta{padding-left:24px;padding-right:24px}
+  .wf-row{flex-direction:column;align-items:center;gap:8px}
+  .wf-arr{transform:rotate(90deg)}
+  .steps-row{flex-direction:column;align-items:center;gap:24px}
+  .steps-row::before{display:none}
 }
-@media(max-width:560px){
-  .trust-grid{grid-template-columns:1fr}
+@media(max-width:640px){
   .hero h1{font-size:36px}
-  .section-title{font-size:28px}
+  .s-title{font-size:28px}
+  .features-grid{grid-template-columns:1fr}
+  .trust-grid{grid-template-columns:1fr}
+  .bottom-cta h2{font-size:30px}
 }
 @media(prefers-reduced-motion:reduce){
-  .blob,.dashboard-wrap,.chip,.reveal,.reveal-left,.reveal-right{animation:none;transition:none;opacity:1;transform:none}
+  *{animation:none!important;transition:none!important}
+  .reveal,.rl,.rr{opacity:1;transform:none}
 }
 </style>
 </head>
@@ -284,21 +543,16 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 
 <!-- HERO -->
 <div class="hero-wrap">
-  <div class="hero-bg">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
-  <section class="hero">
-    <div class="hero-left">
-      <div class="hero-badge"><span class="hero-badge-dot"></span>AI Candidate Screening Assistant for Recruitment Agencies</div>
+  <section class="hero-inner">
+    <div class="hero-left reveal">
+      <div class="hero-badge"><span class="badge-dot"></span>AI Candidate Screening Assistant for Recruitment Agencies</div>
       <h1>Interview Every Applicant.<br>Receive <em>AI-Ranked Candidates</em><br>In Minutes.</h1>
       <p class="hero-sub">Create a job, share one screening link, and let SamparkAI interview every applicant automatically.<br><br>No phone screening. No scheduling. Just recruiter-ready shortlisted candidates inside your dashboard.</p>
       <ul class="bullets">
-        <li><span class="bullet-check" style="background:#3b82f6">✓</span>Interview every applicant automatically</li>
-        <li><span class="bullet-check" style="background:var(--orange)">✓</span>AI ranks candidates based on role fit</li>
-        <li><span class="bullet-check" style="background:#22c55e">✓</span>Contact shortlisted candidates instantly via WhatsApp</li>
-        <li><span class="bullet-check" style="background:#f4b400;color:#0d1b2a">✓</span>Reduce manual screening by up to 80%</li>
+        <li><span class="bcheck" style="background:#3b82f6">✓</span>Interview every applicant automatically</li>
+        <li><span class="bcheck" style="background:var(--orange)">✓</span>AI ranks candidates based on role fit</li>
+        <li><span class="bcheck" style="background:#22c55e">✓</span>Contact shortlisted candidates instantly via WhatsApp</li>
+        <li><span class="bcheck" style="background:#f4b400;color:var(--navy)">✓</span>Reduce manual screening by up to 80%</li>
       </ul>
       <div class="hero-ctas">
         <button class="cta-primary" onclick="document.getElementById('demo-form').scrollIntoView({behavior:'smooth'})">Book a Live Demo →</button>
@@ -307,12 +561,12 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
     </div>
     <div class="hero-right">
       <div class="dash-glow"></div>
-      <div class="float-chips">
-        <div class="chip chip-1"><span class="chip-icon">🤖</span>AI Screening</div>
-        <div class="chip chip-2"><span class="chip-icon">⭐</span>Ranked Candidates</div>
-        <div class="chip chip-3"><span class="chip-icon">📱</span>WhatsApp</div>
-        <div class="chip chip-4"><span class="chip-icon">⚡</span>80% Faster</div>
-      </div>
+      <div class="dash-rings"><div class="ring"></div><div class="ring"></div><div class="ring"></div></div>
+      <!-- floating chips -->
+      <div class="chip chip-1"><span class="chip-icon">🤖</span>AI Screening</div>
+      <div class="chip chip-2"><span class="chip-icon">⭐</span>Ranked Candidates</div>
+      <div class="chip chip-3"><span class="chip-icon">📱</span>WhatsApp</div>
+      <div class="chip chip-4"><span class="chip-icon">⚡</span>80% Faster</div>
       <div class="dashboard-wrap">
         <div class="dash-topbar">
           <div class="dash-brand"><div class="dash-brand-dot"></div><span class="dash-brand-name">SamparkAI Dashboard</span></div>
@@ -361,76 +615,55 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 
 <!-- WORKFLOW -->
 <section class="workflow-wrap" id="workflow">
-  <div class="section-label reveal">How It Works</div>
-  <h2 class="section-title reveal stagger-1">How SamparkAI Works</h2>
-  <p class="section-sub reveal stagger-2">Five simple steps from job opening to shortlisted candidates — no phone calls, no scheduling, no manual screening.</p>
-  <div class="workflow-row">
-    <div class="wf-step reveal stagger-1">
-      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#e8f0fe,#c7d9fd)">📋</div>
-      <div class="wf-num">01</div>
-      <div class="wf-name">Create Job</div>
-      <div class="wf-desc">Upload the job description or enter hiring requirements</div>
-    </div>
-    <div class="wf-arrow reveal stagger-1">→</div>
-    <div class="wf-step reveal stagger-2">
-      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#fce8e6,#fbc9c4)">⚡</div>
-      <div class="wf-num">02</div>
-      <div class="wf-name">AI Builds Screening Interview</div>
-      <div class="wf-desc">Role-specific interview questions created automatically</div>
-    </div>
-    <div class="wf-arrow reveal stagger-2">→</div>
-    <div class="wf-step reveal stagger-3">
-      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#e6f4ea,#bbf7d0)">🔗</div>
-      <div class="wf-num">03</div>
-      <div class="wf-name">Share One Link</div>
-      <div class="wf-desc">Share through WhatsApp, email or job portals</div>
-    </div>
-    <div class="wf-arrow reveal stagger-3">→</div>
-    <div class="wf-step reveal stagger-4">
-      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#fef9e7,#fef3c7)">💬</div>
-      <div class="wf-num">04</div>
-      <div class="wf-name">Candidates Complete AI Interview</div>
-      <div class="wf-desc">Applicants complete the interview anytime from any device</div>
-    </div>
-    <div class="wf-arrow reveal stagger-4">→</div>
-    <div class="wf-step reveal stagger-5">
-      <div class="wf-icon-wrap" style="background:linear-gradient(135deg,#e8f0fe,#c7d9fd)">🏆</div>
-      <div class="wf-num">05</div>
-      <div class="wf-name">Recruiter Contacts Top Candidates</div>
-      <div class="wf-desc">Review AI-ranked candidates and contact the best ones instantly</div>
+  <div class="s-label reveal">How It Works</div>
+  <h2 class="s-title reveal d1">How SamparkAI Works</h2>
+  <p class="s-sub reveal d2">Five simple steps from job opening to shortlisted candidates — no phone calls, no scheduling, no manual screening.</p>
+  <div class="wf-card-outer reveal d2">
+    <div class="wf-card">
+      <div class="wf-row">
+        <div class="wf-step"><div class="wf-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">📋</div><div class="wf-n">01</div><div class="wf-name">Create Job</div><div class="wf-desc">Upload job description or enter hiring requirements</div></div>
+        <div class="wf-arr">→</div>
+        <div class="wf-step"><div class="wf-icon" style="background:linear-gradient(135deg,#fee2e2,#fecaca)">⚡</div><div class="wf-n">02</div><div class="wf-name">AI Builds Screening Interview</div><div class="wf-desc">Role-specific questions created automatically</div></div>
+        <div class="wf-arr">→</div>
+        <div class="wf-step"><div class="wf-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">🔗</div><div class="wf-n">03</div><div class="wf-name">Share One Link</div><div class="wf-desc">Share through WhatsApp, email or job portals</div></div>
+        <div class="wf-arr">→</div>
+        <div class="wf-step"><div class="wf-icon" style="background:linear-gradient(135deg,#fef9c3,#fef08a)">💬</div><div class="wf-n">04</div><div class="wf-name">Candidates Complete AI Interview</div><div class="wf-desc">Applicants complete the interview from any device</div></div>
+        <div class="wf-arr">→</div>
+        <div class="wf-step"><div class="wf-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe)">🏆</div><div class="wf-n">05</div><div class="wf-name">Recruiter Contacts Top Candidates</div><div class="wf-desc">Review AI-ranked candidates and contact instantly</div></div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- HOW IT WORKS (detailed steps) -->
+<!-- HOW IT WORKS (detailed) -->
 <section class="how-section" id="how">
-  <div style="max-width:1100px;margin:0 auto">
-    <div class="section-label reveal">Process</div>
-    <h2 class="section-title reveal stagger-1">Hire Faster In Five Simple Steps</h2>
-    <p class="section-sub reveal stagger-2">No phone calls. No scheduling. No manual screening. Just AI-powered results your clients will love.</p>
+  <div class="steps-inner">
+    <div class="s-label reveal">Process</div>
+    <h2 class="s-title reveal d1">Hire Faster In Five Simple Steps</h2>
+    <p class="s-sub reveal d2" style="margin-bottom:52px">No phone calls. No scheduling. No manual screening. Just AI-powered results your clients will love.</p>
     <div class="steps-row">
-      <div class="step reveal stagger-1">
-        <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
+      <div class="step reveal d1">
+        <div class="step-icon-wrap" style="background:#dbeafe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
         <div class="step-num">01</div><div class="step-name">Create Job</div>
         <div class="step-desc">Upload job description or enter requirements for your client</div>
       </div>
-      <div class="step reveal stagger-2">
-        <div class="step-icon-wrap" style="background:#fce8e6"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4501e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+      <div class="step reveal d2">
+        <div class="step-icon-wrap" style="background:#fee2e2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4501e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
         <div class="step-num">02</div><div class="step-name">AI Builds Screening Interview</div>
         <div class="step-desc">SamparkAI automatically creates role-specific interview questions</div>
       </div>
-      <div class="step reveal stagger-3">
-        <div class="step-icon-wrap" style="background:#e6f4ea"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
+      <div class="step reveal d3">
+        <div class="step-icon-wrap" style="background:#dcfce7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
         <div class="step-num">03</div><div class="step-name">Share One Link</div>
         <div class="step-desc">Share through WhatsApp, email or job portals</div>
       </div>
-      <div class="step reveal stagger-4">
-        <div class="step-icon-wrap" style="background:#fef9e7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4b400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+      <div class="step reveal d4">
+        <div class="step-icon-wrap" style="background:#fef9c3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
         <div class="step-num">04</div><div class="step-name">Candidates Complete AI Interview</div>
         <div class="step-desc">Applicants complete the interview anytime from any device</div>
       </div>
-      <div class="step reveal stagger-5">
-        <div class="step-icon-wrap" style="background:#e8f0fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="step reveal d5">
+        <div class="step-icon-wrap" style="background:#ede9fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
         <div class="step-num">05</div><div class="step-name">Receive Ranked Candidates</div>
         <div class="step-desc">Review AI-ranked candidates inside your dashboard and contact the best ones instantly</div>
       </div>
@@ -440,68 +673,37 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 
 <!-- FEATURES -->
 <section class="features-section" id="features">
-  <div style="max-width:1100px;margin:0 auto">
-    <div class="section-label reveal">Features</div>
-    <h2 class="section-title reveal stagger-1">Everything You Need To Screen Candidates Faster</h2>
-    <p class="section-sub reveal stagger-2">Built specifically for recruitment agencies who want to scale without hiring more screeners.</p>
+  <div class="features-inner">
+    <div class="s-label reveal">Features</div>
+    <h2 class="s-title reveal d1">Everything You Need To Screen Candidates Faster</h2>
+    <p class="s-sub reveal d2">Built specifically for recruitment agencies who want to scale without hiring more screeners.</p>
     <div class="features-grid">
-      <div class="feature-card fc-1 reveal stagger-1">
-        <div class="feature-icon" style="background:#e8f0fe">🤖</div>
-        <div class="feature-title">AI Candidate Screening</div>
-        <div class="feature-desc">AI interviews every applicant using role-specific questions and automatically ranks the best candidates.</div>
-        <span class="feature-tag" style="background:#e8f0fe;color:#1e40af">Saves 80% screening time</span>
-      </div>
-      <div class="feature-card fc-2 reveal stagger-2">
-        <div class="feature-icon" style="background:#fff0eb">👥</div>
-        <div class="feature-title">Multi-Client Management</div>
-        <div class="feature-desc">Manage multiple hiring clients from one dashboard with separate jobs, candidates and shortlists.</div>
-        <span class="feature-tag" style="background:#fff0eb;color:#9a3412">White-label ready</span>
-      </div>
-      <div class="feature-card fc-3 reveal stagger-3">
-        <div class="feature-icon" style="background:#e6f4ea">📱</div>
-        <div class="feature-title">WhatsApp Screening</div>
-        <div class="feature-desc">Candidates complete interviews directly on WhatsApp. No app. No login.</div>
-        <span class="feature-tag" style="background:#e6f4ea;color:#166534">No app needed</span>
-      </div>
-      <div class="feature-card fc-4 reveal stagger-4">
-        <div class="feature-icon" style="background:#fef9e7">📊</div>
-        <div class="feature-title">Client Review Portal</div>
-        <div class="feature-desc">Share shortlisted candidates professionally with your clients and collect feedback faster.</div>
-        <span class="feature-tag" style="background:#fef9e7;color:#854d0e">Impresses your clients</span>
-      </div>
-      <div class="feature-card fc-5 reveal stagger-5">
-        <div class="feature-icon" style="background:#f3e8ff">🏊</div>
-        <div class="feature-title">Talent Pool Reactivation</div>
-        <div class="feature-desc">Search and re-screen previous candidates whenever new positions open.</div>
-        <span class="feature-tag" style="background:#f3e8ff;color:#6b21a8">Unlock hidden value</span>
-      </div>
-      <div class="feature-card fc-6 reveal stagger-6">
-        <div class="feature-icon" style="background:#e6f4ea">📈</div>
-        <div class="feature-title">Recruiter Analytics</div>
-        <div class="feature-desc">Track jobs, shortlisted candidates and recruiter productivity from one dashboard.</div>
-        <span class="feature-tag" style="background:#e6f4ea;color:#14532d">Data-driven decisions</span>
-      </div>
+      <div class="feature-card fc-1 reveal d1"><div class="feature-icon" style="background:linear-gradient(135deg,#dbeafe,#bfdbfe)">🤖</div><div class="feature-title">AI Candidate Screening</div><div class="feature-desc">AI interviews every applicant using role-specific questions and automatically ranks the best candidates.</div><span class="feature-tag" style="background:#eff6ff;color:#1d4ed8">Saves 80% screening time</span></div>
+      <div class="feature-card fc-2 reveal d2"><div class="feature-icon" style="background:linear-gradient(135deg,#ffedd5,#fed7aa)">👥</div><div class="feature-title">Multi-Client Management</div><div class="feature-desc">Manage multiple hiring clients from one dashboard with separate jobs, candidates and shortlists.</div><span class="feature-tag" style="background:#fff7ed;color:#c2410c">White-label ready</span></div>
+      <div class="feature-card fc-3 reveal d3"><div class="feature-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">📱</div><div class="feature-title">WhatsApp Screening</div><div class="feature-desc">Candidates complete interviews directly on WhatsApp. No app. No login.</div><span class="feature-tag" style="background:#f0fdf4;color:#15803d">No app needed</span></div>
+      <div class="feature-card fc-4 reveal d4"><div class="feature-icon" style="background:linear-gradient(135deg,#fef9c3,#fef08a)">📊</div><div class="feature-title">Client Review Portal</div><div class="feature-desc">Share shortlisted candidates professionally with your clients and collect feedback faster.</div><span class="feature-tag" style="background:#fefce8;color:#a16207">Impresses your clients</span></div>
+      <div class="feature-card fc-5 reveal d5"><div class="feature-icon" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe)">🏊</div><div class="feature-title">Talent Pool Reactivation</div><div class="feature-desc">Search and re-screen previous candidates whenever new positions open.</div><span class="feature-tag" style="background:#faf5ff;color:#7e22ce">Unlock hidden value</span></div>
+      <div class="feature-card fc-6 reveal d6"><div class="feature-icon" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0)">📈</div><div class="feature-title">Recruiter Analytics</div><div class="feature-desc">Track jobs, shortlisted candidates and recruiter productivity from one dashboard.</div><span class="feature-tag" style="background:#f0fdf4;color:#14532d">Data-driven decisions</span></div>
     </div>
   </div>
 </section>
 
 <!-- TRUST -->
 <section class="trust-section" id="agencies">
-  <div class="section-label reveal">For Agencies</div>
-  <h2 class="section-title reveal stagger-1">Built For Modern Recruitment Agencies</h2>
-  <p class="section-sub reveal stagger-2" style="margin-bottom:48px"> </p>
+  <div class="s-label reveal">For Agencies</div>
+  <h2 class="s-title reveal d1">Built For Modern Recruitment Agencies</h2>
   <div class="trust-grid">
-    <div class="trust-card reveal stagger-1"><div class="trust-icon">📞</div><div class="trust-title">Reduce screening calls</div><div class="trust-desc">Let AI handle first-round interviews so your recruiters spend time on placements, not phone screens.</div></div>
-    <div class="trust-card reveal stagger-2"><div class="trust-icon">📈</div><div class="trust-title">Screen more with the same team</div><div class="trust-desc">Scale your candidate volume without adding headcount. One recruiter can manage what used to take three.</div></div>
-    <div class="trust-card reveal stagger-3"><div class="trust-icon">⚡</div><div class="trust-title">Respond to clients faster</div><div class="trust-desc">Deliver shortlisted candidates to clients in hours, not days. Win more business with faster turnaround.</div></div>
-    <div class="trust-card reveal stagger-4"><div class="trust-icon">🎯</div><div class="trust-title">Never miss strong candidates</div><div class="trust-desc">AI screens every applicant equally. No candidate gets missed because a recruiter ran out of time.</div></div>
+    <div class="trust-card reveal d1"><div class="trust-icon">📞</div><div class="trust-title">Reduce screening calls</div><div class="trust-desc">Let AI handle first-round interviews so your recruiters spend time on placements, not phone screens.</div></div>
+    <div class="trust-card reveal d2"><div class="trust-icon">📈</div><div class="trust-title">Screen more with the same team</div><div class="trust-desc">Scale your candidate volume without adding headcount. One recruiter can manage what used to take three.</div></div>
+    <div class="trust-card reveal d3"><div class="trust-icon">⚡</div><div class="trust-title">Respond to clients faster</div><div class="trust-desc">Deliver shortlisted candidates to clients in hours, not days. Win more business with faster turnaround.</div></div>
+    <div class="trust-card reveal d4"><div class="trust-icon">🎯</div><div class="trust-title">Never miss strong candidates</div><div class="trust-desc">AI screens every applicant equally. No candidate gets missed because a recruiter ran out of time.</div></div>
   </div>
 </section>
 
 <!-- WHATSAPP -->
 <section class="wa-section" id="whatsapp">
   <div class="wa-inner">
-    <div class="wa-left reveal-left">
+    <div class="wa-left rl">
       <div class="wa-badge"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp-Powered Screening</div>
       <h2>Candidates Interview on WhatsApp.<br>You Get a Ranked Shortlist.</h2>
       <p>No apps to download. No scheduling headaches. Candidates simply reply to a WhatsApp message — our AI conducts the full screening interview and sends you a ranked list with scores and summaries.</p>
@@ -511,12 +713,9 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
         <div class="wa-step"><div class="wa-step-num">3</div><div class="wa-step-text"><strong>You receive ranked shortlist</strong> — tap WhatsApp button to contact top candidates directly</div></div>
       </div>
     </div>
-    <div class="wa-right reveal-right">
+    <div class="wa-right rr">
       <div class="wa-phone">
-        <div class="wa-phone-header">
-          <div class="wa-avatar">S</div>
-          <div><div class="wa-contact-name">SamparkAI Screening</div><div class="wa-contact-status">AI Interviewer · Online</div></div>
-        </div>
+        <div class="wa-phone-header"><div class="wa-avatar">S</div><div><div class="wa-contact-name">SamparkAI Screening</div><div class="wa-contact-status">AI Interviewer · Online</div></div></div>
         <div class="wa-messages">
           <div class="wa-msg received"><strong>SamparkAI</strong>Hi Ahmed! You've applied for Sales Manager at TechCorp. Ready to start your 5-min screening? Reply YES to begin.</div>
           <div class="wa-msg sent">YES</div>
@@ -547,15 +746,10 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.85);backdrop
 </section>
 
 <script>
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if(e.isIntersecting){
-      e.target.classList.add('visible');
-    }
-  });
-}, {threshold: 0.12});
-document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el => observer.observe(el));
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('vis'); });
+}, {threshold: 0.1, rootMargin: '0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.rl,.rr').forEach(el => io.observe(el));
 </script>
 </body>
 </html>
