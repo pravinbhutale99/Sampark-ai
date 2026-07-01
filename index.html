@@ -552,6 +552,115 @@ nav{
   *{animation:none!important;transition:none!important}
   .reveal,.rl,.rr{opacity:1;transform:none}
 }
+
+/* ── DASHBOARD SHOWCASE ── */
+.dash-showcase{
+  padding:80px 56px;
+  background:linear-gradient(180deg,rgba(241,244,255,.9) 0%,rgba(248,250,255,.6) 100%);
+  position:relative;overflow:hidden;
+}
+.dash-showcase::before{
+  content:'';position:absolute;
+  top:-100px;left:50%;transform:translateX(-50%);
+  width:800px;height:400px;
+  background:radial-gradient(ellipse,rgba(59,130,246,.08) 0%,transparent 70%);
+  pointer-events:none;
+}
+.ds-inner{max-width:1060px;margin:0 auto;position:relative;z-index:1}
+.ds-stage{
+  position:relative;margin-top:52px;
+  padding:0 120px;
+}
+/* Floating callout cards */
+.ds-card{
+  position:absolute;z-index:3;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,.8);
+  border-radius:14px;padding:10px 16px;
+  box-shadow:0 8px 28px rgba(13,27,42,.1),0 2px 6px rgba(13,27,42,.05);
+  min-width:140px;
+  animation:dsFloat 5s ease-in-out infinite;
+}
+.ds-card:nth-child(2){animation-delay:-1.5s;animation-duration:6s}
+.ds-card:nth-child(3){animation-delay:-3s;animation-duration:5.5s}
+.ds-card:nth-child(4){animation-delay:-2s;animation-duration:6.5s}
+.ds-card:nth-child(5){animation-delay:-4s;animation-duration:5s}
+.ds-card:nth-child(6){animation-delay:-1s;animation-duration:7s}
+@keyframes dsFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.dc-dot{width:8px;height:8px;border-radius:50%;margin-bottom:5px}
+.dc-label{font-size:10px;color:var(--g600);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.dc-val{font-size:14px;font-weight:700;color:var(--navy)}
+/* card positions */
+.dc-tl{top:8%;left:-2%}
+.dc-tr{top:8%;right:-2%}
+.dc-ml{top:42%;left:-4%}
+.dc-mr{top:42%;right:-4%}
+.dc-bl{bottom:12%;left:-2%}
+.dc-br{bottom:12%;right:-2%}
+
+/* Main mockup */
+.ds-mock{
+  background:#fff;
+  border-radius:20px;
+  border:1px solid var(--g200);
+  box-shadow:0 32px 80px rgba(13,27,42,.12),0 8px 24px rgba(13,27,42,.07);
+  overflow:hidden;
+  position:relative;z-index:2;
+}
+.ds-mock-bar{
+  background:#f8faff;
+  border-bottom:1px solid var(--g200);
+  padding:10px 16px;
+  display:flex;align-items:center;gap:12px;
+}
+.ds-mock-dots{display:flex;gap:5px}
+.ds-mock-dots span{width:10px;height:10px;border-radius:50%;background:var(--g200)}
+.ds-mock-dots span:nth-child(1){background:#ff5f57}
+.ds-mock-dots span:nth-child(2){background:#febc2e}
+.ds-mock-dots span:nth-child(3){background:#28c840}
+.ds-mock-url{font-size:11px;color:var(--g400);background:var(--g100);padding:3px 12px;border-radius:6px;flex:1;text-align:center}
+.ds-mock-body{padding:20px}
+.dm-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.dm-logo{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--navy)}
+.dm-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--orange)}
+.dm-tabs{display:flex;gap:4px}
+.dm-tab{font-size:11px;padding:5px 12px;border-radius:6px;color:var(--g600);cursor:pointer;font-weight:500}
+.dm-tab.active{background:var(--navy);color:#fff}
+.dm-job-badge{font-size:11px;color:var(--g600);background:var(--g100);padding:4px 10px;border-radius:6px;margin-left:auto}
+.dm-cards{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.dm-cand{
+  display:flex;align-items:center;gap:12px;
+  background:var(--g50);border-radius:12px;padding:12px 14px;
+  border:1px solid var(--g200);
+  transition:border-color .2s,box-shadow .2s;
+}
+.dm-cand:hover{border-color:rgba(59,130,246,.3);box-shadow:0 4px 16px rgba(59,130,246,.08)}
+.dm-cand-top{background:#f0f7ff;border-color:rgba(59,130,246,.2)}
+.dm-avatar{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0}
+.dm-info{flex:1;min-width:0}
+.dm-name{font-size:13px;font-weight:700;color:var(--navy)}
+.dm-meta{font-size:10px;color:var(--g600);margin-top:1px}
+.dm-score-wrap{text-align:center;flex-shrink:0}
+.dm-score{font-size:20px;font-weight:800;line-height:1}
+.dm-score-label{font-size:9px;color:var(--g400);font-weight:600;text-transform:uppercase}
+.dm-stars{font-size:12px;color:#f4b400;flex-shrink:0}
+.dm-pill{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;flex-shrink:0}
+.dm-wa-btn{background:#25D366;color:#fff;font-size:10px;font-weight:700;padding:5px 10px;border-radius:7px;flex-shrink:0;cursor:pointer}
+.dm-summary{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:8px;padding-top:12px;border-top:1px solid var(--g200);
+}
+.dm-sum-item{text-align:center}
+.dm-sum-num{font-size:22px;font-weight:800;line-height:1;font-family:var(--fh)}
+.dm-sum-label{font-size:10px;color:var(--g400);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* hide callout cards on mobile, keep mockup */
+@media(max-width:960px){
+  .ds-stage{padding:0}
+  .ds-card{display:none}
+}
+@media(prefers-reduced-motion:reduce){.ds-card{animation:none}}
 </style>
 </head>
 <body>
@@ -676,42 +785,121 @@ nav{
 </section>
 
 <!-- HOW IT WORKS (detailed) -->
-<section class="how-section" id="how">
-  <div class="steps-inner">
-    <div class="s-label reveal">Process</div>
-    <h2 class="s-title reveal d1">Hire Faster In Five Simple Steps</h2>
-    <p class="s-sub reveal d2" style="margin-bottom:52px">No phone calls. No scheduling. No manual screening. Just AI-powered results your clients will love.</p>
-    <div class="steps-row">
-      <div class="step reveal d1">
-        <div class="step-icon-wrap" style="background:#dbeafe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></div>
-        <div class="step-num">01</div><div class="step-name">Create Job</div>
-        <div class="step-desc">Upload job description or enter requirements for your client</div>
+<!-- DASHBOARD SHOWCASE -->
+<section class="dash-showcase" id="dashboard">
+  <div class="ds-inner">
+    <div class="s-label reveal">Recruiter Dashboard</div>
+    <h2 class="s-title reveal d1">See What Recruiters Get</h2>
+    <p class="s-sub reveal d2">Everything you need to identify the best candidates in one dashboard.</p>
+
+    <div class="ds-stage reveal d2">
+      <!-- Floating callout cards -->
+      <div class="ds-card dc-tl reveal">
+        <div class="dc-dot" style="background:#3b82f6"></div>
+        <div class="dc-label">AI Candidate Score</div>
+        <div class="dc-val">8.4 / 10</div>
       </div>
-      <div class="step reveal d2">
-        <div class="step-icon-wrap" style="background:#fee2e2"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f4501e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-        <div class="step-num">02</div><div class="step-name">AI Builds Screening Interview</div>
-        <div class="step-desc">SamparkAI automatically creates role-specific interview questions</div>
+      <div class="ds-card dc-tr reveal d1">
+        <div class="dc-dot" style="background:#22c55e"></div>
+        <div class="dc-label">Top Ranked</div>
+        <div class="dc-val">#1 of 47</div>
       </div>
-      <div class="step reveal d3">
-        <div class="step-icon-wrap" style="background:#dcfce7"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div>
-        <div class="step-num">03</div><div class="step-name">Share One Link</div>
-        <div class="step-desc">Share through WhatsApp, email or job portals</div>
+      <div class="ds-card dc-ml reveal d2">
+        <div class="dc-dot" style="background:#8b5cf6"></div>
+        <div class="dc-label">Interview Summary</div>
+        <div class="dc-val">Strong fit ✓</div>
       </div>
-      <div class="step reveal d4">
-        <div class="step-icon-wrap" style="background:#fef9c3"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ca8a04" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
-        <div class="step-num">04</div><div class="step-name">Candidates Complete AI Interview</div>
-        <div class="step-desc">Applicants complete the interview anytime from any device</div>
+      <div class="ds-card dc-mr reveal d2">
+        <div class="dc-dot" style="background:#f4b400"></div>
+        <div class="dc-label">AI Recommendation</div>
+        <div class="dc-val">Shortlist Now</div>
       </div>
-      <div class="step reveal d5">
-        <div class="step-icon-wrap" style="background:#ede9fe"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
-        <div class="step-num">05</div><div class="step-name">Receive Ranked Candidates</div>
-        <div class="step-desc">Review AI-ranked candidates inside your dashboard and contact the best ones instantly</div>
+      <div class="ds-card dc-bl reveal d3">
+        <div class="dc-dot" style="background:#f4501e"></div>
+        <div class="dc-label">WhatsApp Contact</div>
+        <div class="dc-val">1-tap call ✓</div>
+      </div>
+      <div class="ds-card dc-br reveal d3">
+        <div class="dc-dot" style="background:#0f9d58"></div>
+        <div class="dc-label">Interview Transcript</div>
+        <div class="dc-val">Full record ✓</div>
+      </div>
+
+      <!-- Main dashboard mockup -->
+      <div class="ds-mock">
+        <div class="ds-mock-bar">
+          <div class="ds-mock-dots"><span></span><span></span><span></span></div>
+          <div class="ds-mock-url">samparkai.tech / dashboard</div>
+        </div>
+        <div class="ds-mock-body">
+          <!-- Header row -->
+          <div class="dm-header">
+            <div class="dm-logo"><div class="dm-logo-dot"></div><span>SamparkAI</span></div>
+            <div class="dm-tabs">
+              <span class="dm-tab active">All Candidates</span>
+              <span class="dm-tab">Shortlisted</span>
+              <span class="dm-tab">Scheduled</span>
+            </div>
+            <div class="dm-job-badge">Sales Manager · 47 applicants</div>
+          </div>
+          <!-- Candidate cards -->
+          <div class="dm-cards">
+            <div class="dm-cand dm-cand-top">
+              <div class="dm-avatar" style="background:#3b82f6">RS</div>
+              <div class="dm-info">
+                <div class="dm-name">Rahul Sharma</div>
+                <div class="dm-meta">7 yrs exp · Mumbai · ₹18 LPA</div>
+              </div>
+              <div class="dm-score-wrap">
+                <div class="dm-score" style="color:#0f9d58">8.4</div>
+                <div class="dm-score-label">AI Score</div>
+              </div>
+              <div class="dm-stars">★★★★☆</div>
+              <div class="dm-pill" style="background:#f0fdf4;color:#15803d">Shortlisted</div>
+              <div class="dm-wa-btn">📱 WhatsApp</div>
+            </div>
+            <div class="dm-cand">
+              <div class="dm-avatar" style="background:#8b5cf6">PD</div>
+              <div class="dm-info">
+                <div class="dm-name">Priya Desai</div>
+                <div class="dm-meta">5 yrs exp · Pune · ₹14 LPA</div>
+              </div>
+              <div class="dm-score-wrap">
+                <div class="dm-score" style="color:#f4b400">7.2</div>
+                <div class="dm-score-label">AI Score</div>
+              </div>
+              <div class="dm-stars">★★★★☆</div>
+              <div class="dm-pill" style="background:#fffbeb;color:#b45309">Review</div>
+              <div class="dm-wa-btn">📱 WhatsApp</div>
+            </div>
+            <div class="dm-cand">
+              <div class="dm-avatar" style="background:#f4501e">AK</div>
+              <div class="dm-info">
+                <div class="dm-name">Amit Kumar</div>
+                <div class="dm-meta">3 yrs exp · Delhi · ₹10 LPA</div>
+              </div>
+              <div class="dm-score-wrap">
+                <div class="dm-score" style="color:#f4501e">5.8</div>
+                <div class="dm-score-label">AI Score</div>
+              </div>
+              <div class="dm-stars">★★★☆☆</div>
+              <div class="dm-pill" style="background:#fff1f2;color:#be123c">Pending</div>
+              <div class="dm-wa-btn">📱 WhatsApp</div>
+            </div>
+          </div>
+          <!-- Summary bar -->
+          <div class="dm-summary">
+            <div class="dm-sum-item"><div class="dm-sum-num" style="color:#3b82f6">47</div><div class="dm-sum-label">Screened</div></div>
+            <div class="dm-sum-item"><div class="dm-sum-num" style="color:#22c55e">12</div><div class="dm-sum-label">Qualified</div></div>
+            <div class="dm-sum-item"><div class="dm-sum-num" style="color:#f4501e">5</div><div class="dm-sum-label">Shortlisted</div></div>
+            <div class="dm-sum-item"><div class="dm-sum-num" style="color:#8b5cf6">2.1h</div><div class="dm-sum-label">Avg. Time</div></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- FEATURES -->
 <section class="features-section" id="features">
   <div class="features-inner">
     <div class="s-label reveal">Features</div>
