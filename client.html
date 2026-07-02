@@ -33,36 +33,41 @@
   .mob-toggle{display:flex}
 
   /* Sidebar slides in/out */
-  .sb{
-    transform:translateX(-100%);
-    transition:transform .25s ease;
-    z-index:200;
-  }
+  .sb{transform:translateX(-100%);transition:transform .25s ease;z-index:200}
   .sb.open{transform:translateX(0)}
   .sb-overlay.open{display:block}
 
   /* Main takes full width */
   .main{margin-left:0!important}
 
-  /* Topbar: make room for hamburger */
+  /* Topbar */
   .topbar{padding:0 12px 0 60px;height:52px}
   .pgT{font-size:15px}
 
-  /* Stats: 2x2 grid on mobile */
-  .stats{grid-template-columns:1fr 1fr!important;gap:10px}
-  .sc{padding:14px}
+  /* Stats: 2x2 grid — fix label overflow */
+  .stats{grid-template-columns:1fr 1fr!important;gap:8px}
+  .sc{padding:12px 10px}
+  .sc-label{font-size:9px;letter-spacing:.3px}
+  .sc-num,.sc .text-2xl{font-size:24px!important}
 
-  /* Candidate cards: 1 column on mobile */
-  .cg{grid-template-columns:1fr!important;gap:10px}
-
-  /* Job cards grid: 1 column */
+  /* Job cards: 1 column (was grid3 = 3 cols) */
+  .grid3{grid-template-columns:1fr!important;gap:10px}
   .jg{grid-template-columns:1fr!important;gap:10px}
 
-  /* Candidate card layout */
+  /* Job card stats row: fix "TotalShortlistedSched" cutoff */
+  .jc-stats{grid-template-columns:repeat(3,1fr);gap:4px}
+  .jc-stat-label{font-size:8px;white-space:normal;line-height:1.3}
+  .jc-stat-num{font-size:16px}
+
+  /* Candidate cards: 1 column */
+  .cg{grid-template-columns:1fr!important;gap:10px}
+
+  /* Candidate card */
   .cand-card{padding:14px}
   .cand-photo{width:40px;height:40px;font-size:14px}
+  .cand-body{flex-direction:column;gap:8px}
 
-  /* Tabs scroll horizontally */
+  /* Tabs horizontal scroll */
   .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;flex-wrap:nowrap;gap:6px;padding-bottom:4px}
   .tabs::-webkit-scrollbar{display:none}
   .tab-btn{white-space:nowrap;flex-shrink:0;padding:7px 14px;font-size:12px}
@@ -70,42 +75,34 @@
   /* Content padding */
   .content{padding:16px 14px}
 
-  /* Modal full screen on mobile */
+  /* Modal */
   .modal-box{width:95vw;max-width:95vw;margin:20px auto;max-height:85vh;overflow-y:auto}
 
-  /* Job card copy link */
-  .copy-link-row{flex-wrap:wrap;gap:6px}
+  /* Copy link */
+  .copy-link-row{gap:6px}
   .copy-link-url{font-size:8px}
 
-  /* Header in topbar */
-  .topbar .flex{gap:8px}
-  
-  /* Cand card body: stack vertically */
-  .cand-body{flex-direction:column;gap:8px}
-  
-  /* Score badge sizing */
-  .score-badge{min-width:50px}
-
-  /* WhatsApp button full width on mobile */
+  /* WhatsApp button */
   .wa-btn{width:100%;justify-content:center;margin-top:6px}
 
-  /* Section headings */
-  .section-heading{font-size:16px}
+  /* Score badge */
+  .score-badge{min-width:50px}
 
-  /* Dashboard stats numbers */
-  .sc .text-2xl{font-size:20px}
-
-  /* Hide non-essential columns in tables */
+  /* Hide non-essential */
   .hide-mobile{display:none!important}
 
   /* Job card actions */
   .job-actions{flex-direction:column;gap:6px}
   .job-actions button{width:100%}
+
+  /* mg2 / bg3 grids */
+  .mg2,.bg3{grid-template-columns:1fr!important}
 }
 
 @media(max-width:420px){
   .stats{grid-template-columns:1fr 1fr!important}
   .cg{grid-template-columns:1fr!important}
+  .grid3{grid-template-columns:1fr!important}
   .topbar{padding-left:54px}
   .content{padding:12px 10px}
 }
